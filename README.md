@@ -17,7 +17,7 @@ The MySQL database backend is run through the NodeJS server so this will automat
 [SRV] MySQL Started
 [SRV] Configurable Dashboard Loading Complete
 
-Visit http://127.0.0.1:9091/ to use the system.
+Visit http://127.0.0.1:8080/ to use the system.
 ```
 
 ## Customisation options
