@@ -1,0 +1,24 @@
+{
+  "name": "dashboard-server",
+  "version": "0.0.1",
+  "description": "A configurable dashboard built in CSS, HTML & Javascript to display appropriate information as required.",
+  "main": "dashboard-server.js",
+  "dependencies": {
+    "http": "0.0.0",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node dashboard-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stuartajd/configurable-dashboard.git"
+  },
+  "author": "Stuart Davidson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stuartajd/configurable-dashboard/issues"
+  },
+  "homepage": "https://github.com/stuartajd/configurable-dashboard#readme"
+}
