@@ -15,9 +15,10 @@ The MySQL database backend is run through the NodeJS server so this will automat
 [SRV] Loading MySQL Database
 [SRV] SocketIO Started on *:9090
 [SRV] MySQL Started
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 [SRV] Configurable Dashboard Loading Complete
+
 Visit http://127.0.0.1:9091/ to use the system.
+```
 
 ## Customisation options
 * Background Image Themes (Provided from https://source.unsplash.com/)
