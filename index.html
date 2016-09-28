@@ -9,11 +9,22 @@
         
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Pavanam" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-        <!-- Scripts -->
-        
+        <link href="style.css" rel="stylesheet">        
     </head>
+    
     <body>
-        <h1>Configurable Dashboard</h1>
+        <section class="alert alert-error hidden" id="cannot-connect">
+            We were unable to connect to the Dashboard Server. The information currently displayed will not be updated until the connection is re-established.
+        </section>
+        
+        <main>
+            <h1 id="title">Configurable Dashboard</h1>
+        </main>
+        
     </body>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+    <script src="dashboard-client.js"></script>    
 </html>
