@@ -1,5 +1,7 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto:100';
+
 body{
-    font-family: 'Pavanam', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #333333;
     color: white;
     margin: 0;
