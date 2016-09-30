@@ -11,15 +11,24 @@
         
         <!-- Styles -->
         <link href="style.css" rel="stylesheet">      
+        <link href="styles/rwdgrid.css" rel="stylesheet">
+        <link href="styles/weather-icons/css/weather-icons.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     </head>
     
     <body>
+        <div id="background-darkness"></div>
         <main id="main">
             <section id="title-section">
                 <section class="container">
-                    <h1>Welcome to your Dashboard</h1>
-                    <h2 id="dashboard-date">date here</h2>
+                    <section class="grid-6">
+                        <h1>Welcome to your dashboard</h1>
+                        <h2 id="dashboard-date">date here</h2>
+                    </section>
+                    <section class="grid-6">
+                        <h1 style="text-align: right;">Local Weather</h1>
+                        <h2 style="text-align: right;"><i class="wi wi-forecast-io-thunderstorm"></i> <small>Highs of 18&deg;</small></h2>
+                    </section>                    
                 </section>
             </section>
             
@@ -30,11 +39,22 @@
             </section>
 
             <section class="container">
-                <h2></h2>
+                <section class="grid-6">
+                    <p class="widget">
+                        <strong>Dashboard Widget Position 1</strong>
+                        <p><img src="http://s.stuartd.co.uk/3009163323.png" style="width: 100%;"></p>
+                    </p>
+                </section>
+                <section class="grid-6">
+                    <p class="widget"> 
+                        <strong>Dashboard Widget Position 2</strong>
+                        <p><img src="http://s.stuartd.co.uk/3009161123.png" style="width: 100%;"></p>    
+                    </p>
+                </section>
             </section>
             
             <footer>
-                <p><i class="fa fa-cog"></i> Customize Dashboard</p>
+                Dasher - <i class="fa fa-cog"></i> Customize Dashboard - <a href="https://github.com/stuartajd/dasher" target="_blank">Source Available on GitHub</a>
             </footer>
         </main>
     </body>
