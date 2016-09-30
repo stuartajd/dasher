@@ -16,7 +16,7 @@ $( document ).ready(function() {
 var socket = io.connect('http://localhost:9090');
 
 /*
- * User is connecting to the Socket Server
+ * User is reconnecting to the Socket Server
  */
 socket.on('reconnecting', function(){
    console.log("connecting"); 
