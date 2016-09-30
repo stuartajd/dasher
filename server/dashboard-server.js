@@ -26,7 +26,7 @@ var connection = mysql.createConnection({
 server.listen(9090, function(){
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
 
-    console.log("Visit http://" + server_address + ":8080/ to use the system.");
+    console.log("[SRV] Visit http://" + server_address + ":8080/ to use the system.\n");
 });
 
 
@@ -34,19 +34,28 @@ server.listen(9090, function(){
  * When a connection is established to the socket
  */
 io.on('connection', function(socket){
-    connection.connect();
+    //connection.connect();
     
     socket.on('event', function(data){});
     socket.on('disconnect', function(){
-        connection.end();        
+        //connection.end();        
+    });
+    
+    /*
+     * Client sends to Sync Dashboard
+     */
+    socket.on('syncData', function(data){
+        console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
+        io.emit('syncData', { locX: data.locX, locY: data.locY }); 
     });
     
     socket.on('background-update', function(data)
     {
-        connection.query('SELECT `action` FROM `settings` WHERE `setting` = "background_theme"', function(err, rows, fields) {
-            if (err) throw err;
+        //connection.query('SELECT `action` FROM `settings` WHERE `setting` = "background_theme"', function(err, rows, fields) {
+            //if (err) throw err;
 
-            console.log('The solution is: ', rows[0].action);
-        });          
+            //console.log('The solution is: ', rows[0].action);
+        //});          
     });
 });
+
