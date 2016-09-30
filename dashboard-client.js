@@ -3,7 +3,7 @@
 /* ================================================= */
 
 $( document ).ready(function() {
-
+    setDashboardDate();
 });
 
 /* ================================================= */
@@ -74,4 +74,13 @@ function showNoConnection(shown = true){
         $("#cannot-connect").slideUp();
     }
 };
+
+/*
+ * Get the current date & Update the dashboard
+ */
+function setDashboardDate(){
+    var date = new Date();
+    var today = "" + date.getUTCDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+    $("#dashboard-date").text(today);
+}
 
