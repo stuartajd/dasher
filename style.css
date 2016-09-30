@@ -6,6 +6,9 @@ body{
     color: white;
     margin: 0;
     padding: 0;
+    
+    background: url("https://source.unsplash.com/category/nature/1920x1080") no-repeat center center fixed;
+    background-size: cover;
 }
 
 .container{
@@ -28,7 +31,6 @@ h1#title{
 
 .alert{
     margin: 0 auto;
-    max-width: 57em;
     border: 1px solid grey;
     border-left: 3px solid grey;
     padding: 0.6em 1em;
