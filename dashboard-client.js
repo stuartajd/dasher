@@ -4,6 +4,7 @@
 
 $( document ).ready(function() {
     setDashboardDate();
+    syncData();
 });
 
 /* ================================================= */
@@ -82,3 +83,11 @@ function setDashboardDate(){
     $("#dashboard-date").text( moment().format('dddd, DD MMMM') );
 }
 
+/*
+ * Sync Data to NodeJS Server
+ * Data includes current location
+ * @returns - Success (True / False), Current Weather, Config Display Options, Background Image
+ */
+function syncData(){
+    socket.emit('syncData', { locX: "" + locX, locY: "" + locY });
+}
