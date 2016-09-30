@@ -4,7 +4,7 @@
 
 $( document ).ready(function() {
     setDashboardDate();
-    syncData();
+    // syncData();
 });
 
 /* ================================================= */
