@@ -79,8 +79,6 @@ function showNoConnection(shown = true){
  * Get the current date & Update the dashboard
  */
 function setDashboardDate(){
-    var date = new Date();
-    var today = "" + date.getUTCDay() + "/" + date.getMonth() + "/" + date.getFullYear();
-    $("#dashboard-date").text(today);
+    $("#dashboard-date").text( moment().format('dddd, DD MMMM') );
 }
 
