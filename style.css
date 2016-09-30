@@ -1,5 +1,12 @@
 body{
     font-family: 'Pavanam', sans-serif;
+    background-color: #333333;
+    color: white;
+}
+
+main#main{
+    margin: 0 auto;
+    
 }
 
 h1#title{
@@ -19,6 +26,7 @@ h1#title{
 }
 
 .alert-error{
+    background-color: #ff3535;
     border: 1px solid #b51c1c;
     border-left: 3px solid #b51c1c;
 }
