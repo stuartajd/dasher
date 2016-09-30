@@ -10,7 +10,8 @@
 
         
         <!-- Styles -->
-        <link href="style.css" rel="stylesheet">        
+        <link href="style.css" rel="stylesheet">      
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     </head>
     
     <body>
@@ -23,16 +24,19 @@
             </section>
             
             <section class="alert alert-error hidden" id="cannot-connect">
-                <strong>Error</strong>: We were unable to connect to the Dashboard Server. The information currently displayed will not be updated until the connection is re-established.
+                <section class="container">
+                    <strong>Error</strong>: We were unable to connect to the Dashboard Server. The information currently displayed will not be updated until the connection is re-established.
+                </section>
             </section>
 
+            <section class="container">
+                <h2></h2>
+            </section>
             
-            <h1 id="title"></h1>
+            <footer>
+                <p><i class="fa fa-cog"></i> Customize Dashboard</p>
+            </footer>
         </main>
-        
-        <footer>
-            Last Updated: <span id="last-update"></span> - <a id="update-now">Update Now</a>
-        </footer>
     </body>
     
     <!-- Scripts -->
