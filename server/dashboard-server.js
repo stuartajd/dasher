@@ -25,7 +25,6 @@ var connection = mysql.createConnection({
  */
 server.listen(9090, function(){
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
-
     console.log("[SRV] Visit http://" + server_address + ":8080/ to use the system.\n");
 });
 
