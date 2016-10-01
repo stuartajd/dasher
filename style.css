@@ -11,10 +11,18 @@ body{
     background-size: cover;
 }
 
+header#header{
+    width: 100%;
+}
+
+section#widget-area{
+    margin-top: 3em;
+}
+
 #background-darkness{
     z-index: -9999;
-    position: absolute;
-    height: 100vh;
+    position: fixed;
+    height: 200%;
     width: 100vw;
     background-color:Black;
     opacity:0.7;
@@ -30,6 +38,7 @@ section#title-section{
     background-color: white;
     color: black;
 }
+
 h1#title{
     text-align: center;
 }
@@ -39,6 +48,7 @@ h1#title{
 }
 
 .alert{
+    text-align: center;
     margin: 0 auto;
     border: 1px solid grey;
     border-left: 3px solid grey;
@@ -59,9 +69,26 @@ h1#title{
     border-left: 3px solid #b51c1c;
 }
 
+.button{
+    padding: 0.5em 1em;
+    margin: 0 1em;
+    border: 1px solid;
+    background-color: #bbbbbb;
+    color: black;  
+}
+.button-blue{
+    background-color: #008ee8;
+    color: white;
+    border: 1px solid #009cff;
+}
+
 footer{
+    margin: 2em 0 8em;
     text-align: center;
 }
-footer > a, footer > a:visited{
+#small-footer-image{
+    width: 1em;
+}
+footer > p > a, footer > p > a:visited{
     color: white;
 }
