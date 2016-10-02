@@ -16,6 +16,9 @@ The MySQL database backend is run through the NodeJS server so this will automat
 Visit http://*IPADDRESS*:8080/ to use the system.
 ```
 
+## Assets / EndPoints
+Weather API - Darksky.net
+
 ## Customisation options
 * Background Image Themes (Provided from https://source.unsplash.com/)
  * buildings
