@@ -17,7 +17,7 @@ Visit http://*IPADDRESS*:8080/ to use the system.
 ```
 
 ## Assets / EndPoints
-Weather API - Darksky.net
+Weather API - Darksky.net (Formally forcast.io)
 
 ## Customisation options
 * Background Image Themes (Provided from https://source.unsplash.com/)
