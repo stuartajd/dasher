@@ -11,6 +11,24 @@ body{
     background-size: cover;
 }
 
+section#splash-screen{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    text-align: center;
+    padding-top: 10em;
+    font-size: 2em;
+}
+
+/*header, main, footer{
+    display: none;
+}*/
+
+section#splash-screen{
+    display: none;
+}
+
 header#header{
     width: 100%;
 }

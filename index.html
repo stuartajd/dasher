@@ -2,22 +2,27 @@
 <html lang="en">
     <head>
         <!-- META Information -->
-        <title>Dasher - Configurable Dashboard</title>
+        <title>dasher - Configurable Dashboard</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <link rel="icon" type="image/png" href="favicon-256.png" />
+        <link rel="icon" type="image/png" href="assets/favicon-256.png" />
 
-        
         <!-- Styles -->
-        <link href="style.css" rel="stylesheet">      
-        <link href="styles/rwdgrid.css" rel="stylesheet">
-        <link href="styles/weather-icons/css/weather-icons.min.css" rel="stylesheet">
+        <link href="assets/styles/style.css" rel="stylesheet">      
+        <link href="assets/styles//rwdgrid.css" rel="stylesheet">
+        <link href="assets/styles/weather-icons/css/weather-icons.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     </head>
     
-    <body>
-        <div id="background-darkness"></div>
+    <body>        
+        <section id="background-darkness"></section>
+        
+        <section id="splash-screen">
+            <h1>dasher</h1>
+            <p>welcome to dasher. we're just syncing your data.</p>
+        </section>
+        
         <header id="header">
             <section id="title-section">
                 <section class="container">
@@ -85,7 +90,7 @@
     
         <footer>
             <p>
-                <img src="favicon-256.png" id="small-footer-image"> <strong>Dasher</strong> 
+                <img src="assets/favicon-256.png" id="small-footer-image"> <strong>Dasher</strong> 
                 <a id="customise-dashboard" class="button button-blue"><i class="fa fa-cog"></i> Customize Dashboard</a> 
                 <a href="https://github.com/stuartajd/dasher" target="_blank">Source Available on GitHub</a>
             </p>
@@ -95,6 +100,6 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
-    <script src="scripts/moment.js"></script>
-    <script src="dashboard-client.js"></script>    
+    <script src="assets/scripts/moment.js"></script>
+    <script src="assets/scripts/dashboard-client.js"></script>    
 </html>
