@@ -7,38 +7,23 @@
  */
 var server = require('http').createServer();
 var io = require('socket.io')(server);
-var server_address = require("ip").address();
-var mysql = require('mysql');
-
-/*
- * Initiate the MySQL Database Connection
- */
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'configurable-dashboard'
-});
+var request = require('request');
 
 /*
  * When the server is running on the correct port
  */
 server.listen(9090, function(){
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
-    console.log("[SRV] Visit http://" + server_address + ":8080/ to use the system.\n");
 });
 
 
 /*
  * When a connection is established to the socket
  */
-io.on('connection', function(socket){
-    //connection.connect();
-    
+io.on('connection', function(socket){    
     socket.on('event', function(data){});
-    socket.on('disconnect', function(){
-        //connection.end();        
-    });
+    
+    socket.on('disconnect', function(){});
     
     /*
      * Client sends to Sync Dashboard
@@ -46,15 +31,33 @@ io.on('connection', function(socket){
     socket.on('syncData', function(data){
         console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
         io.emit('syncData', { locX: data.locX, locY: data.locY }); 
+        console.log(getSetting("localWeather"));
     });
     
-    socket.on('background-update', function(data)
-    {
-        //connection.query('SELECT `action` FROM `settings` WHERE `setting` = "background_theme"', function(err, rows, fields) {
-            //if (err) throw err;
-
-            //console.log('The solution is: ', rows[0].action);
-        //});          
-    });
 });
 
+/* ================================================= */
+/*                      FUNCTIONS                    */
+/* ================================================= */
+
+function getSetting(settingName){
+    request.post('http://localhost:100/server/api.php?action=getSetting', { form: { setting : settingName } }, function(error, response, body) {
+        return response.body;
+    });	
+}
+
+function updateSetting(settingName, action){
+    request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } }, function(error, response, body) {
+        console.log(response.body);
+    });	
+}
+
+function getLocalWeather(locX, locY){
+    request.post('', { form: { secure_key: '98220E17F7F824662FD8C41BDCEF92BF', action : 'confirm', number : '' + spinNumber + '' } }, function(error, response, body) {
+		if(!error){
+			setTimeout(function(){
+				clearBets();
+			},900); 
+		}
+	});
+}
