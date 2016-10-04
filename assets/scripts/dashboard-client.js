@@ -135,6 +135,6 @@ function locationError(error) {
 function syncData(){
     getLocation();
     setTimeout(function() {
-        socket.emit('syncData', { locX: "" + locX, locY: "" + locY });
-    }, 500);
+        socket.emit('syncData', { locX: "" + locX, locY: "" + locY});
+    }, 1000);
 }
