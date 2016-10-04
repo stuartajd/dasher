@@ -20,20 +20,28 @@ server.listen(9090, function(){
 /*
  * When a connection is established to the socket
  */
-io.on('connection', function(socket){    
-    socket.on('event', function(data){});
-    
+io.on('connection', function(socket){       
     socket.on('disconnect', function(){});
     
     /*
      * Client sends to Sync Dashboard
      */
     socket.on('syncData', function(data){
-        console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
-        io.emit('syncData', { locX: data.locX, locY: data.locY }); 
-        console.log(getSetting("localWeather"));
+        //console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
+            
+        getSetting("localWeather").on("data", function(response) {
+            var localWeather = response.toString('utf8');
+            
+            getSetting("username").on("data", function(response) {
+                var username = response.toString('utf8');
+                    
+                updateSetting("locX", data.locX);
+                updateSetting("locY", data.locY);
+
+                io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localWeather, username: username }); 
+            });
+        });        
     });
-    
 });
 
 /* ================================================= */
@@ -41,23 +49,36 @@ io.on('connection', function(socket){
 /* ================================================= */
 
 function getSetting(settingName){
-    request.post('http://localhost:100/server/api.php?action=getSetting', { form: { setting : settingName } }, function(error, response, body) {
-        return response.body;
-    });	
+    return request.post('http://localhost:100/server/api.php?action=getSetting', { form: { setting : settingName } });
 }
 
 function updateSetting(settingName, action){
-    request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } }, function(error, response, body) {
-        console.log(response.body);
-    });	
+    request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } });	
 }
 
-function getLocalWeather(locX, locY){
-    request.post('', { form: { secure_key: '98220E17F7F824662FD8C41BDCEF92BF', action : 'confirm', number : '' + spinNumber + '' } }, function(error, response, body) {
-		if(!error){
-			setTimeout(function(){
-				clearBets();
-			},900); 
-		}
-	});
+function updateWeather(locX, locY){
+    {
+    
+    /*
+    API RESPONSE
+    currently: {
+        time: 1475608728,
+        summary: "Partly Cloudy",
+        icon: "partly-cloudy-day",
+        nearestStormDistance: 170,
+        nearestStormBearing: 52,
+        precipIntensity: 0,
+        precipProbability: 0,
+        temperature: 62.33,
+        apparentTemperature: 62.33,
+        dewPoint: 51.94,
+        humidity: 0.69,
+        windSpeed: 4.95,
+        windBearing: 291,
+        visibility: 9.33,
+        cloudCover: 0.53,
+        pressure: 1016.93,
+        ozone: 292.23
+    },
+    */
 }

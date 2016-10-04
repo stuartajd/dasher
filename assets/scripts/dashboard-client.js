@@ -1,26 +1,45 @@
 /* ================================================= */
 /*                  PAGE LOAD SCRIPT                 */
 /* ================================================= */
-
+var connected = false;
 $( document ).ready(function() {
     setDashboardDate();
     syncData();
+    syncDataTimer();
+    connected = false;
 });
 
 /* ================================================= */
 /*                  SOCKET CONNECTION                */
+/*
+
+socket.on 'connect',-> console.log 'connected'
+socket.on 'reconnect',-> console.log 'reconnect'
+socket.on 'connecting',-> console.log 'connecting'
+socket.on 'reconnecting',-> console.log 'reconnecting'
+socket.on 'connect_failed',-> console.log 'connect failed'
+socket.on 'reconnect_failed',-> console.log 'reconnect failed'
+socket.on 'close',-> console.log 'close'
+socket.on 'disconnect',-> console.log 'disconnect'
+
+*/
 /* ================================================= */
 
 /*
  * Initialise the websocket
  */
 var socket = io.connect('http://localhost:9090');
+    
 
 /*
- * User is reconnecting to the Socket Server
+ * Cannot connect to the server as there was an unknown error
  */
-socket.on('reconnecting', function(){
-   console.log("connecting"); 
+socket.on('error', function (err) {
+    showNoConnection();
+});
+
+socket.on('reconnect_failed', function (err) {
+    console.log(err);
 });
 
 /*
@@ -50,7 +69,11 @@ socket.on('disconnect', function ()
  * Data Sync Returned from Server
  */
 socket.on('syncData', function(data){
-    console.log("Server Returned: "+ data.locX + " / " + data.locY);
+    // locX: data.locX, locY: data.locY, localWeather: localWeather, username: username
+    console.log("Server Returned: "+ data.locX + " / " + data.locY + " / " + data.localWeather + " / " + data.username);
+    
+    $("#dashboard-user").text(data.username);
+    $("#dashboard-weather").text(data.localWeather);
 });
 
 /* ================================================= */
@@ -78,8 +101,10 @@ function showNoConnection(shown = true){
     if(shown){
         $("#cannot-connect").slideDown();
         socket_reconnect();
+        connected = false;
     } else {
         $("#cannot-connect").slideUp();
+        connected = true;
     }
 };
 
@@ -126,7 +151,6 @@ function locationError(error) {
     }
 }
 
-
 /*
  * Sync Data to NodeJS Server
  * Data includes current location
@@ -137,4 +161,16 @@ function syncData(){
     setTimeout(function() {
         socket.emit('syncData', { locX: "" + locX, locY: "" + locY});
     }, 1000);
+}
+
+function syncDataTimer(){
+    setInterval(function(){
+        if(connected){
+            console.log("Running Sync Data");
+            syncData();
+        } else {
+            socket_reconnect();
+            console.log("Cannot run Sync Data");
+        }
+    }, 5000);
 }

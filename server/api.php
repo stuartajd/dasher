@@ -1,6 +1,6 @@
 <?php
     require("class.pdo.php");
-    $pdo = new pdo_class("localhost", "root", "", "configurable-dashboard");
+    $pdo = new pdo_class("91.121.220.21", "dasher", "tCzFRRqZe8uE6AT6", "dasher");
 
     switch($_GET['action']){
         case "getSetting":
@@ -12,7 +12,8 @@
             }
             break;
         case "updateSetting":
-            if(isset($_POST['setting']) && !empty($_POST['setting'] && isset($_POST['action'] && !empty($_POST['action']))){
+            if(isset($_POST['setting']) && !empty($_POST['setting']) && isset($_POST['action']) && !empty($_POST['action']))
+            {
                 $settingName = $_POST['setting'];
                 $action = $_POST['action'];
                 

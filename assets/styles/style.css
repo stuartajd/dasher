@@ -69,8 +69,12 @@ h1#title{
     text-align: center;
     margin: 0 auto;
     border: 1px solid grey;
-    border-left: 3px solid grey;
     padding: 0.6em 1em;
+}
+
+.alert-error{
+    background-color: #bb0000;
+    border: 1px solid #690000;
 }
 
 .widget{
@@ -79,12 +83,6 @@ h1#title{
     border: 1px solid #e7e7e7;
     padding: 1em;
     height: 100%;
-}
-
-.alert-error{
-    background-color: #ff3535;
-    border: 1px solid #b51c1c;
-    border-left: 3px solid #b51c1c;
 }
 
 .button{
