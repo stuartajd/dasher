@@ -3,9 +3,11 @@
 /* ================================================= */
 var connected = false;
 $( document ).ready(function() {
-    setDashboardDate();
-    syncData();
+    // Show the loading screen during the initial page load (allows syncing without displaying the placeholders)
+    showLoadingScreen();
+    
     syncDataTimer();
+    
     connected = false;
 });
 
@@ -69,11 +71,19 @@ socket.on('disconnect', function ()
  * Data Sync Returned from Server
  */
 socket.on('syncData', function(data){
-    // locX: data.locX, locY: data.locY, localWeather: localWeather, username: username
-    console.log("Server Returned: "+ data.locX + " / " + data.locY + " / " + data.localWeather + " / " + data.username);
+    // Show the returned data
+    console.log("Server Returned: "+ data.locX + " / " + data.locY + " / " + data.localWeather + " / " + data.localWeatherHighTemp);
+    
+    // Update the localStorage
+    updateSetting("locX", locX);
+    updateSetting("locY", locY);
+    updateSetting("localWeather", data.localWeather);
+    updateSetting("localWeatherHighTemp", data.localWeatherHighTemp);
     
     $("#dashboard-user").text(data.username);
-    $("#dashboard-weather").text(data.localWeather);
+    $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of 18&deg;</small>');
+    
+    showLoadingScreen(true);
 });
 
 /* ================================================= */
@@ -151,6 +161,27 @@ function locationError(error) {
     }
 }
 
+function showLoadingScreen(already_shown=false)
+{
+    if(already_shown){
+        // Show the main
+        $("header").fadeIn();
+        $("main").fadeIn();
+        $("footer").fadeIn();
+
+        // Hide the loading
+        $("#splash-screen").fadeOut();
+    } else {
+        $("header").hide();
+        $("main").hide();
+        $("footer").hide();
+
+        // Show the loading
+        $("#splash-screen").show();
+    }
+
+}
+
 /*
  * Sync Data to NodeJS Server
  * Data includes current location
@@ -158,9 +189,12 @@ function locationError(error) {
  */
 function syncData(){
     getLocation();
-    setTimeout(function() {
+    setDashboardDate();
+    
+    // Give the client time to find the location as otherwise it returns undefined.
+    setTimeout(function() {    
         socket.emit('syncData', { locX: "" + locX, locY: "" + locY});
-    }, 1000);
+    }, 1000);    
 }
 
 function syncDataTimer(){
@@ -173,4 +207,12 @@ function syncDataTimer(){
             console.log("Cannot run Sync Data");
         }
     }, 5000);
+}
+
+/*
+ * Update the Local Storage Data / Create if it has not already
+ */
+function updateSetting(setting_name, setting_content){
+    // Local Storage has not already been created
+    localStorage.setItem(setting_name, setting_content);
 }

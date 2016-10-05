@@ -30,16 +30,10 @@ io.on('connection', function(socket){
         //console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
             
         getSetting("localWeather").on("data", function(response) {
-            var localWeather = response.toString('utf8');
-            
-            getSetting("username").on("data", function(response) {
-                var username = response.toString('utf8');
-                    
-                updateSetting("locX", data.locX);
-                updateSetting("locY", data.locY);
+            var localWeather = "wi-forecast-io-cloudy";
+            var localWeatherHighTemp = "18";
 
-                io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localWeather, username: username }); 
-            });
+            io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localWeather, localWeatherHighTemp: localWeatherHighTemp }); 
         });        
     });
 });
@@ -56,9 +50,7 @@ function updateSetting(settingName, action){
     request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } });	
 }
 
-function updateWeather(locX, locY){
-    {
-    
+function updateWeather(locX, locY){    
     /*
     API RESPONSE
     currently: {
