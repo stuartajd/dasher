@@ -8,6 +8,8 @@
 var server = require('http').createServer();
 var io = require('socket.io')(server);
 var request = require('request');
+//var LocalStorage = require('node-localstorage').LocalStorage;
+//localStorage = new LocalStorage('./dashboard-server');
 
 /*
  * When the server is running on the correct port
@@ -27,14 +29,21 @@ io.on('connection', function(socket){
      * Client sends to Sync Dashboard
      */
     socket.on('syncData', function(data){
+        //localStorage.setItem("locX", data.locX);
+        //localStorage.setItem("locY", data.locY);
+        startWeatherUpdateTimer();
+
         //console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
             
-        getSetting("localWeather").on("data", function(response) {
-            var localWeather = "wi-forecast-io-cloudy";
+        //updateWeather(data.locX, data.locY).on("data", function(response) {
+            //var localWeather = localStorage.localWeather;
+            //console.log(localWeather);
+            
+            var localWeather = "wi-forecast-io-clear-day";
             var localWeatherHighTemp = "18";
 
             io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localWeather, localWeatherHighTemp: localWeatherHighTemp }); 
-        });        
+       // });        
     });
 });
 
@@ -50,7 +59,19 @@ function updateSetting(settingName, action){
     request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } });	
 }
 
+function startWeatherUpdateTimer(){
+    setInterval(function(){
+       // updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
+    }, 10000);
+}
+
 function updateWeather(locX, locY){    
+    request
+      .get('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/' + locX + ',' + locY)
+      .on('response', function(response) {
+            //localStorage.setItem("localWeather", "test");
+      });
+}
     /*
     API RESPONSE
     currently: {
@@ -73,4 +94,3 @@ function updateWeather(locX, locY){
         ozone: 292.23
     },
     */
-}
