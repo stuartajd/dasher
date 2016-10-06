@@ -30,7 +30,7 @@ socket.on 'disconnect',-> console.log 'disconnect'
 /*
  * Initialise the websocket
  */
-var socket = io.connect('http://localhost:9090');
+var socket = io.connect('http://localhost:9090', {'forceNew': true});
     
 
 /*
@@ -202,9 +202,11 @@ function syncDataTimer(){
         if(connected){
             console.log("Running Sync Data");
             syncData();
+            showCannotConnect(true);
         } else {
             socket_reconnect();
             console.log("Cannot run Sync Data");
+            showCannotConnect();
         }
     }, 5000);
 }
@@ -215,4 +217,16 @@ function syncDataTimer(){
 function updateSetting(setting_name, setting_content){
     // Local Storage has not already been created
     localStorage.setItem(setting_name, setting_content);
+}
+
+/*
+ * Show an error screen for not being able to connect to the server
+ */
+function showCannotConnect(shown=false){
+    // The screen is already showing
+    if(shown){
+        $("p#splash-screen-error").slideUp();
+    } else {
+        $("p#splash-screen-error").slideDown();
+    }
 }
