@@ -36,6 +36,15 @@ section#splash-screen-text{
     position: absolute;
 }
 
+p#splash-screen-error{
+    display: none;
+    
+    font-size: 0.7em;
+    background-color: #c11515;
+    padding: 0.5em;
+    margin-top: 0.2em;
+}
+
 header#header{
     width: 100%;
 }
