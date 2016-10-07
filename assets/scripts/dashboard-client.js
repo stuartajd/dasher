@@ -184,7 +184,6 @@ function showLoadingScreen(already_shown=false)
 function syncData(){
     getLocation();
     setDashboardDate();
-    setUserName();
     
     // Give the client time to find the location as otherwise it returns undefined.
     setTimeout(function() {    
