@@ -22,7 +22,9 @@ server.listen(9090, function(){
 /*
  * When a connection is established to the socket
  */
-io.on('connection', function(socket){       
+io.on('connection', function(socket){ 
+    console.log("[SRV] A connection has been established to the Dashboard Server");
+    
     socket.on('disconnect', function(){});
     
     /*
