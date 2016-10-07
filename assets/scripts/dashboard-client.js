@@ -30,8 +30,8 @@ socket.on 'disconnect',-> console.log 'disconnect'
 /*
  * Initialise the websocket
  */
-var socket = io.connect('http://localhost:9090', {'forceNew': true});
-    
+var socketURL = "http://localhost:9090";
+var socket = io.connect(socketURL);
 
 /*
  * Cannot connect to the server as there was an unknown error
@@ -94,15 +94,18 @@ socket.on('syncData', function(data){
  * Reconnect to Socket Server
  */
 function socket_reconnect(){
-    socket.io.reconnect();
+    if(!socket.connected){
+        socket.io.connect(socketURL);
+    }else{
+        socket.io.disconnect();
+        socket.io.connect(socketURL);
+    }
+    
+    if(socket.connected){
+        location.reload();
+        connected = true;
+    }
 } 
-
-/*
- * Disconnect from Socket Server
- */
-function socket_disconnect(){
-    socket.io.disconnect();
-}
 
 /*
  * Display the cannot connect to server message
