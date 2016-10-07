@@ -30,18 +30,13 @@ socket.on 'disconnect',-> console.log 'disconnect'
 /*
  * Initialise the websocket
  */
-var socketURL = "http://localhost:9090";
-var socket = io.connect(socketURL);
+var socket = io.connect("http://localhost:9090/");
 
 /*
  * Cannot connect to the server as there was an unknown error
  */
 socket.on('error', function (err) {
     showNoConnection();
-});
-
-socket.on('reconnect_failed', function (err) {
-    console.log(err);
 });
 
 /*
@@ -95,10 +90,7 @@ socket.on('syncData', function(data){
  */
 function socket_reconnect(){
     if(!socket.connected){
-        socket.io.connect(socketURL);
-    }else{
-        socket.io.disconnect();
-        socket.io.connect(socketURL);
+        socket.io.connect();
     }
     
     if(socket.connected){
@@ -113,7 +105,6 @@ function socket_reconnect(){
 function showNoConnection(shown = true){
     if(shown){
         $("#cannot-connect").slideDown();
-        socket_reconnect();
         connected = false;
     } else {
         $("#cannot-connect").slideUp();
@@ -193,6 +184,7 @@ function showLoadingScreen(already_shown=false)
 function syncData(){
     getLocation();
     setDashboardDate();
+    setUserName();
     
     // Give the client time to find the location as otherwise it returns undefined.
     setTimeout(function() {    
@@ -203,12 +195,12 @@ function syncData(){
 function syncDataTimer(){
     setInterval(function(){
         if(connected){
-            console.log("Running Sync Data");
+            //console.log("Running Sync Data");
             syncData();
             showCannotConnect(true);
         } else {
             socket_reconnect();
-            console.log("Cannot run Sync Data");
+            console.log("[ERROR] Cannot run Sync Data - No Server Connection");
             showCannotConnect();
         }
     }, 5000);

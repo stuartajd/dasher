@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <!-- META Information -->
-        <title>dasher - Configurable Dashboard</title>
+        <title>Dasher</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
@@ -10,7 +10,7 @@
 
         <!-- Styles -->
         <link href="assets/styles/style.css" rel="stylesheet">      
-        <link href="assets/styles//rwdgrid.css" rel="stylesheet">
+        <link href="assets/styles/rwdgrid.css" rel="stylesheet">
         <link href="assets/styles/weather-icons/css/weather-icons.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     </head>
@@ -30,12 +30,12 @@
             <section id="title-section">
                 <section class="container">
                     <section class="grid-6">
-                        <h1>Welcome <span id="dashboard-user">username here</span></h1>
-                        <h2 id="dashboard-date">date here</h2>
+                        <h1>Welcome <span id="dashboard-user"><small><i class="fa fa-refresh fa-spin"></i> Syncing Data</small></span></h1>
+                        <h2 id="dashboard-date"><small><i class="fa fa-refresh fa-spin"></i> Syncing Data</small></h2>
                     </section>
                     <section class="grid-6">
                         <h1 style="text-align: right;">Local Weather</h1>
-                        <h2 style="text-align: right;"><span id="dashboard-weather"><small><i class="fa fa-refresh fa-spin"></i> Syncing Weather</small></span></h2>
+                        <h2 style="text-align: right;"><span id="dashboard-weather"><small><i class="fa fa-refresh fa-spin"></i> Syncing Data</small></span></h2>
                     </section>                    
                 </section>
             </section>
@@ -69,5 +69,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="assets/scripts/moment.js"></script>
+    <script src="assets/scripts/config-ini.js"></script>
     <script src="assets/scripts/dashboard-client.js"></script>    
 </html>
