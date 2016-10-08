@@ -66,18 +66,17 @@ socket.on('disconnect', function ()
  * Data Sync Returned from Server
  */
 socket.on('syncData', function(data){
-    // Show the returned data
-    console.log("Server Returned: "+ data.locX + " / " + data.locY + " / " + data.localWeather + " / " + data.localWeatherHighTemp);
-    
     // Update the localStorage
     updateSetting("locX", locX);
     updateSetting("locY", locY);
     updateSetting("localWeather", data.localWeather);
     updateSetting("localWeatherHighTemp", data.localWeatherHighTemp);
     
+    // Update the site to reflect changes
     $("#dashboard-user").text(data.username);
-    $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of 18&deg;</small>');
+    $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of '+ localStorage.getItem("localWeatherHighTemp") +'&deg;</small>');
     
+    // Remove the loading screen
     showLoadingScreen(true);
 });
 
