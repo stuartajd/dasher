@@ -30,12 +30,13 @@ socket.on 'disconnect',-> console.log 'disconnect'
 /*
  * Initialise the websocket
  */
+
 var socket = io.connect("http://localhost:9090/");
 
 /*
  * Cannot connect to the server as there was an unknown error
  */
-socket.on('error', function (err) {
+socket.io.on('connect_error', function(err) {
     showNoConnection();
 });
 
@@ -90,11 +91,6 @@ socket.on('syncData', function(data){
 function socket_reconnect(){
     if(!socket.connected){
         socket.io.connect();
-    }
-    
-    if(socket.connected){
-        location.reload();
-        connected = true;
     }
 } 
 
