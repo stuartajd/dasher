@@ -8,14 +8,16 @@
 var server = require('http').createServer();
 var io = require('socket.io')(server);
 var request = require('request');
-//var LocalStorage = require('node-localstorage').LocalStorage;
-//localStorage = new LocalStorage('./dashboard-server');
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./dashboard-server-localStorage/');
 
 /*
  * When the server is running on the correct port
  */
 server.listen(9090, function(){
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
+    
+    startWeatherUpdateTimer();
 });
 
 
@@ -24,28 +26,19 @@ server.listen(9090, function(){
  */
 io.on('connection', function(socket){ 
     console.log("[SRV] A connection has been established to the Dashboard Server");
-    
-    socket.on('disconnect', function(){});
+        
+    socket.on('disconnect', function(){
+        console.log("[SRV] A connection has been terminated");        
+    });
     
     /*
      * Client sends to Sync Dashboard
      */
     socket.on('syncData', function(data){
-        //localStorage.setItem("locX", data.locX);
-        //localStorage.setItem("locY", data.locY);
-        startWeatherUpdateTimer();
+        localStorage.setItem("locX", data.locX);
+        localStorage.setItem("locY", data.locY);        
 
-        //console.log("[SRV] syncData() RECEIVED: {locX: "+ data.locX + ", locY: "+ data.locY +"}");
-            
-        //updateWeather(data.locX, data.locY).on("data", function(response) {
-            //var localWeather = localStorage.localWeather;
-            //console.log(localWeather);
-            
-            var localWeather = "wi-forecast-io-clear-day";
-            var localWeatherHighTemp = "18";
-
-            io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localWeather, localWeatherHighTemp: localWeatherHighTemp }); 
-       // });        
+        io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localStorage.getItem("localWeather"), localWeatherHighTemp: localStorage.getItem("localWeatherHighTemp") }); 
     });
 });
 
@@ -62,37 +55,43 @@ function updateSetting(settingName, action){
 }
 
 function startWeatherUpdateTimer(){
+    // Run the update weather function @ server startup
+    updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
+    
+    // Then run every 10 minutes
     setInterval(function(){
-       // updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
-    }, 10000);
+        updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
+    }, 600000);
 }
 
-function updateWeather(locX, locY){    
-    request
-      .get('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/' + locX + ',' + locY)
-      .on('response', function(response) {
-            //localStorage.setItem("localWeather", "test");
-      });
+function updateWeather(locX, locY){  
+    console.log("Starting weather update");
+    request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/' + locX + ',' + locY, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var weatherJSON = JSON.parse(body);
+            localStorage.setItem("localWeather", "wi-forecast-io-"+ weatherJSON.currently.icon);
+            
+            var temperature = Math.floor((weatherJSON.currently.temperature - 32)*(5 / 9));
+            
+            localStorage.setItem("localWeatherHighTemp", temperature);
+        }
+    });
+    console.log("Weather Update Complete");
 }
-    /*
-    API RESPONSE
-    currently: {
-        time: 1475608728,
-        summary: "Partly Cloudy",
-        icon: "partly-cloudy-day",
-        nearestStormDistance: 170,
-        nearestStormBearing: 52,
-        precipIntensity: 0,
-        precipProbability: 0,
-        temperature: 62.33,
-        apparentTemperature: 62.33,
-        dewPoint: 51.94,
-        humidity: 0.69,
-        windSpeed: 4.95,
-        windBearing: 291,
-        visibility: 9.33,
-        cloudCover: 0.53,
-        pressure: 1016.93,
-        ozone: 292.23
-    },
-    */
+
+/*
+ * Update console.log to include timestamp
+ * Source; http://stackoverflow.com/a/21801403/5203742
+ */
+console.logCopy = console.log.bind(console);
+
+console.log = function()
+{
+    if (arguments.length)
+    {
+        var timestamp = new Date().toJSON(); // The easiest way I found to get milliseconds in the timestamp
+        var args = arguments;
+        args[0] = timestamp + ' > ' + arguments[0];
+        this.logCopy.apply(this, args);
+    }
+};
