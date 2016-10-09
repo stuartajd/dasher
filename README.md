@@ -1,4 +1,6 @@
 # Dasher - Configurable Dashboard
+> Dasher is currently under development, please be aware that not all the features are complete / functional. Anything and everything could change at any time =)
+
 Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to display appropriate information as required, it is fully customisable with different modules that can be selected as you wish to use them. It is self contained and is shipped with an HTTP server to ensure that you simply run a few commands for it to function.
 
 ## Requirements
