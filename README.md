@@ -8,7 +8,15 @@ To install the node-js modules simply run;
 npm install
 ```
 
-The MySQL database backend is run through the NodeJS server so this will automatically be started upon starting the NodeJS server. Once the server has started running simply visit the URL that is given and you will be able to begin using the dashboard (See example of console below)
+Then once all the required packages are installed simply run:
+
+```
+npm test
+OR
+node dashboard-server.js
+```
+
+This will kickstart the server and dashboard itself. Once the server has started running simply visit the URL that is given and you will be able to begin using the dashboard (See example of console below)
 
 ```
 [SRV] Webserver Started - Visit http://IP_ADDRESS:8080
