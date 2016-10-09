@@ -6,8 +6,13 @@ $( document ).ready(function() {
     // Show the loading screen during the initial page load (allows syncing without displaying the placeholders)
     showLoadingScreen();
     
+    // Run syncData to begin syncing
+    syncData();
+    
+    // Start the syncData timer for every 5 seconds
     syncDataTimer();
     
+    // We're not connected to the socket yet
     connected = false;
 });
 
@@ -56,8 +61,6 @@ socket.on('disconnect', function ()
  */
 socket.on('syncData', function(data){
     // Update the localStorage
-    updateSetting("locX", locX);
-    updateSetting("locY", locY);
     updateSetting("localWeather", data.localWeather);
     updateSetting("localWeatherHighTemp", data.localWeatherHighTemp);
     
@@ -65,8 +68,16 @@ socket.on('syncData', function(data){
     $("#dashboard-user").text(data.username);
     $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of '+ localStorage.getItem("localWeatherHighTemp") +'&deg;</small>');
     
-    // Remove the loading screen
-    showLoadingScreen(true);
+    // Wait for 1 second after completing sync to ensure everything is complete
+    setInterval(function(){
+        // Remove the loading screen
+        showLoadingScreen(true);
+    }, 1000);
+});
+
+socket.on('location', function(data){
+    console.log("Location Requested");
+    getLocation();
 });
 
 /* ================================================= */
@@ -110,7 +121,6 @@ var locX, locY;
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(setLocation, locationError);
-        
     } else {
         alert("Geolocation is not supported by this browser.");
     }
@@ -119,6 +129,9 @@ function getLocation() {
 function setLocation(position){
     locX = position.coords.latitude;
     locY = position.coords.longitude;
+    
+    updateSetting("locX", locX);
+    updateSetting("locY", locY);
 }
 
 function locationError(error) {
