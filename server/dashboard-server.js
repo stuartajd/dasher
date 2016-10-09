@@ -8,7 +8,6 @@
 var server = require('http').createServer();
 var cmd = require('node-cmd');
 var io = require('socket.io')(server);
-var webserver = require('http-server');
 var ip = require('ip');
 var request = require('request');
 var LocalStorage = require('node-localstorage').LocalStorage;
