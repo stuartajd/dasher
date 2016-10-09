@@ -6,7 +6,10 @@
  * Required Modules
  */
 var server = require('http').createServer();
+var cmd = require('node-cmd');
 var io = require('socket.io')(server);
+var webserver = require('http-server');
+var ip = require('ip');
 var request = require('request');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./dashboard-server-localStorage/');
@@ -15,6 +18,10 @@ localStorage = new LocalStorage('./dashboard-server-localStorage/');
  * When the server is running on the correct port
  */
 server.listen(9090, function(){
+    cmd.run('http-server ../client');
+    
+    console.log("[SRV] Webserver Started - " + ip.address() + ":8080");
+    
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
     
     startWeatherUpdateTimer();
