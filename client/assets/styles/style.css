@@ -21,10 +21,6 @@ section#splash-screen{
     font-size: 2em;
 }
 
-/*header, main, footer{
-    display: none;
-}*/
-
 section#splash-screen{
     display: none;
 }
