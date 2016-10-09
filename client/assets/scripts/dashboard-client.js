@@ -13,18 +13,6 @@ $( document ).ready(function() {
 
 /* ================================================= */
 /*                  SOCKET CONNECTION                */
-/*
-
-socket.on 'connect',-> console.log 'connected'
-socket.on 'reconnect',-> console.log 'reconnect'
-socket.on 'connecting',-> console.log 'connecting'
-socket.on 'reconnecting',-> console.log 'reconnecting'
-socket.on 'connect_failed',-> console.log 'connect failed'
-socket.on 'reconnect_failed',-> console.log 'reconnect failed'
-socket.on 'close',-> console.log 'close'
-socket.on 'disconnect',-> console.log 'disconnect'
-
-*/
 /* ================================================= */
 
 /*
