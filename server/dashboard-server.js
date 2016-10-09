@@ -20,7 +20,7 @@ localStorage = new LocalStorage('./dashboard-server-localStorage/');
 server.listen(9090, function(){
     cmd.run('http-server ../client');
     
-    console.log("[SRV] Webserver Started - " + ip.address() + ":8080");
+    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":8080");
     
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
     
