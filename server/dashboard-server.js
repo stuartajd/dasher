@@ -14,7 +14,7 @@ var colors = require('colors');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./dashboard-server-localStorage/');
 
-var debug_mode = true;
+var debug_mode = false;
 
 /*
  * When the server is running on the correct port
