@@ -10,8 +10,11 @@ var cmd = require('node-cmd');
 var io = require('socket.io')(server);
 var ip = require('ip');
 var request = require('request');
+var colors = require('colors');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./dashboard-server-localStorage/');
+
+var debug_mode = true;
 
 /*
  * When the server is running on the correct port
@@ -19,9 +22,11 @@ localStorage = new LocalStorage('./dashboard-server-localStorage/');
 server.listen(9090, function(){
     cmd.run('http-server ../client');
     
-    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":8080");
+    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":8080/");
     
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
+    
+    debug("Socket Server Started");
     
     startWeatherUpdateTimer();
 });
@@ -31,20 +36,31 @@ server.listen(9090, function(){
  * When a connection is established to the socket
  */
 io.on('connection', function(socket){ 
-    console.log("[SRV] A connection has been established to the Dashboard Server");
+    debug("A client has connected to the server");
         
     socket.on('disconnect', function(){
-        console.log("[SRV] A connection has been terminated");        
+        debug("A client has disconnected from the server");     
     });
     
     /*
      * Client sends to Sync Dashboard
      */
     socket.on('syncData', function(data){
+        debug("syncData() request has been recieved");
+        
+        // Update localStorage to include the current X & Y locations
         localStorage.setItem("locX", data.locX);
         localStorage.setItem("locY", data.locY);        
-
-        io.emit('syncData', { locX: data.locX, locY: data.locY, localWeather: localStorage.getItem("localWeather"), localWeatherHighTemp: localStorage.getItem("localWeatherHighTemp") }); 
+        
+        // Return all the required variables for the sync
+        io.emit('syncData', { 
+            locX: data.locX, 
+            locY: data.locY, 
+            localWeather: localStorage.getItem("localWeather"), 
+            localWeatherHighTemp: localStorage.getItem("localWeatherHighTemp") 
+        }); 
+        
+        debug("syncData() request results have been returned");
     });
 });
 
@@ -52,28 +68,33 @@ io.on('connection', function(socket){
 /*                      FUNCTIONS                    */
 /* ================================================= */
 
-function getSetting(settingName){
-    return request.post('http://localhost:100/server/api.php?action=getSetting', { form: { setting : settingName } });
-}
-
-function updateSetting(settingName, action){
-    request.post('http://localhost:100/server/api.php?action=updateSetting', { form: { setting : settingName, action: action } });	
-}
-
 function startWeatherUpdateTimer(){
-    // Run the update weather function @ server startup
-    updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
-    
-    // Then run every 10 minutes
-    setInterval(function(){
+    if(!localStorage.getItem("locX") || !localStorage.getItem("locY")){
+        debug("startWeatherUpdateTimer() does not have the X or Y co-ordinates in localStorage");
+        // They do not exist in the localStorage, attempt to reaquire location.
+        io.emit('location');
+        
+        // Check if the location is available after 2 seconds.
+        setTimeout(function(){
+            startWeatherUpdateTimer();
+        }, 2000);
+    } else {
+        debug("startWeatherUpdateTimer() has started successfully");
+        // Run the update weather function @ server startup
         updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
-    }, 600000);
+
+        // Then run every 10 minutes
+        setInterval(function(){
+            updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
+        }, 600000);
+    }
 }
 
 function updateWeather(locX, locY){  
-    console.log("Starting weather update");
     request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/' + locX + ',' + locY, function (error, response, body) {
         if (!error && response.statusCode == 200) {
+            debug("updateWeather() has started successfully and connected to the API");
+            
             var weatherJSON = JSON.parse(body);
             localStorage.setItem("localWeather", "wi-forecast-io-"+ weatherJSON.currently.icon);
             
@@ -82,22 +103,10 @@ function updateWeather(locX, locY){
             localStorage.setItem("localWeatherHighTemp", temperature);
         }
     });
-    console.log("Weather Update Complete");
 }
 
-/*
- * Update console.log to include timestamp
- * Source; http://stackoverflow.com/a/21801403/5203742
- */
-console.logCopy = console.log.bind(console);
-
-console.log = function()
-{
-    if (arguments.length)
-    {
-        var timestamp = new Date().toJSON(); // The easiest way I found to get milliseconds in the timestamp
-        var args = arguments;
-        args[0] = timestamp + ' > ' + arguments[0];
-        this.logCopy.apply(this, args);
+function debug(message){
+    if(debug_mode){
+        console.log("[" + "DEBUG".red + "] " + message);
     }
-};
+}
