@@ -190,7 +190,6 @@ function syncData(){
 function syncDataTimer(){
     setInterval(function(){
         if(connected){
-            //console.log("Running Sync Data");
             syncData();
             showCannotConnect(true);
         } else {
