@@ -65,8 +65,8 @@ socket.on('disconnect', function ()
  */
 socket.on('syncData', function(data){
     // Update the localStorage
-    updateSetting("localWeather", data.localWeather);
-    updateSetting("localWeatherHighTemp", data.localWeatherHighTemp);
+    localStorage.setItem("localWeather", data.localWeather);
+    localStorage.setItem("localWeatherHighTemp", data.localWeatherHighTemp);
     
     // Update the site to reflect changes
     $("#dashboard-user").text(data.username);
