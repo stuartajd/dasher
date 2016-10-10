@@ -1,6 +1,6 @@
 {
-  "name": "dashboard-server",
-  "version": "0.0.1",
+  "name": "dasher",
+  "version": "1.0.0",
   "description": "A configurable dashboard built in CSS, HTML & Javascript to display appropriate information as required.",
   "private": true,
   "main": "dashboard-server.js",
@@ -17,7 +17,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node dashboard-server.js"
+    "dev": "nodemon dashboard-server.js",
+    "dashboard": "node dashboard-server.js"
   },
   "repository": {
     "type": "git",
