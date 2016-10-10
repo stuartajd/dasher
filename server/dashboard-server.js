@@ -14,15 +14,15 @@ var colors = require('colors');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./dashboard-server-localStorage/');
 
-var debug_mode = false;
+var debug_mode = true;
 
 /*
  * When the server is running on the correct port
  */
 server.listen(9090, function(){
-    cmd.run('http-server ../client');
+    cmd.run('http-server ../client -p 80');
     
-    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":8080/");
+    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":80/");
     
     console.log("[SRV] Configurable Dashboard Local Loading Complete");
     
