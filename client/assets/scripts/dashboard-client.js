@@ -68,13 +68,26 @@ socket.on('syncData', function(data){
     $("#dashboard-user").text(data.username);
     $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of '+ localStorage.getItem("localWeatherHighTemp") +'&deg;</small>');
     
-    // Wait for 1 second after completing sync to ensure everything is complete
-    setInterval(function(){
-        // Remove the loading screen
-        showLoadingScreen(true);
-    }, 1000);
+    if(!localStorage.getItem("locX") || 
+       !localStorage.getItem("locY") ||
+       !localStorage.getItem("localWeather") || localStorage.getItem("localWeather") == "null" ||
+       !localStorage.getItem("localWeatherHighTemp") || localStorage.getItem("localWeatherHighTemp") == "null"){
+        // The required localStorage do not exist
+        setTimeout(function(){
+            syncData();
+        }, 1000);     
+    } else {    
+        // Wait for 1 second after completing sync to ensure everything is complete
+        setTimeout(function(){
+            // Remove the loading screen
+            showLoadingScreen(true);
+        }, 1000);
+    }
 });
 
+/*
+ * The location is missing from the server, therefore it will ask for the location to be resent.
+ */
 socket.on('location', function(data){
     console.log("Location Requested");
     getLocation();
@@ -130,8 +143,8 @@ function setLocation(position){
     locX = position.coords.latitude;
     locY = position.coords.longitude;
     
-    updateSetting("locX", locX);
-    updateSetting("locY", locY);
+    localStorage.setItem("locX", locX);
+    localStorage.setItem("locY", locY);
 }
 
 function locationError(error) {
@@ -151,6 +164,10 @@ function locationError(error) {
     }
 }
 
+/*
+ * Shows the loading screen
+ * If already_shown = true, the loading screen will be removed
+ */
 function showLoadingScreen(already_shown=false)
 {
     if(already_shown){
@@ -187,6 +204,9 @@ function syncData(){
     }, 1000);    
 }
 
+/*
+ * Creates a timer for 5 seconds to refresh the information on the dashboard
+ */
 function syncDataTimer(){
     setInterval(function(){
         if(connected){
@@ -198,14 +218,6 @@ function syncDataTimer(){
             showCannotConnect();
         }
     }, 5000);
-}
-
-/*
- * Update the Local Storage Data / Create if it has not already
- */
-function updateSetting(setting_name, setting_content){
-    // Local Storage has not already been created
-    localStorage.setItem(setting_name, setting_content);
 }
 
 /*
