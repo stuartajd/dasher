@@ -5,7 +5,7 @@
         <title>Dasher</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
+        <meta name="description" content="A confirgurable dashboard built in HTML5, CSS & Javascript along with a backend Node Server.">
         <link rel="icon" type="image/png" href="assets/favicon-256.png" />
 
         <!-- Styles -->
@@ -13,6 +13,12 @@
         <link href="assets/styles/rwdgrid.css" rel="stylesheet">
         <link href="assets/styles/weather-icons/css/weather-icons.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+        
+        <!-- Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" defer></script>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js" defer></script>
+        <script src="assets/scripts/moment.js" defer></script>
+        <script src="assets/scripts/dashboard-client.js" defer></script>    
     </head>
     
     <body>        
@@ -57,17 +63,9 @@
         </main>
     
         <footer>
-            <p>
-                <img src="assets/favicon-256.png" id="small-footer-image"> <strong>Dasher</strong> 
+            <p> 
                 <a id="customise-dashboard" class="button button-blue"><i class="fa fa-cog"></i> Customize Dashboard</a> 
-                <a href="https://github.com/stuartajd/dasher" target="_blank">Source Available on GitHub</a>
             </p>
         </footer>
     </body>
-    
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script src="assets/scripts/moment.js"></script>
-    <script src="assets/scripts/dashboard-client.js"></script>    
 </html>
