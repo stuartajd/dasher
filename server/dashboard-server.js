@@ -11,10 +11,17 @@ var io = require('socket.io')(server);
 var ip = require('ip');
 var request = require('request');
 var colors = require('colors');
+var args = require('optimist').argv;
+
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./dashboard-server-localStorage/');
 
-var debug_mode = true;
+if(args.debug){
+    var debug_mode = true;
+    debug("Debug Mode Enabled");
+} else {
+    var debug_mode = false;
+}
 
 /*
  * When the server is running on the correct port
