@@ -18,6 +18,12 @@ $( document ).ready(function() {
     
     // We're not connected to the socket yet
     connected = false;
+    
+    // Create an initial widgets
+    createWidget();
+    createWidget();
+    createWidget();
+    createWidget();
 });
 
 /* ================================================= */
@@ -131,13 +137,29 @@ function setDashboardDate(){
 }
 
 /*
+ * Start the dashboard timer, get the time & update the dashboard
+ */
+function setDashboardTime(){
+    setInterval(function(){
+        var d = new Date(); // for now
+        $("#dashboard-time").text ( d.getHours() + ":" + d.getMinutes() );
+    }, 5000);
+}
+
+/*
  * Get the users current location
  */
 var locX, locY;
 
+var options = {
+  enableHighAccuracy: false,
+  timeout: 5000,
+  maximumAge: 0
+};
+
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(setLocation, locationError);
+        navigator.geolocation.getCurrentPosition(setLocation, locationError, options);
     } else {
         alert("Geolocation is not supported by this browser.");
     }
@@ -201,6 +223,7 @@ function showLoadingScreen(already_shown=false)
 function syncData(){
     getLocation();
     setDashboardDate();
+    setDashboardTime();
     
     // Give the client time to find the location as otherwise it returns undefined.
     setTimeout(function() {    
@@ -235,3 +258,24 @@ function showCannotConnect(shown=false){
         $("p#splash-screen-error").slideDown();
     }
 }
+
+/*
+ * Creates a widget for the dashboard
+ */
+function createWidget(){
+    var widgetArea = window.widgetArea;
+    
+    // Create the "outer" section
+    var outerWidget = document.createElement("section");
+    outerWidget.className += "outerWidget col-md-6";
+    
+    // Create the "inner" section
+    var innerWidget = document.createElement("section");
+    innerWidget.className += "innerWidget";
+    $(innerWidget).html("Just testing a widget, this is just an example of a LOAD of text within the widget. BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH ");
+    
+    $(outerWidget).html(innerWidget);
+    widgetArea.appendChild(outerWidget);
+    
+}
+
