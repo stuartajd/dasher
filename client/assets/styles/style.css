@@ -69,6 +69,10 @@ section#title-section{
     color: black;
 }
 
+h1{
+    margin: 0;
+}
+
 h1#title{
     text-align: center;
 }
@@ -89,9 +93,16 @@ h1#title{
     border: 1px solid #690000;
 }
 
-.widget{
+.outerWidget{
+    margin-bottom: 1.3em;
+}
+
+.innerWidget{
     background-color: #e7e7e7;
     color: black;
+    font-weight: bold;
+    text-align: justify;
+    word-wrap: break-word;
     border: 1px solid #e7e7e7;
     padding: 1em;
     height: 100%;
