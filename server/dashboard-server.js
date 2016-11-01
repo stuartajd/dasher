@@ -76,7 +76,8 @@ io.on('connection', function(socket){
 /* ================================================= */
 
 function startWeatherUpdateTimer(){
-    if(!localStorage.getItem("locX") || !localStorage.getItem("locY")){
+    if(!localStorage.getItem("locX") || !localStorage.getItem("locY") ||
+        localStorage.getItem("locX") == "undefined" || localStorage.getItem("locY") == "undefined"){
         debug("startWeatherUpdateTimer() does not have the X or Y co-ordinates in localStorage");
         // They do not exist in the localStorage, attempt to reaquire location.
         io.emit('location');
