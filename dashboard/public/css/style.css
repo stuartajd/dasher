@@ -131,3 +131,13 @@ footer{
 footer > p > a, footer > p > a:visited{
     color: white;
 }
+
+#dashboard-time{
+    font-size:  4em;
+}
+#dashboard-date{
+    font-size: 2em;
+}
+#dashboard-weather{
+    font-size: 2em;
+}

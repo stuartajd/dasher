@@ -6,6 +6,8 @@
  * Required Modules
  */
 var server = require('http').createServer();
+var express = require("express");
+var app = express();
 var cmd = require('node-cmd');
 var io = require('socket.io')(server);
 var ip = require('ip');
@@ -27,14 +29,24 @@ if(args.debug){
  * When the server is running on the correct port
  */
 server.listen(9090, function(){
-    cmd.run('http-server ../client -p 80');
-    
-    console.log("[SRV] Webserver Started - Visit http://" + ip.address() + ":80/");
-    
-    console.log("[SRV] Configurable Dashboard Local Loading Complete");
-    
     debug("Socket Server Started");
-    
+
+    app.use('/css', express.static(__dirname + '/public/css'));
+    app.use('/js', express.static(__dirname + '/public/js'));
+
+
+    app.listen(80, function(){
+        debug("Web Server Started");
+
+        console.log("[SRV] Webserver Started");
+    });
+
+    app.get('/',function(req,res){
+        res.sendFile(__dirname + '/public/test.html');
+    });
+
+    debug("Loading Complete");
+
     startWeatherUpdateTimer();
 });
 

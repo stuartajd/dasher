@@ -143,7 +143,7 @@ function setDashboardTime(){
     setInterval(function(){
         var d = new Date(); // for now
         $("#dashboard-time").text ( d.getHours() + ":" + d.getMinutes() );
-    }, 5000);
+    }, 1000);
 }
 
 /*
