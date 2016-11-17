@@ -47,7 +47,7 @@ server.listen(9090, function(){
 
     debug("Loading Complete");
 
-    startWeatherUpdateTimer();
+    startUpdateTimer();
 });
 
 
@@ -74,7 +74,8 @@ io.on('connection', function(socket){
         // Return all the required variables for the sync
         io.emit('syncData', { 
             locX: data.locX, 
-            locY: data.locY, 
+            locY: data.locY,
+            nearestCity: localStorage.getItem("nearestCity"),
             localWeather: localStorage.getItem("localWeather"), 
             localWeatherHighTemp: localStorage.getItem("localWeatherHighTemp") 
         }); 
@@ -87,24 +88,29 @@ io.on('connection', function(socket){
 /*                      FUNCTIONS                    */
 /* ================================================= */
 
-function startWeatherUpdateTimer(){
+function startUpdateTimer(){
     if(!localStorage.getItem("locX") || !localStorage.getItem("locY") ||
         localStorage.getItem("locX") == "undefined" || localStorage.getItem("locY") == "undefined"){
-        debug("startWeatherUpdateTimer() does not have the X or Y co-ordinates in localStorage");
+        debug("startUpdateTimer() does not have the X or Y co-ordinates in localStorage");
         // They do not exist in the localStorage, attempt to reaquire location.
         io.emit('location');
         
         // Check if the location is available after 2 seconds.
         setTimeout(function(){
-            startWeatherUpdateTimer();
+            startUpdateTimer();
         }, 2000);
     } else {
-        debug("startWeatherUpdateTimer() has started successfully");
+        debug("startUpdateTimer() has started successfully");
+
+        // Update the local city @ server startup
+        updateLocation(localStorage.getItem("locX"), localStorage.getItem("locY"));
+
         // Run the update weather function @ server startup
         updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
 
         // Then run every 10 minutes
         setInterval(function(){
+            updateLocation(localStorage.getItem("locX"), localStorage.getItem("locY"));
             updateWeather(localStorage.getItem("locX"), localStorage.getItem("locY"));
         }, 600000);
     }
@@ -121,6 +127,17 @@ function updateWeather(locX, locY){
             var temperature = Math.floor((weatherJSON.currently.temperature - 32)*(5 / 9));
             
             localStorage.setItem("localWeatherHighTemp", temperature);
+        }
+    });
+}
+
+function updateLocation(locX, locY){
+    request('http://maps.googleapis.com/maps/api/geocode/json?latlng=' + locX + ',' + locY, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            debug("updateLocation() has started successfully and connected to the API");
+
+            var cityJSON = JSON.parse(body);
+            localStorage.setItem("nearestCity", "Portsmouth");
         }
     });
 }

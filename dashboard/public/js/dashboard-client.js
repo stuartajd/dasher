@@ -18,12 +18,6 @@ $( document ).ready(function() {
     
     // We're not connected to the socket yet
     connected = false;
-    
-    // Create an initial widgets
-    createWidget();
-    createWidget();
-    createWidget();
-    createWidget();
 });
 
 /* ================================================= */
@@ -77,11 +71,14 @@ socket.on('syncData', function(data){
     // Update the site to reflect changes
     $("#dashboard-user").text(data.username);
     $("#dashboard-weather").html('<i class="wi ' + localStorage.getItem("localWeather") + '"></i> <small>Highs of '+ localStorage.getItem("localWeatherHighTemp") +'&deg;</small>');
-    
-    if(!localStorage.getItem("locX") || 
-       !localStorage.getItem("locY") ||
-       !localStorage.getItem("localWeather") || localStorage.getItem("localWeather") == "null" ||
-       !localStorage.getItem("localWeatherHighTemp") || localStorage.getItem("localWeatherHighTemp") == "null"){
+    $("#dashboard-location").html(localStorage.getItem("nearestCity"));
+
+    if( !localStorage.getItem("locX") ||
+        !localStorage.getItem("locY") ||
+        !localStorage.getItem("localWeather") || localStorage.getItem("localWeather") == "null" ||
+        !localStorage.getItem("localWeatherHighTemp") || localStorage.getItem("localWeatherHighTemp") == "null" ||
+        !localStorage.getItem("nearestCity") || localStorage.getItem("nearestCity") == "null"){
+
         // The required localStorage do not exist
         setTimeout(function(){
             syncData();
@@ -257,25 +254,5 @@ function showCannotConnect(shown=false){
     } else {
         $("p#splash-screen-error").slideDown();
     }
-}
-
-/*
- * Creates a widget for the dashboard
- */
-function createWidget(){
-    var widgetArea = window.widgetArea;
-    
-    // Create the "outer" section
-    var outerWidget = document.createElement("section");
-    outerWidget.className += "outerWidget col-md-6";
-    
-    // Create the "inner" section
-    var innerWidget = document.createElement("section");
-    innerWidget.className += "innerWidget";
-    $(innerWidget).html("Just testing a widget, this is just an example of a LOAD of text within the widget. BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH ");
-    
-    $(outerWidget).html(innerWidget);
-    widgetArea.appendChild(outerWidget);
-    
 }
 
