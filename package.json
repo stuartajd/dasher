@@ -1,0 +1,33 @@
+{
+  "name": "dasher",
+  "version": "0.0.1",
+  "description": "A configurable dashboard",
+  "main": "dashboard.js",
+  "scripts": {
+    "dev": "nodemon dashboard.js --debug",
+    "dashboard": "node dashboard.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stuartajd/dasher.git"
+  },
+  "keywords": [
+    "dasher"
+  ],
+  "author": "Stuart Davidson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stuartajd/dasher/issues"
+  },
+  "homepage": "https://github.com/stuartajd/dasher#readme",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "express": "^4.14.0",
+    "news-headline": "0.0.1",
+    "node-geocoder": "^3.16.0",
+    "nodemon": "^1.11.0",
+    "optimist": "^0.6.1",
+    "request": "^2.81.0",
+    "ws": "^2.1.0"
+  }
+}

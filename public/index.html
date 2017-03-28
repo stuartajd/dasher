@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>dasher</title>
+        <meta charset="UTF-8">
+
+        <!-- Needs to be stored on local but for now -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Weather Icons - weathericons.io -->
+        <link rel="stylesheet" href="css/weather-icons-master/css/weather-icons.min.css">
+
+        <!-- Custom Stylesheet -->
+        <link rel="stylesheet" href="/css/style.css">
+
+    </head>
+
+    <body>
+        <section id="background-darkness"></section>
+
+        <span id="settings_button" class="hidden"><i class="fa fa-cog"></i></span>
+
+        <main id="dashboard_loading" class="container hidden">
+            <section id="center_box">
+                <h1 class="dasher_title">dasher</h1>
+                <p>we are just syncing your settings, please wait..</p>
+            </section>
+        </main>
+
+        <main id="dashboard_error" class="container hidden">
+            <section id="center_box">
+                <h1>An error has occured!</h1>
+
+                <span id="error_message"></span>
+            </section>
+        </main>
+
+        <section id="settings_box" class="white_box hidden container">
+            <div class="white_box_title clearfix">
+                Settings
+                <div class="white_box_close" id="settings_box_close"><i class="fa fa-times"></i></div>
+            </div>
+
+            <div class="white_box_content">
+
+                <p>Background Image Category:
+                <select id="setting_background_type">
+                    <option value="nature">Nature</option>
+                    <option value="buildings">Buildings</option>
+                    <option value="food">Food</option>
+                    <option value="people">People</option>
+                    <option value="technology">Technology</option>
+                    <option value="objects">Objects</option>
+                </select></p>
+
+                <p>Colour Scheme:
+                    <input type="color" id="setting_color_picker" value="#008cff">
+                </p>
+
+                <hr>
+
+                <h3>Widget Display</h3>
+                <p>Display News: <span class="clickable" id="display_news_button"></span></p>
+                <p>Display Weather: <span class="clickable" id="display_weather_button"></span></p>
+            </div>
+        </section>
+
+        <main id="dashboard" class="container hidden">
+            <section class="row clearfix">
+
+                <!-- Clock Widget -->
+                <section class="col-md-4" id="widget_clock">
+                    <section class="widget">
+                        <span id="current-time"><i class="fa fa-refresh fa-spin"></i>:<i class="fa fa-refresh fa-spin"></i></span>
+                    </section>
+                </section>
+
+                <!-- Date Widget -->
+                <section class="col-md-4" id="widget_date">
+                    <section class="widget">
+                        <span id="current-date"><i class="fa fa-refresh fa-spin"></i></span>
+                    </section>
+                </section>
+
+                <!-- Location -->
+                <section class="col-md-4" id="widget_location">
+                    <section class="widget">
+                        <span id="current_location"><i class="fa fa-refresh fa-spin"></i></span>
+                    </section>
+                </section>
+
+                <!-- Headlines -->
+                <section class="col-md-6" id="widget_news">
+                    <section class="widget_header">
+                        News Headlines
+                    </section>
+                    <section class="widget">
+                        <article id="news_headlines"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
+                    </section>
+                </section>
+
+                <!-- Weather Forecast -->
+                <section class="col-md-6" id="widget_weather">
+                    <section class="widget_header">
+                        Local Weather Forecast
+                    </section>
+                    <section class="widget">
+                        <article id="widget_weather_icon"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
+                        <article id="widget_weather_text"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
+                    </section>
+                </section>
+
+                <!-- Notepad -->
+                <section class="col-md-6" id="widget_notepad">
+                    <section class="widget_header">
+                        Notes
+                    </section>
+                    <section class="widget">
+                        <article contenteditable="true" placeholder="Click to begin typing.."></article>
+                    </section>
+                </section>
+
+            </section>
+        </main>
+
+
+
+        <script src="/js/dasher.js"></script>
+    </body>
+</html>

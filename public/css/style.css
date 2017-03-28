@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css?family=Basic');
+
+@font-face {
+    font-family: JennaSue;
+    src: url('../fonts/JennaSue.ttf');
+}
+.dasher_title{
+    font-family: JennaSue;
+    font-size: 4em;
+}
+body{
+    font-family: 'Basic', sans-serif;
+    text-transform: uppercase;
+
+    color: white;
+    margin: 0;
+    padding: 0;
+
+    #background: url("https://source.unsplash.com/category/nature/1280x720/") no-repeat center center fixed;
+    background-image: url("https://source.unsplash.com/category/nature/1280x720/");
+    background-size: cover;
+}
+
+select{
+    margin: 0 1em;
+    padding: 0.5em;
+}
+
+.clearfix {
+    overflow: auto;
+}
+
+#settings_button{
+    float: left;
+    display: inline-block;
+    background-color: rgba(0,0,0,0.4);
+    margin-top: 1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    font-size: 1.5em;
+}
+
+#settings_button:hover{
+    cursor:pointer;
+}
+
+.white_box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 2em auto;
+
+    z-index:9999999;
+    background-color: #fefefe;
+    border: 1px solid #888;
+    color: black;
+
+    border: 1px solid grey;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.white_box_close {
+    cursor: pointer;
+    float: right;
+}
+
+.white_box_title{
+    border-bottom: 1px solid grey;
+    font-size: 2em;
+    padding: 0.5em 0;
+}
+
+.white_box_content{
+    text-align: justify;
+    padding: 1em;
+}
+
+section#center_box{
+    top:50%;
+    left: 50%;
+    transform: translate3d(-50%,-50%, 0);
+    position: absolute;
+}
+
+section#background-darkness{
+    z-index: -9999;
+    position: fixed;
+    height: 200%;
+    width: 100vw;
+    background-color:Black;
+    opacity:0.4;
+}
+
+main{
+    padding: 1em;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    color: white;
+}
+
+.widget{
+    color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.5em;
+    margin: 0.2em;
+    box-shadow: 3px 3px 10px #000;
+    border-bottom: 5px solid #008cff;
+}
+
+.widget_header{
+    background-color: #008cff;
+    padding: 0.2em;
+    margin: 1em 0.2em -0.2em;
+}
+
+#news_headlines {
+    text-align: left;
+    font-size: 0.9em;
+    list-style-type: none;
+}
+
+#news_headlines > li{
+    padding: 0.5em 0;
+    border-bottom: 1px dashed grey;
+}
+
+#news_headlines > li:last-child{
+    border-bottom: none;
+}
+
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    display: block; /* For Firefox */
+}
+
+.large-text{
+    font-size: 5em;
+}
+.widget_large{
+    min-height: 15em;
+    height: auto;
+    padding: 1em;
+}
+.widget_autosize{
+    height: auto;
+    padding: 1em;
+}
+
+#widget_weather_icon{
+    font-size: 3em;
+}
