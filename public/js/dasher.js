@@ -129,20 +129,26 @@ function loadDasher(){
         showLoading();
 
         setTimeout(function() {
-            if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false"){
-
-                // Start the date and time timers
-                startTimeTimer();
-                startDateTimer();
-                startNewsTimer();
-                startWeatherTimer();
-
-                // Send current lat and lon to get the location response
-                ws.send(JSON.stringify({"action":"location", "lat":localStorage.getItem("locLat"), "lon":localStorage.getItem("locLon")}));
-
-                showDashboard();
+            if(localStorage.getItem("locLon") === "unavailable" && localStorage.getItem("locLat") == "unavailable"){
+                // Fall back to using GeoLocation from IP Address
+                getLocationFromIP();
             } else {
-                showErrors();
+                if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false"){
+
+
+                    // Start the date and time timers
+                    startTimeTimer();
+                    startDateTimer();
+                    startNewsTimer();
+                    startWeatherTimer();
+
+                    // Send current lat and lon to get the location response
+                    ws.send(JSON.stringify({"action":"location", "lat":localStorage.getItem("locLat"), "lon":localStorage.getItem("locLon")}));
+
+                    showDashboard();
+                } else {
+                    showErrors();
+                }
             }
         }, 2000);
     } else {
@@ -354,6 +360,22 @@ function updateSettingsBackground(){
 }
 
 /**
+ * Get location from IP Address
+ */
+function getLocationFromIP(){
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", locationIPResponse);
+    oReq.open("GET", "http://ip-api.com/json");
+    oReq.send();
+}
+
+function locationIPResponse(){
+    var response = JSON.parse(this.responseText);
+    console.log(response.lat);
+    console.log(response.lon);
+}
+
+/**
  * HTML Geolocation - getLocation
  */
 function getLocation() {
@@ -384,8 +406,8 @@ function saveLocation(position){
  * @param error
  */
 function locationError(error) {
-    localStorage.setItem("locLat", "false");
-    localStorage.setItem("locLon", "false");
+    localStorage.setItem("locLat", "unavailable");
+    localStorage.setItem("locLon", "unavailable");
 
     switch(error.code) {
         case error.PERMISSION_DENIED:
