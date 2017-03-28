@@ -16,6 +16,7 @@ var args = require('optimist').argv;
 var dasher = require("./private/dasher.module.js");
 var nodeGeoCoder = require('node-geocoder');
 var request = require('request');
+var ip = require("ip");
 const WebSocket = require('ws');
 
 /**
@@ -49,7 +50,7 @@ app.get('/*', function (req, res) {
 });
 
 /* Socket Content */
-var wss = new WebSocket.Server({ port: 8081 }, function(){
+var wss = new WebSocket.Server({ host: ip.address(), port: 8081 }, function(){
     debug("Socket Server Started");
     print("Socket Server Started on " + web.address().address +":8081", "Server");
 

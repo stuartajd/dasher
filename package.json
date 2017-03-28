@@ -24,6 +24,7 @@
     "colors": "^1.1.2",
     "express": "^4.14.0",
     "http": "0.0.0",
+    "ip": "^1.1.5",
     "node-geocoder": "^3.16.0",
     "nodemon": "^1.11.0",
     "optimist": "^0.6.1",
