@@ -38,6 +38,7 @@ select{
 }
 
 .red-alert{
+    font-size: 0.8em;
     background-color: red;
     padding: 0.5em 1em;
     margin-bottom: 20px;
@@ -136,6 +137,10 @@ footer {
     background-color: #008cff;
     padding: 0.2em;
     margin: 1em 0.2em -0.2em;
+}
+
+#notepad_content{
+    text-align: left;
 }
 
 #news_headlines {

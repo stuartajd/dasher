@@ -14,7 +14,6 @@
 
         <!-- Custom Stylesheet -->
         <link rel="stylesheet" href="/css/style.css">
-
     </head>
 
     <body>
@@ -88,7 +87,8 @@
                         Notes
                     </section>
                     <section class="widget">
-                        <article contenteditable="true" placeholder="Click to begin typing.."></article>
+                        <div class="red-alert hidden" id="notepad_max_length">A maximum of 250 characters is enforced.</div>
+                        <article id="notepad_content" contenteditable="true" placeholder="Click to begin typing.."></article>
                     </section>
                 </section>
 

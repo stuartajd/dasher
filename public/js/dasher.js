@@ -6,7 +6,7 @@
 
 'use strict'
 
-var ws = new WebSocket('ws://localhost:8081');
+var ws = new WebSocket('ws://127.0.0.1:8081');
 var socket_connected = false;
 
 ws.onopen = function (event) {
@@ -183,8 +183,15 @@ function configureDashboard(){
         localStorage.setItem("setting_display_weather", "true");
     }
 
+    if(localStorage.getItem("notepad_content") === null){
+        localStorage.setItem("notepad_content", "");
+    }
+
     // Update Background Picture
     document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
+
+    // Update Notepad Content
+    document.getElementById("notepad_content").innerHTML = localStorage.getItem("notepad_content");
 
     // Update Widget Header Colour
     var widgets = document.querySelectorAll(".widget_header");
@@ -261,6 +268,7 @@ document.getElementById("display_news_button").addEventListener("click", updateS
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
 document.getElementById("setting_color_picker").addEventListener("change", updateSettingsBackgroundColor);
 document.getElementById("setting_reset_dasher").addEventListener("click", updateResetDasher);
+document.getElementById("notepad_content").addEventListener("keyup", updateNotepadContent);
 
 /**
  * Event Handlers
@@ -303,6 +311,21 @@ function updateResetDasher(){
     localStorage.setItem("setting_display_weather", "true");
     localStorage.setItem("setting_background_color", "#008cff");
     localStorage.setItem("setting_background_type", "nature");
+    localStorage.setItem("notepad_content", "");
+}
+
+/**
+ * Save Notepad Content
+ */
+function updateNotepadContent(){
+    if(document.getElementById("notepad_content").textContent.length > 250){
+        // More than 250 characters, ignore :(
+        window.notepad_max_length.classList.remove("hidden");
+    } else {
+        // Less than 250 characters, therefore save =)
+        window.notepad_max_length.classList.add("hidden");
+        localStorage.setItem("notepad_content", document.getElementById("notepad_content").innerHTML);
+    }
 }
 
 /**
