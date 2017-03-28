@@ -17,14 +17,13 @@ var server = http.createServer();
 
 /* Socket Content */
 const wss = new wsserver({ server: server });
-
 const app = express();
 const colors = require("colors");
 const args = require('optimist').argv;
 const dasher = require("./private/dasher.module.js");
 const nodeGeoCoder = require('node-geocoder');
 const request = require('request');
-const ip = require("ip");
+const externalip = require("externalip");
 
 server.on('request', app);
 
@@ -46,11 +45,11 @@ debug("Dasher Loading - Started");
 app.use(express.static(__dirname + '/public'));
 
 server.listen(8080, function () {
-    debug("Web Server Started");
-    print("Web Server Started on "+this.address().address+":" + this.address().port, "Server");
+    externalip(function (err, ip) {
+        debug("Web Server Started");
+        print("Dasher has loaded successfully, to use visit: "+ ip +":8080 in any browser!", "Server");
+    });
 });
-
-
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -65,13 +64,10 @@ app.get('/*', function (req, res) {
 
 // dasher is connected via Socket
 wss.on('connection', function connection(ws) {
-
+    debug("New Connection Established");
     ws.on('message', function incoming(message) {
         var message = JSON.parse(message);
         switch(message.action){
-            case "sync":
-
-                break;
             case "weather":
                 getWeatherForcast(ws, message.lat, message.lon);
                 break;
