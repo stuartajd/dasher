@@ -21,9 +21,11 @@ body{
     margin: 0;
     padding: 0;
 
-    #background: url("https://source.unsplash.com/category/nature/1280x720/") no-repeat center center fixed;
-    background-image: url("https://source.unsplash.com/category/nature/1280x720/");
-    background-size: cover;
+    background-image: url("https://source.unsplash.com/category/nature/1280x720/") no-repeat center center fixed;
+    background-size: cover !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
 }
 
 select{

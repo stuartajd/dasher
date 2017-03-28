@@ -184,7 +184,7 @@ function configureDashboard(){
     }
 
     // Update Background Picture
-    document.querySelector("body").style.backgroundImage = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/")';
+    document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
 
     // Update Widget Header Colour
     var widgets = document.querySelectorAll(".widget_header");
