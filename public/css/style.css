@@ -45,8 +45,12 @@ select{
     color: white;
 }
 
-.news_headline{
-    cursor: pointer;
+.green-alert{
+    font-size: 0.8em;
+    background-color: green;
+    padding: 0.5em 1em;
+    margin-bottom: 20px;
+    color: white;
 }
 
 .news_body{
@@ -58,17 +62,24 @@ select{
     padding-bottom: 0.1em;
 }
 
-#settings_button{
+#side_bar{
     float: left;
-    display: inline-block;
+}
+
+#settings_button{
+    display: block;
     background-color: rgba(0,0,0,0.4);
     margin-top: 1em;
     padding: 0.5em 0.5em 0.5em 1em;
     font-size: 1.5em;
 }
 
-#settings_button:hover{
-    cursor:pointer;
+#about_button{
+    display: block;
+    background-color: rgba(0,0,0,0.4);
+    margin-top: 1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    font-size: 1.5em;
 }
 
 .white_box {
@@ -80,7 +91,10 @@ select{
 
     margin: 2em auto;
 
-    height: 40em;
+    height: auto;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     z-index:9999999;
     background-color: #fefefe;
@@ -138,10 +152,10 @@ footer {
 }
 
 .widget{
+    margin: 0.2em;
     color: black;
     background-color: rgba(255, 255, 255, 0.7);
     padding: 0.5em;
-    margin: 0.2em;
     box-shadow: 3px 3px 10px #000;
     border-bottom: 5px solid #008cff;
 }

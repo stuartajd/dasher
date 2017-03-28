@@ -74,7 +74,7 @@ function createTrafficMap(){
     var myLatlng = new google.maps.LatLng(Number(localStorage.getItem("locLat")), Number(localStorage.getItem("locLon")));
 
     var map = new google.maps.Map(document.getElementById('widget_map_image'), {
-        zoom: 15,
+        zoom: 13,
         center: myLatlng
     });
 
@@ -307,6 +307,7 @@ function showDashboard(){
     window.dashboard_error.classList.add("hidden");
     window.dashboard.classList.remove("hidden");
     window.settings_button.classList.remove("hidden");
+    window.about_button.classList.remove("hidden");
 }
 
 /**
@@ -317,6 +318,7 @@ function showErrors(){
     window.dashboard_error.classList.remove("hidden");
     window.dashboard.classList.add("hidden");
     window.settings_button.classList.add("hidden");
+    window.about_button.classList.add("hidden");
 }
 
 /**
@@ -327,6 +329,7 @@ function showLoading(){
     window.dashboard_error.classList.add("hidden");
     window.dashboard.classList.add("hidden");
     window.settings_button.classList.add("hidden");
+    window.about_button.classList.add("hidden");
 }
 
 /**
@@ -334,6 +337,8 @@ function showLoading(){
  */
 document.getElementById("settings_box_close").addEventListener("click", updateSettings);
 document.getElementById("settings_button").addEventListener("click", showSettingsBox);
+document.getElementById("about_button").addEventListener("click", showAboutBox);
+document.getElementById("about_box_close").addEventListener("click", showAboutBox);
 document.getElementById("setting_background_type").addEventListener("change", updateSettingsBackground);
 document.getElementById("display_news_button").addEventListener("click", updateSettingsNews);
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
@@ -351,7 +356,13 @@ function viewNews(element){
     element.childNodes[1].classList.toggle("hidden");
 }
 
+function showAboutBox(){
+    window.about_box.classList.toggle("hidden");
+}
+
 function showSettingsBox(){
+    window.about_box.classList.toggle("hidden");
+
     // Loop through all the backgrounds
     var set_bg_ty = document.getElementById("setting_background_type");
     for(var i = 0; i < set_bg_ty.options.length; i++){
@@ -405,6 +416,12 @@ function updateResetDasher(){
     localStorage.setItem("setting_background_color", "#008cff");
     localStorage.setItem("setting_background_type", "nature");
     localStorage.setItem("notepad_content", "");
+
+    // Close all news articles
+    var articles = document.querySelectorAll(".news_headline");
+    for(var i = 0; i < articles.length; i++){
+        articles[i].childNodes[1].classList.add("hidden");
+    }
 }
 
 /**
@@ -504,12 +521,18 @@ function getLocationFromIP(){
     req.addEventListener("load", locationIPResponse);
     req.open("GET", "http://ip-api.com/json");
     req.send();
+
+    document.getElementById("widget_loc_warning").classList.remove("hidden");
 }
 
 function locationIPResponse(){
     var response = JSON.parse(this.responseText);
     localStorage.setItem("locLon", response.lon);
     localStorage.setItem("locLat", response.lat);
+
+    setTimeout(function(){
+        document.getElementById("widget_loc_warning").classList.add("hidden");
+    }, 5000);
 }
 
 /**

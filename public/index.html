@@ -19,7 +19,11 @@
     <body>
         <section id="background-darkness"></section>
 
-        <span id="settings_button" class="hidden"><i class="fa fa-cog"></i></span>
+        <aside id="side_bar">
+            <div id="settings_button" class="hidden clickable"><i class="fa fa-cog"></i></div>
+
+            <div id="about_button" class="hidden clickable"><i class="fa fa-question"></i></div>
+        </aside>
 
         <main id="dashboard_loading" class="container hidden">
             <section id="center_box">
@@ -60,13 +64,21 @@
                     </section>
                 </section>
 
+                <!-- Location Warning -->
+
+                <section class="col-md-12 hidden" id="widget_loc_warning">
+                    <section class="widget">
+                        <article id="location_warning" class="clickable">Dasher has had to use your IP address to determine your location, it may not be 100% accurate!</article>
+                    </section>
+                </section>
+
                 <!-- Headlines -->
                 <section class="col-md-6" id="widget_news">
                     <section class="widget_header">
                         News Headlines
                     </section>
                     <section class="widget">
-                        <article id="news_headlines"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
+                        <article id="news_headlines" class="clickable"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
                     </section>
                 </section>
 
@@ -88,7 +100,7 @@
                         Local Area Traffic
                     </section>
                     <section class="widget">
-                        <div style="height: 10em;" id="widget_map_image"></div>
+                        <div style="height: 15em;" id="widget_map_image"></div>
                     </section>
                 </section>
 
@@ -105,14 +117,58 @@
             </section>
         </main>
 
+        <section id="about_box" class="white_box hidden container">
+            <div class="white_box_title clearfix">
+                About Dasher
+                <div class="white_box_close" id="about_box_close"><i class="fa fa-times"></i></div>
+            </div>
+
+            <div class="white_box_content">
+
+                <h4>Welcome to Dasher!</h4>
+
+                <p>Dasher is a customisable dashboard built to display various pieces of information that may be of use! Dasher will automatically update as long as the server is still available, with everything updating every 15 minutes to ensure you have the latest information!</p>
+
+                <p class="text-center">Created with <i class="fa fa-heart"></i> by up772629</p>
+
+                <hr>
+
+                <h4>What can be customised?</h4>
+                <ul>
+                    <li>House colours can be changed (to whatever you want!)</li>
+                    <li>Background Image Category [Nature, Buildings, Food, People, Technology, Objects]</li>
+                    <li>Displaying and Hiding specific widgets</li>
+                    <li>Type whatever you want in your notepad!</li>
+                </ul>
+
+                <hr>
+
+                <h4>How can I customise Dasher?</h4>
+                <p>Customisation is easy! All you have to do is click on the <i class="fa fa-cog"></i> button on the left side, it'll open up a menu, then just follow all the steps displayed! Easy as pie!</p>
+
+                <hr>
+
+                <h4>We wanted to say Thank You!</h4>
+                <p>Dasher makes use of various different public systems to get all your data, thanks for making stuff available!</p>
+
+                <ul>
+                    <li>Weather API is provided by DarkSky [ <small><a href="https://darksky.net" target="_blank">https://darksky.net</a></small> ]</li>
+                    <li>Location API is provided by Google [ <small><a href="https://google.com" target="_blank">https://google.com</a></small> ]</li>
+                    <li>Weather Icons are provided by erikflowers [ <small><a href="http://weathericons.io" target="_blank">http://weathericons.io</a></small> ]</li>
+                    <li>Latest Headlines are provided by News API [ <small><a href="https://newsapi.org" target="_blank">https://newsapi.org</a></small> ] and BBC News [ <small><a href="https://bbc.co.uk/news" target="_blank">https://bbc.co.uk/news</a></small> ]  </li>
+                </ul>
+            </div>
+        </section>
+
         <section id="settings_box" class="white_box hidden container">
             <div class="white_box_title clearfix">
                 Settings
                 <div class="white_box_close" id="settings_box_close"><i class="fa fa-times"></i></div>
-                <p style="font-size: 13px;" class="text-right">To save your settings, just close the settings page.</p>
             </div>
 
             <div class="white_box_content">
+
+                <div class="green-alert">To save your settings, just close the settings page.</div>
 
                 <p>Background Image Category:
                     <select id="setting_background_type">
