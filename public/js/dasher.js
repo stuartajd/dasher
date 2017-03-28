@@ -129,7 +129,7 @@ function loadDasher(){
         showLoading();
 
         setTimeout(function() {
-            if(localStorage.getItem("locLon") === "unavailable" && localStorage.getItem("locLat") == "unavailable"){
+            if(localStorage.getItem("locLon") == "unavailable" && localStorage.getItem("locLat") == "unavailable"){
                 // Fall back to using GeoLocation from IP Address
                 getLocationFromIP();
                 setTimeout(function(){
