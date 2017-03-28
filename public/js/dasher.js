@@ -18,21 +18,22 @@ ws.onmessage = function (event) {
     switch(message.action){
         case "weather":
             updateElementHTML("#widget_weather_icon", '<i class="wi wi-forecast-io-'+message.forecast.currently.icon+'"></i>');
-            updateElementHTML("#widget_weather_text", message.forecast.currently.summary + "<br />");
+            updateElementHTML("#widget_weather_text", 'It\'s currently ' + message.forecast.currently.summary + "<hr>");
 
             var weekly = document.createElement("table");
             weekly.classList.add("table");
 
-            var weekForecast = message.forecast.daily.data;
+            var weekForecast = message.forecast.hourly.data;
 
             for(var i = 0; i < 5; i++){
-                var time = new Date(weekForecast[i].time);
+                var time = new Date(0); // The 0 there is the key, which sets the date to the epoch
+                time.setUTCSeconds(weekForecast[i+1].time);
                 var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
                 var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
                 var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
 
                 var fore = document.createElement("td");
-                fore.innerHTML = '<i class="wi wi-forecast-io-'+ weekForecast[i].icon+'"></i><br />'+ hours + ":" + mins + AMPM ;
+                fore.innerHTML = '<i title="'+ weekForecast[i+1].summary +'" class="wi wi-forecast-io-'+ weekForecast[i+1].icon +'"></i><br />'+ hours + ":" + mins + AMPM ;
                 weekly.appendChild(fore);
             }
 
@@ -41,15 +42,22 @@ ws.onmessage = function (event) {
             break;
         case "location":
             updateElementText("#current_location", message.location);
-            document.getElementById("widget_map_image").innerHTML = '<img class="img-responsive" src="https://maps.googleapis.com/maps/api/staticmap?center='+ message.location +'&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyAu2pQkbeYVcYTeWouEVUi2EVT93LpIBp0">';
             break;
         case "news":
             var newsHeadlines = message.articles;
             var news = document.createElement("ul");
             for(var i = 0; i < 5; i++){
+                var headline = "";
+                if(newsHeadlines[i].title.length > 50) {
+                    headline = newsHeadlines[i].title.substr(0, 50) + '..';
+                } else {
+                    headline = newsHeadlines[i].title;
+                }
+
                 var ti = document.createElement("li");
-                ti.innerHTML = '<span class="news_headline" id="news_headline_'+i+'">' + newsHeadlines[i].title +'</a>' +
-                    '<article class="news_body hidden"><img src="' + newsHeadlines[i].urlToImage +'" class="img-responsive"><br />' + newsHeadlines[i].description  +
+                ti.innerHTML = '<span class="news_headline" id="news_headline_'+i+'">' + headline +'</a>' +
+                    '<article class="news_body hidden"><img src="' + newsHeadlines[i].urlToImage +'" class="img-responsive"><br />' +
+                    '' + newsHeadlines[i].title + '<hr>' + newsHeadlines[i].description  +
                     '<p class="text-right"><a href="'+ newsHeadlines[i].url +'" target="_blank">Read More</a></p></article></span>';
 
                 ti.setAttribute('onclick', 'viewNews(news_headline_'+i+')');
@@ -60,6 +68,20 @@ ws.onmessage = function (event) {
             break;
     }
 }
+
+function createTrafficMap(){
+
+    var myLatlng = new google.maps.LatLng(Number(localStorage.getItem("locLat")), Number(localStorage.getItem("locLon")));
+
+    var map = new google.maps.Map(document.getElementById('widget_map_image'), {
+        zoom: 15,
+        center: myLatlng
+    });
+
+    var trafficLayer = new google.maps.TrafficLayer();
+    trafficLayer.setMap(map);
+}
+
 
 /**
  * Run as soon as the document is loaded.
@@ -163,6 +185,8 @@ function loadDasher(){
                     "lon": localStorage.getItem("locLon")
                 }));
 
+                createTrafficMap();
+
                 showDashboard();
             }else {
                 getLocation();
@@ -204,6 +228,10 @@ function configureDashboard(){
         localStorage.setItem("setting_display_news", "true");
     }
 
+    if(localStorage.getItem("setting_display_map") === null){
+        localStorage.setItem("setting_display_map", "true");
+    }
+
     if(localStorage.getItem("setting_display_weather") === null){
         localStorage.setItem("setting_display_weather", "true");
     }
@@ -220,7 +248,7 @@ function configureDashboard(){
     document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
 
     // Update Notepad Content
-    document.getElementById("notepad_content").innerHTML = localStorage.getItem("notepad_content");
+    document.getElementById("notepad_content").innerHTML = strip_tags(localStorage.getItem("notepad_content"), "<div><br>");
 
     // Update Widget Header Colour
     var widgets = document.querySelectorAll(".widget_header");
@@ -238,6 +266,13 @@ function configureDashboard(){
         window.widget_news.style.display = "block";
     } else {
         window.widget_news.style.display = "none";
+    }
+
+    // Display Map Widget
+    if(localStorage.getItem("setting_display_map") == "true"){
+        window.widget_map.style.display = "block";
+    } else {
+        window.widget_map.style.display = "none";
     }
 
     // Display Weather Widget
@@ -303,6 +338,7 @@ document.getElementById("setting_background_type").addEventListener("change", up
 document.getElementById("display_news_button").addEventListener("click", updateSettingsNews);
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
 document.getElementById("display_notepad_button").addEventListener("click", updateSettingsNotepad);
+document.getElementById("display_map_button").addEventListener("click", updateSettingsMap);
 document.getElementById("setting_color_picker").addEventListener("change", updateSettingsBackgroundColor);
 document.getElementById("setting_reset_dasher").addEventListener("click", updateResetDasher);
 document.getElementById("notepad_content").addEventListener("keyup", updateNotepadContent);
@@ -340,6 +376,13 @@ function showSettingsBox(){
     }
 
     // Check if weather is enabled
+    if(localStorage.getItem("setting_display_map") == "true"){
+        window.display_map_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+    } else {
+        window.display_map_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    }
+
+    // Check if weather is enabled
     if(localStorage.getItem("setting_display_notepad") == "true"){
         window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
     } else {
@@ -357,6 +400,8 @@ function showSettingsBox(){
 function updateResetDasher(){
     localStorage.setItem("setting_display_news", "true");
     localStorage.setItem("setting_display_weather", "true");
+    localStorage.setItem("setting_display_map", "true");
+    localStorage.setItem("setting_display_notepad", "true");
     localStorage.setItem("setting_background_color", "#008cff");
     localStorage.setItem("setting_background_type", "nature");
     localStorage.setItem("notepad_content", "");
@@ -383,11 +428,22 @@ function updateSettingsNews(){
     if(localStorage.getItem("setting_display_news") == "true"){
         localStorage.setItem("setting_display_news", "false");
         window.display_news_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-        window.widget_news.style.display = "none";
     } else {
         localStorage.setItem("setting_display_news", "true");
         window.display_news_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-        window.widget_news.style.display = "block";
+    }
+}
+
+/**
+ * If the news setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsMap(){
+    if(localStorage.getItem("setting_display_map") == "true"){
+        localStorage.setItem("setting_display_map", "false");
+        window.display_map_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    } else {
+        localStorage.setItem("setting_display_map", "true");
+        window.display_map_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
     }
 }
 
@@ -405,11 +461,9 @@ function updateSettingsWeather(){
     if(localStorage.getItem("setting_display_weather") == "true"){
         localStorage.setItem("setting_display_weather", "false");
         window.display_weather_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-        window.widget_weather.style.display = "none";
     } else {
         localStorage.setItem("setting_display_weather", "true");
         window.display_weather_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-        window.widget_weather.style.display = "block";
     }
 }
 
@@ -420,11 +474,9 @@ function updateSettingsNotepad(){
     if(localStorage.getItem("setting_display_notepad") == "true"){
         localStorage.setItem("setting_display_notepad", "false");
         window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-        window.widget_notepad.style.display = "none";
     } else {
         localStorage.setItem("setting_display_notepad", "true");
         window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-        window.widget_notepad.style.display = "block";
     }
 }
 
@@ -512,5 +564,17 @@ function locationError(error) {
             window.error_message.textContent = "An unknown error occurred.";
             break;
     }
+}
+
+// Source: http://coursesweb.net/javascript/strip_tags-stripslashes-javascript_cs
+function strip_tags(str, allow) {
+    // making sure the allow arg is a string containing only tags in lowercase (<a><b><c>)
+    allow = (((allow || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
+
+    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+    var commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+    return str.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+        return allow.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    });
 }
 

@@ -82,6 +82,16 @@
                     </section>
                 </section>
 
+                <!-- Map -->
+                <section class="col-md-6" id="widget_map">
+                    <section class="widget_header">
+                        Local Area Traffic
+                    </section>
+                    <section class="widget">
+                        <div style="height: 10em;" id="widget_map_image"></div>
+                    </section>
+                </section>
+
                 <!-- Notepad -->
                 <section class="col-md-6" id="widget_notepad">
                     <section class="widget_header">
@@ -92,17 +102,6 @@
                         <article id="notepad_content" contenteditable="true" placeholder="Click to begin typing.."></article>
                     </section>
                 </section>
-
-
-                <!-- Map -->
-                <section class="col-md-6" id="widget_map">
-                    <section class="widget_header">
-                        Local Area Map
-                    </section>
-                    <section class="widget">
-                        <article id="widget_map_image"><i class="fa fa-refresh fa-spin"></i> Loading..</article>
-                    </section>
-                </section>
             </section>
         </main>
 
@@ -110,7 +109,7 @@
             <div class="white_box_title clearfix">
                 Settings
                 <div class="white_box_close" id="settings_box_close"><i class="fa fa-times"></i></div>
-                <p style="font-size: 13px;">To save your settings, just close the settings page.</p>
+                <p style="font-size: 13px;" class="text-right">To save your settings, just close the settings page.</p>
             </div>
 
             <div class="white_box_content">
@@ -135,6 +134,7 @@
                 <p>Display News: <span class="clickable" id="display_news_button"></span></p>
                 <p>Display Weather: <span class="clickable" id="display_weather_button"></span></p>
                 <p>Display Notepad: <span class="clickable" id="display_notepad_button"></span></p>
+                <p>Display Map: <span class="clickable" id="display_map_button"></span></p>
 
                 <hr>
 
@@ -143,7 +143,7 @@
                 <p>Reset Dasher: <span class="clickable btn btn-default" id="setting_reset_dasher">Reset Dasher</span></p>
             </div>
         </section>
-
-        <script src="/js/dasher.js"></script>
+        <script async defer src="/js/dasher.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAu2pQkbeYVcYTeWouEVUi2EVT93LpIBp0"></script>
     </body>
 </html>

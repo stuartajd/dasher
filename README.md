@@ -1,12 +1,13 @@
 # Dasher - Configurable Dashboard
 Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to display appropriate information as required, it is fully customisable with different modules that can be selected as you wish to use them. It is self contained and is shipped with an HTTP server to ensure that you simply run a few commands for it to function.
 
+The system is built to be run on any system and many systems are able to access the server as all the customisation options are managed on the client side.
 
 ## Requirements
 A nodeJS server (npm installed) - Version 6.7.0
 
 ## Installation Guide
-To install the node-js modules simply run;
+To install the node-js modules simply run:
 
 ```
 npm install
@@ -33,4 +34,19 @@ Dasher has a load of different customisation options, you're able to alter the b
 ####How do I customise the site?
 Customisation is easy, simply click the cog in the top left corner, then it'll display the site settings, then just click on the settings that you want to change!
 
+####Customisation Options
+* House colours can be changed
+* Background Category [Nature, Buildings, Food, People, Technology, Objects]
+* Displaying and Hiding specific elements
+* Notepad Facility
+
+#Data Sources
+Data is sourced from multiple locations, they have been credited below.
+
+Weather API: https://darksky.net\
+Location API: Google API\
+Weather Icons: https://github.com/erikflowers/weather-icons\
+News Headlines: https://newsapi.org
+
+Any functions used from external sources have been credited in the code comments.
 
