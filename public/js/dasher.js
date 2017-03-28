@@ -17,18 +17,43 @@ ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
     switch(message.action){
         case "weather":
-            updateElementHTML("#widget_weather_icon", '<i class="wi wi-forecast-io-'+message.forecast.icon+'"></i>');
-            updateElementText("#widget_weather_text", message.forecast.summary);
+            updateElementHTML("#widget_weather_icon", '<i class="wi wi-forecast-io-'+message.forecast.currently.icon+'"></i>');
+            updateElementHTML("#widget_weather_text", message.forecast.currently.summary + "<br />");
+
+            var weekly = document.createElement("table");
+            weekly.classList.add("table");
+
+            var weekForecast = message.forecast.daily.data;
+
+            for(var i = 0; i < 5; i++){
+                var time = new Date(weekForecast[i].time);
+                var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
+                var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
+                var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
+
+                var fore = document.createElement("td");
+                fore.innerHTML = '<i class="wi wi-forecast-io-'+ weekForecast[i].icon+'"></i><br />'+ hours + ":" + mins + AMPM ;
+                weekly.appendChild(fore);
+            }
+
+            document.getElementById("widget_weather_week").innerHTML = "";
+            document.getElementById("widget_weather_week").append(weekly);
             break;
         case "location":
             updateElementText("#current_location", message.location);
+            document.getElementById("widget_map_image").innerHTML = '<img class="img-responsive" src="https://maps.googleapis.com/maps/api/staticmap?center='+ message.location +'&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyAu2pQkbeYVcYTeWouEVUi2EVT93LpIBp0">';
             break;
         case "news":
             var newsHeadlines = message.articles;
             var news = document.createElement("ul");
             for(var i = 0; i < 5; i++){
                 var ti = document.createElement("li");
-                ti.innerHTML = '<a href="'+ newsHeadlines[i].url +'" target="_blank">' + newsHeadlines[i].title +'</a>';
+                ti.innerHTML = '<span class="news_headline" id="news_headline_'+i+'">' + newsHeadlines[i].title +'</a>' +
+                    '<article class="news_body hidden"><img src="' + newsHeadlines[i].urlToImage +'" class="img-responsive"><br />' + newsHeadlines[i].description  +
+                    '<p class="text-right"><a href="'+ newsHeadlines[i].url +'" target="_blank">Read More</a></p></article></span>';
+
+                ti.setAttribute('onclick', 'viewNews(news_headline_'+i+')');
+
                 news.append(ti);
             }
             document.querySelector("#news_headlines").innerHTML = news.innerHTML;
@@ -183,6 +208,10 @@ function configureDashboard(){
         localStorage.setItem("setting_display_weather", "true");
     }
 
+    if(localStorage.getItem("setting_display_notepad") === null){
+        localStorage.setItem("setting_display_notepad", "true");
+    }
+
     if(localStorage.getItem("notepad_content") === null){
         localStorage.setItem("notepad_content", "");
     }
@@ -216,6 +245,13 @@ function configureDashboard(){
         window.widget_weather.style.display = "block";
     } else {
         window.widget_weather.style.display = "none";
+    }
+
+    // Display Notepad Widget
+    if(localStorage.getItem("setting_display_notepad") == "true"){
+        window.widget_notepad.style.display = "block";
+    } else {
+        window.widget_notepad.style.display = "none";
     }
 }
 
@@ -266,13 +302,19 @@ document.getElementById("settings_button").addEventListener("click", showSetting
 document.getElementById("setting_background_type").addEventListener("change", updateSettingsBackground);
 document.getElementById("display_news_button").addEventListener("click", updateSettingsNews);
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
+document.getElementById("display_notepad_button").addEventListener("click", updateSettingsNotepad);
 document.getElementById("setting_color_picker").addEventListener("change", updateSettingsBackgroundColor);
 document.getElementById("setting_reset_dasher").addEventListener("click", updateResetDasher);
 document.getElementById("notepad_content").addEventListener("keyup", updateNotepadContent);
 
+
 /**
  * Event Handlers
  */
+function viewNews(element){
+    element.childNodes[1].classList.toggle("hidden");
+}
+
 function showSettingsBox(){
     // Loop through all the backgrounds
     var set_bg_ty = document.getElementById("setting_background_type");
@@ -297,6 +339,12 @@ function showSettingsBox(){
         window.display_weather_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
     }
 
+    // Check if weather is enabled
+    if(localStorage.getItem("setting_display_notepad") == "true"){
+        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+    } else {
+        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    }
 
     window.setting_color_picker.value = localStorage.getItem("setting_background_color");
 
@@ -366,6 +414,21 @@ function updateSettingsWeather(){
 }
 
 /**
+ * If the news setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsNotepad(){
+    if(localStorage.getItem("setting_display_notepad") == "true"){
+        localStorage.setItem("setting_display_notepad", "false");
+        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+        window.widget_notepad.style.display = "none";
+    } else {
+        localStorage.setItem("setting_display_notepad", "true");
+        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+        window.widget_notepad.style.display = "block";
+    }
+}
+
+/**
  * Updates the settings for the dashboard, then closes the settings page.
  */
 function updateSettings(){
@@ -385,7 +448,6 @@ function updateSettingsBackground(){
  * Get location from IP Address
  */
 function getLocationFromIP(){
-    console.log("getLocationFromIP()");
     var req = new XMLHttpRequest();
     req.addEventListener("load", locationIPResponse);
     req.open("GET", "http://ip-api.com/json");
@@ -402,7 +464,6 @@ function locationIPResponse(){
  * HTML Geolocation - getLocation
  */
 function getLocation() {
-    console.log("getLocation()");
     var options = {
         enableHighAccuracy: false,
         timeout: 5000,

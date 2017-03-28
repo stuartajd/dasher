@@ -45,6 +45,19 @@ select{
     color: white;
 }
 
+.news_headline{
+    cursor: pointer;
+}
+
+.news_body{
+    cursor: pointer;
+    background-color: white;
+    font-size: 0.9em;
+    margin-top: 1em;
+    padding: 0.5em;
+    padding-bottom: 0.1em;
+}
+
 #settings_button{
     float: left;
     display: inline-block;

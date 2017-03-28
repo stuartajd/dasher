@@ -72,15 +72,9 @@ wss.on('connection', function connection(ws) {
                 getWeatherForcast(ws, message.lat, message.lon);
                 break;
             case "location":
-                //while(location == null){
-                    //console.log(location);
-                    //getLocationString(message.lat, message.lon);
-                //}
-
                 getLocationString(ws, message.lat, message.lon);
                 break;
             case "news":
-                // API: 08962d9950894e9ab44c424a0690d2aa
                 getNewsHeadlines(ws);
                 break;
         }
@@ -93,7 +87,7 @@ wss.on('connection', function connection(ws) {
 function getWeatherForcast(ws, lat, lon){
     request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/'+lat+','+lon+'', function (error, response, body) {
         var forecast = JSON.parse(body);
-        ws.send(JSON.stringify({"action":"weather", "forecast":forecast.currently}));
+        ws.send(JSON.stringify({"action":"weather", "forecast":forecast}));
     });
 }
 
