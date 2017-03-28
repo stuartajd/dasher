@@ -6,12 +6,16 @@
 
 'use strict'
 
-var ws = new WebSocket('ws://35.187.54.249:8081');
+var ws = new WebSocket('ws://localhost:8081');
 var socket_connected = false;
 
 ws.onopen = function (event) {
     socket_connected = true;
 };
+
+if(socket_connected == false){
+
+}
 
 ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
@@ -150,6 +154,8 @@ function loadDasher(){
         }, 2000);
     } else {
         setTimeout(function(){
+            window.error_message.textContent = "Cannot connect to the dashboard server!";
+            showErrors();
             loadDasher();
         }, 1000);
     }
