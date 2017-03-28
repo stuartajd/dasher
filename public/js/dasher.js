@@ -522,12 +522,12 @@ function updateSettingsBackground(){
  * Get location from IP Address
  */
 function getLocationFromIP(){
+    document.getElementById("widget_loc_warning").classList.remove("hidden");
+
     var req = new XMLHttpRequest();
     req.addEventListener("load", locationIPResponse);
     req.open("GET", "http://ip-api.com/json");
     req.send();
-
-    document.getElementById("widget_loc_warning").classList.remove("hidden");
 }
 
 function locationIPResponse(){
