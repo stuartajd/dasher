@@ -38,7 +38,7 @@ app.use(express.static(__dirname + '/public'));
 
 var web = app.listen(8080, function () {
     debug("Web Server Started");
-    print("Web Server Started on " + web.address().address + ":" + web.address().port, "Server");
+    print("Web Server Started on " + ip.address() + ":" + web.address().port, "Server");
 });
 
 app.get('/', function (req, res) {
@@ -52,9 +52,9 @@ app.get('/*', function (req, res) {
 /* Socket Content */
 var wss = new WebSocket.Server({ host: ip.address(), port: 8081 }, function(){
     debug("Socket Server Started");
-    print("Socket Server Started on " + web.address().address +":8081", "Server");
+    print("Socket Server Started on " + ip.address() +":8081", "Server");
 
-    print("Dasher has loaded, visit " + web.address().address +":8080 to view!", "Server");
+    print("Dasher has loaded, visit " + ip.address() +":8080 to view!", "Server");
     debug("Dasher Loading - Complete");
 });
 
