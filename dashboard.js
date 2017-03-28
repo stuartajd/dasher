@@ -13,7 +13,7 @@ const http = require("http");
 const wsserver = require('ws').Server;
 const express = require("express");
 
-const server = http.createServer();
+var server = http.createServer();
 
 /* Socket Content */
 const wss = new wsserver({ server: server });
@@ -45,10 +45,12 @@ debug("Dasher Loading - Started");
 /* Webserver Content */
 app.use(express.static(__dirname + '/public'));
 
-var web = server.listen(8080, function () {
+server.listen(8080, function () {
     debug("Web Server Started");
-    print("Web Server Started on " + ip.address() + ":" + web.address().port, "Server");
+    print("Web Server Started on "+this.address().address+":" + this.address().port, "Server");
 });
+
+
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
