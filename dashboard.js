@@ -9,15 +9,24 @@
 /**
  * Required Modules
  */
-var express = require("express");
-var app = express();
-var colors = require("colors");
-var args = require('optimist').argv;
-var dasher = require("./private/dasher.module.js");
-var nodeGeoCoder = require('node-geocoder');
-var request = require('request');
-var ip = require("ip");
-const WebSocket = require('ws');
+const http = require("http");
+const wsserver = require('ws').Server;
+const express = require("express");
+
+const server = http.createServer();
+
+/* Socket Content */
+const wss = new wsserver({ server: server });
+
+const app = express();
+const colors = require("colors");
+const args = require('optimist').argv;
+const dasher = require("./private/dasher.module.js");
+const nodeGeoCoder = require('node-geocoder');
+const request = require('request');
+const ip = require("ip");
+
+server.on('request', app);
 
 /**
  * Global Variables
@@ -36,7 +45,7 @@ debug("Dasher Loading - Started");
 /* Webserver Content */
 app.use(express.static(__dirname + '/public'));
 
-var web = app.listen(8080, function () {
+var web = server.listen(8080, function () {
     debug("Web Server Started");
     print("Web Server Started on " + ip.address() + ":" + web.address().port, "Server");
 });
@@ -49,14 +58,6 @@ app.get('/*', function (req, res) {
     res.redirect("/");
 });
 
-/* Socket Content */
-var wss = new WebSocket.Server({ host: ip.address(), port: 8081 }, function(){
-    debug("Socket Server Started");
-    print("Socket Server Started on " + ip.address() +":8081", "Server");
-
-    print("Dasher has loaded, visit " + ip.address() +":8080 to view!", "Server");
-    debug("Dasher Loading - Complete");
-});
 
 
 
