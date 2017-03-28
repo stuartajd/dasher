@@ -409,6 +409,11 @@ function showSettingsBox(){
  * Reset Dasher to defaults
  */
 function updateResetDasher(){
+    localStorage.setItem("locLon", "false");
+    localStorage.setItem("locLat", "false");
+
+    getLocation();
+
     localStorage.setItem("setting_display_news", "true");
     localStorage.setItem("setting_display_weather", "true");
     localStorage.setItem("setting_display_map", "true");
