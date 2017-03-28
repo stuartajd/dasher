@@ -6,7 +6,7 @@
 
 'use strict'
 
-var ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 80 +'/');
+var ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 8080 +'/');
 var socket_connected = false;
 
 ws.onopen = function (event) {
