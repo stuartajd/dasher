@@ -123,22 +123,18 @@ function loadDasher(){
     configureDashboard();
 
     if(socket_connected){
-        getLocation();
-
         // Display the loading screen
         showLoading();
 
         setTimeout(function() {
-            if(localStorage.getItem("locLon") == "unavailable" && localStorage.getItem("locLat") == "unavailable"){
-                // Fall back to using GeoLocation from IP Address
-                getLocationFromIP();
-                setTimeout(function(){
-                    loadDasher();
-                }, 1000);
-            } else {
-                if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false"){
-
-
+            if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false") {
+                if (localStorage.getItem("locLon") == "unavailable" && localStorage.getItem("locLat") == "unavailable") {
+                    // Fall back to using GeoLocation from IP Address
+                    getLocationFromIP();
+                    setTimeout(function () {
+                        loadDasher();
+                    }, 1000);
+                } else {
                     // Start the date and time timers
                     startTimeTimer();
                     startDateTimer();
@@ -146,13 +142,21 @@ function loadDasher(){
                     startWeatherTimer();
 
                     // Send current lat and lon to get the location response
-                    ws.send(JSON.stringify({"action":"location", "lat":localStorage.getItem("locLat"), "lon":localStorage.getItem("locLon")}));
+                    ws.send(JSON.stringify({
+                        "action": "location",
+                        "lat": localStorage.getItem("locLat"),
+                        "lon": localStorage.getItem("locLon")
+                    }));
 
                     showDashboard();
-                } else {
-                    showErrors();
                 }
+            }else {
+                getLocation();
+                setTimeout(function () {
+                    loadDasher();
+                }, 1000);
             }
+
         }, 2000);
     } else {
         setTimeout(function(){
