@@ -4,10 +4,11 @@ Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to displa
 The system is built to be run on any system and many systems are able to access the server as all the customisation options are managed on the client side.
 
 ## Requirements
-A nodeJS server (npm installed) - Version 6.7.0
+A nodeJS server (npm installed)\
+Web Browser
 
 ## Installation Guide
-To install the node-js modules simply run:
+To install the node.js modules simply run:
 
 ```
 npm install
