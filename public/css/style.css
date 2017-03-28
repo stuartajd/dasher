@@ -4,6 +4,11 @@
     font-family: JennaSue;
     src: url('../fonts/JennaSue.ttf');
 }
+
+*{
+    border-radius: 0 !important;
+}
+
 .dasher_title{
     font-family: JennaSue;
     font-size: 4em;
@@ -30,6 +35,13 @@ select{
     overflow: auto;
 }
 
+.red-alert{
+    background-color: red;
+    padding: 0.5em 1em;
+    margin-bottom: 20px;
+    color: white;
+}
+
 #settings_button{
     float: left;
     display: inline-block;
@@ -49,7 +61,10 @@ select{
     left: 0;
     right: 0;
     bottom: 0;
+
     margin: 2em auto;
+
+    height: 40em;
 
     z-index:9999999;
     background-color: #fefefe;

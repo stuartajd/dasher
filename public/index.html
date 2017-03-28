@@ -30,41 +30,11 @@
 
         <main id="dashboard_error" class="container hidden">
             <section id="center_box">
-                <h1>An error has occured!</h1>
+                <h1>dasher can't load :(</h1>
 
                 <span id="error_message"></span>
             </section>
         </main>
-
-        <section id="settings_box" class="white_box hidden container">
-            <div class="white_box_title clearfix">
-                Settings
-                <div class="white_box_close" id="settings_box_close"><i class="fa fa-times"></i></div>
-            </div>
-
-            <div class="white_box_content">
-
-                <p>Background Image Category:
-                <select id="setting_background_type">
-                    <option value="nature">Nature</option>
-                    <option value="buildings">Buildings</option>
-                    <option value="food">Food</option>
-                    <option value="people">People</option>
-                    <option value="technology">Technology</option>
-                    <option value="objects">Objects</option>
-                </select></p>
-
-                <p>Colour Scheme:
-                    <input type="color" id="setting_color_picker" value="#008cff">
-                </p>
-
-                <hr>
-
-                <h3>Widget Display</h3>
-                <p>Display News: <span class="clickable" id="display_news_button"></span></p>
-                <p>Display Weather: <span class="clickable" id="display_weather_button"></span></p>
-            </div>
-        </section>
 
         <main id="dashboard" class="container hidden">
             <section class="row clearfix">
@@ -124,7 +94,42 @@
             </section>
         </main>
 
+        <section id="settings_box" class="white_box hidden container">
+            <div class="white_box_title clearfix">
+                Settings
+                <div class="white_box_close" id="settings_box_close"><i class="fa fa-times"></i></div>
+                <p style="font-size: 13px;">To save your settings, just close the settings page.</p>
+            </div>
 
+            <div class="white_box_content">
+
+                <p>Background Image Category:
+                    <select id="setting_background_type">
+                        <option value="nature">Nature</option>
+                        <option value="buildings">Buildings</option>
+                        <option value="food">Food</option>
+                        <option value="people">People</option>
+                        <option value="technology">Technology</option>
+                        <option value="objects">Objects</option>
+                    </select></p>
+
+                <p>Colour Scheme:
+                    <input type="color" id="setting_color_picker" value="#008cff">
+                </p>
+
+                <hr>
+
+                <h3>Widget Display</h3>
+                <p>Display News: <span class="clickable" id="display_news_button"></span></p>
+                <p>Display Weather: <span class="clickable" id="display_weather_button"></span></p>
+
+                <hr>
+
+                <h3>Default Settings</h3>
+                <div class="red-alert">This will reset all your changes to default settings, be careful!</div>
+                <p>Reset Dasher: <span class="clickable btn btn-default" id="setting_reset_dasher">Reset Dasher</span></p>
+            </div>
+        </section>
 
         <script src="/js/dasher.js"></script>
     </body>

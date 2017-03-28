@@ -52,7 +52,8 @@ function updateCurrentTime(){
     var time = new Date();
     var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
     var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
-    document.querySelector("#current-time").textContent = "" + time.getHours() + ":" + mins + AMPM;
+    var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
+    document.querySelector("#current-time").textContent = "" + hours + ":" + mins + AMPM;
 }
 
 /**
@@ -128,13 +129,14 @@ function loadDasher(){
         showLoading();
 
         setTimeout(function() {
-            // Start the date and time timers
-            startTimeTimer();
-            startDateTimer();
-            startNewsTimer();
-            startWeatherTimer();
+            if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false"){
 
-            if(localStorage.getItem("locLon") != false && localStorage.getItem("locLat") != false){
+                // Start the date and time timers
+                startTimeTimer();
+                startDateTimer();
+                startNewsTimer();
+                startWeatherTimer();
+
                 // Send current lat and lon to get the location response
                 ws.send(JSON.stringify({"action":"location", "lat":localStorage.getItem("locLat"), "lon":localStorage.getItem("locLon")}));
 
@@ -151,8 +153,16 @@ function loadDasher(){
 }
 
 function configureDashboard(){
+    if(localStorage.getItem("locLon") === null){
+        localStorage.setItem("locLon", "false");
+    }
+
+    if(localStorage.getItem("locLat") === null){
+        localStorage.setItem("locLat", "false");
+    }
+
     // SET DEFAULTS
-    if(localStorage.getItem("setting_background_type") == null){
+    if(localStorage.getItem("setting_background_type") === null){
         localStorage.setItem("setting_background_type", "nature");
     }
 
@@ -245,6 +255,7 @@ document.getElementById("setting_background_type").addEventListener("change", up
 document.getElementById("display_news_button").addEventListener("click", updateSettingsNews);
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
 document.getElementById("setting_color_picker").addEventListener("change", updateSettingsBackgroundColor);
+document.getElementById("setting_reset_dasher").addEventListener("click", updateResetDasher);
 
 /**
  * Event Handlers
@@ -277,6 +288,16 @@ function showSettingsBox(){
     window.setting_color_picker.value = localStorage.getItem("setting_background_color");
 
     window.settings_box.classList.toggle("hidden");
+}
+
+/**
+ * Reset Dasher to defaults
+ */
+function updateResetDasher(){
+    localStorage.setItem("setting_display_news", "true");
+    localStorage.setItem("setting_display_weather", "true");
+    localStorage.setItem("setting_background_color", "#008cff");
+    localStorage.setItem("setting_background_type", "nature");
 }
 
 /**
@@ -363,8 +384,8 @@ function saveLocation(position){
  * @param error
  */
 function locationError(error) {
-    localStorage.setItem("locLat", false);
-    localStorage.setItem("locLon", false);
+    localStorage.setItem("locLat", "false");
+    localStorage.setItem("locLon", "false");
 
     switch(error.code) {
         case error.PERMISSION_DENIED:
