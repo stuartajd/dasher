@@ -11,15 +11,12 @@ var socket_connected = false;
 
 ws.onopen = function (event) {
     socket_connected = true;
-    console.log("Socket Connection Established");
 };
 
 ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
-    console.log(message);
     switch(message.action){
         case "weather":
-            console.log(message.forecast.icon);
             updateElementHTML("#widget_weather_icon", '<i class="wi wi-forecast-io-'+message.forecast.icon+'"></i>');
             updateElementText("#widget_weather_text", message.forecast.summary);
             break;
@@ -128,28 +125,20 @@ function loadDasher(){
 
         setTimeout(function() {
             if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false") {
-                if (localStorage.getItem("locLon") == "unavailable" && localStorage.getItem("locLat") == "unavailable") {
-                    // Fall back to using GeoLocation from IP Address
-                    getLocationFromIP();
-                    setTimeout(function () {
-                        loadDasher();
-                    }, 1000);
-                } else {
-                    // Start the date and time timers
-                    startTimeTimer();
-                    startDateTimer();
-                    startNewsTimer();
-                    startWeatherTimer();
+                // Start the date and time timers
+                startTimeTimer();
+                startDateTimer();
+                startNewsTimer();
+                startWeatherTimer();
 
-                    // Send current lat and lon to get the location response
-                    ws.send(JSON.stringify({
-                        "action": "location",
-                        "lat": localStorage.getItem("locLat"),
-                        "lon": localStorage.getItem("locLon")
-                    }));
+                // Send current lat and lon to get the location response
+                ws.send(JSON.stringify({
+                    "action": "location",
+                    "lat": localStorage.getItem("locLat"),
+                    "lon": localStorage.getItem("locLon")
+                }));
 
-                    showDashboard();
-                }
+                showDashboard();
             }else {
                 getLocation();
 
@@ -371,7 +360,7 @@ function updateSettingsBackground(){
  * Get location from IP Address
  */
 function getLocationFromIP(){
-    console.error("Fallback Used: getLocationFromIP()");
+    console.log("getLocationFromIP()");
     var oReq = new XMLHttpRequest();
     oReq.addEventListener("load", locationIPResponse);
     oReq.open("GET", "http://ip-api.com/json");
@@ -388,7 +377,7 @@ function locationIPResponse(){
  * HTML Geolocation - getLocation
  */
 function getLocation() {
-    console.log("Default Used: getLocation()");
+    console.log("getLocation()");
     var options = {
         enableHighAccuracy: false,
         timeout: 5000,
@@ -416,8 +405,11 @@ function saveLocation(position){
  * @param error
  */
 function locationError(error) {
-    localStorage.setItem("locLat", "unavailable");
-    localStorage.setItem("locLon", "unavailable");
+    localStorage.setItem("locLat", "false");
+    localStorage.setItem("locLon", "false");
+
+    // Run fallback to get location
+    getLocationFromIP();
 
     switch(error.code) {
         case error.PERMISSION_DENIED:
