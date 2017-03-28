@@ -532,7 +532,7 @@ function locationIPResponse(){
 
     setTimeout(function(){
         document.getElementById("widget_loc_warning").classList.add("hidden");
-    }, 5000);
+    }, 10000);
 }
 
 /**
