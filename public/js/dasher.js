@@ -371,8 +371,8 @@ function getLocationFromIP(){
 
 function locationIPResponse(){
     var response = JSON.parse(this.responseText);
-    console.log(response.lat);
-    console.log(response.lon);
+    localStorage.setItem("locLon", response.lon);
+    localStorage.setItem("locLat", response.lat);
 }
 
 /**
