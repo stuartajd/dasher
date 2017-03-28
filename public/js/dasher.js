@@ -409,8 +409,8 @@ function showSettingsBox(){
  * Reset Dasher to defaults
  */
 function updateResetDasher(){
-    localStorage.setItem("locLon", "false");
-    localStorage.setItem("locLat", "false");
+    localStorage.removeItem("locLon");
+    localStorage.removeItem("locLat");
 
     getLocation();
 
