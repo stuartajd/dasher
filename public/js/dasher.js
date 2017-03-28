@@ -13,10 +13,6 @@ ws.onopen = function (event) {
     socket_connected = true;
 };
 
-if(socket_connected == false){
-
-}
-
 ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
     switch(message.action){
@@ -367,10 +363,10 @@ function updateSettingsBackground(){
  */
 function getLocationFromIP(){
     console.log("getLocationFromIP()");
-    var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", locationIPResponse);
-    oReq.open("GET", "http://ip-api.com/json");
-    oReq.send();
+    var req = new XMLHttpRequest();
+    req.addEventListener("load", locationIPResponse);
+    req.open("GET", "http://ip-api.com/json");
+    req.send();
 }
 
 function locationIPResponse(){
