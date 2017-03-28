@@ -152,6 +152,7 @@ function loadDasher(){
                 }
             }else {
                 getLocation();
+
                 setTimeout(function () {
                     loadDasher();
                 }, 1000);
@@ -370,6 +371,7 @@ function updateSettingsBackground(){
  * Get location from IP Address
  */
 function getLocationFromIP(){
+    console.error("Fallback Used: getLocationFromIP()");
     var oReq = new XMLHttpRequest();
     oReq.addEventListener("load", locationIPResponse);
     oReq.open("GET", "http://ip-api.com/json");
@@ -386,6 +388,7 @@ function locationIPResponse(){
  * HTML Geolocation - getLocation
  */
 function getLocation() {
+    console.log("Default Used: getLocation()");
     var options = {
         enableHighAccuracy: false,
         timeout: 5000,
