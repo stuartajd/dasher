@@ -132,6 +132,9 @@ function loadDasher(){
             if(localStorage.getItem("locLon") === "unavailable" && localStorage.getItem("locLat") == "unavailable"){
                 // Fall back to using GeoLocation from IP Address
                 getLocationFromIP();
+                setTimeout(function(){
+                    loadDasher();
+                }, 1000);
             } else {
                 if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false"){
 
