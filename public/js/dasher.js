@@ -642,7 +642,7 @@ function locationIPResponse(){
         document.getElementById("widget_loc_warning").classList.add("hidden");
     }, 10000);
 }
-
+// TEST
 /**
  * HTML Geolocation - getLocation
  */
