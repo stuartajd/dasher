@@ -239,10 +239,6 @@ function loadDasher(){
                 showDashboard();
             }else {
                 getLocation();
-
-                setTimeout(function () {
-                    loadDasher();
-                }, 10000);
             }
 
         }, 2000);
