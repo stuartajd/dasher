@@ -583,6 +583,7 @@ function getLocationFromIP(){
         // Does have an adblocker, show an error?
         window.error_message.textContent = "Please disable your adblock, our fallback location system isn't able to detect where you are!";
         showErrors();
+        throw new Error("Adblock has been detected, fallback location check can't run, closing!");
     }
 }
 
