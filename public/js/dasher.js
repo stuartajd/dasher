@@ -239,6 +239,10 @@ function loadDasher(){
                 showDashboard();
             }else {
                 getLocation();
+
+                setTimeout(function () {
+                    loadDasher();
+                }, 10000);
             }
 
         }, 2000);
@@ -577,7 +581,7 @@ function getLocationFromIP(){
         req.send();
     } else {
         // Does have an adblocker, show an error?
-        window.error_message.textContent = "Please disable your adblock, our fallback location system isn't able to detect where you are!";
+        window.error_message.innerHTML = "Please disable your adblock, our fallback location system isn't able to detect where you are!<br />Trying again in 10 seconds!";
         showErrors();
         throw new Error("Adblock has been detected, fallback location check can't run, closing!");
     }
