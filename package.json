@@ -1,6 +1,6 @@
 {
   "name": "dasher",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A configurable dashboard",
   "main": "dashboard.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "keywords": [
     "dasher"
   ],
-  "author": "Stuart Davidson",
+  "author": "UP772629",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/stuartajd/dasher/issues"

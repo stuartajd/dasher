@@ -1,7 +1,9 @@
 /**
- Dasher - dasher.js
-
- The main client script for the Dasher package.
+ * Dasher - dasher.js
+ *
+ * The client side scripts for the Dasher Package.
+ *
+ * @author: UP772629
  */
 
 'use strict';
@@ -156,8 +158,13 @@ var widgets_events = [
     },
 ];
 
-
+// Assign a value for the global declaration.
 var ws = null;
+var socket_connected = false;
+
+/**
+ * Establish a connection to the socket server.
+ */
 function socket_connect(){
     try{
         ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 8080 +'/');
@@ -166,13 +173,20 @@ function socket_connect(){
         debug("Cannot connect to socket server");
     }
 }
-socket_connect();
-var socket_connected = false;
 
-ws.onopen = function (event) {
+// Attempt a connection
+socket_connect();
+
+/**
+ * When the socket server has opened.
+ */
+ws.onopen = function () {
     socket_connected = true;
 };
 
+/**
+ * Checks if the socket connection is still alive / connected.
+ */
 function checkSocketConnection(){
     if(ws.readyState === 1){
         debug("Socket connection live.");
@@ -188,16 +202,24 @@ function checkSocketConnection(){
     }
 }
 
-ws.onclose = function(event){
+/**
+ * When the socket server has closed.
+ */
+ws.onclose = function(){
     socket_connected = false;
     debug("Disconnected from Socket Server");
 };
 
+/**
+ * When the socket server sends a message to the client.
+ * It will return a JSON message containing an action [weather, location, news] and the data that comes with it.
+ */
 ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
     debug("Message Received : " + message.action);
 
     switch(message.action){
+        // Updates the current weather
         case "weather":
             updateElementHTML(
                 "#widget_weather_icon",
@@ -230,9 +252,11 @@ ws.onmessage = function (event) {
             document.getElementById("widget_weather_week").innerHTML = "";
             document.getElementById("widget_weather_week").append(weekly);
             break;
+        // Updates the current location from lat / long
         case "location":
             updateElementText("#current_location", message.location);
             break;
+        // Updates the latest news headlines
         case "news":
             var newsHeadlines = message.articles;
             var news = document.createElement("ul");
@@ -261,6 +285,9 @@ ws.onmessage = function (event) {
     }
 }
 
+/**
+ * Creates a map of the area with an overlay of current traffic.
+ */
 function createTrafficMap(){
 
     var myLatlng = new google.maps.LatLng(
@@ -277,11 +304,9 @@ function createTrafficMap(){
     trafficLayer.setMap(map);
 }
 
-
 /**
  * Run as soon as the document is loaded.
  */
-
 loadDasher();
 
 /**
@@ -311,7 +336,7 @@ function updateCurrentDate(){
 }
 
 /**
- * Updates the current news headlines.
+ * Sends a message to the socket server to update the news headlines.
  */
 function updateCurrentNews(){
     debug("updateCurrentNews()");
@@ -322,6 +347,9 @@ function updateCurrentNews(){
     }
 }
 
+/**
+ * Sends a message to the socket server to update the weather.
+ */
 function updateCurrentWeather(){
     debug("updateCurrentWeather()");
     if(socket_connected) {
@@ -392,22 +420,28 @@ function checkSocketConnectionTimer(){
 }
 
 /**
- * Load up the dasher functions
+ * Load up the dasher functions to set up the system
  */
 function loadDasher(){
+    // Create all defaults etc for the localStorage.
     configureDashboard();
 
+    // If there is a connection to the socket server, continue.
     if(socket_connected){
         // Display the loading screen
         showLoading();
 
+        // Gets the current user location
         getLocation();
 
+        // Starts the socket timer to ensure the server is connected
         checkSocketConnectionTimer();
 
+        // Runs after 2 seconds to ensure everything has started / location has been gathered.
         setTimeout(function() {
+            // If the location is found
             if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false") {
-                // Start the date and time timers
+                // Start the timers
                 startTimeTimer();
                 startDateTimer();
                 startNewsTimer();
@@ -423,10 +457,13 @@ function loadDasher(){
                     }));
                 }
 
+                // Create the traffic map
                 createTrafficMap();
 
+                // Show the dashboard itself, hiding the loading screen
                 showDashboard();
             }else {
+                // Otherwise restart the loadDasher function to get location again.
                 setTimeout(function(){
                     loadDasher();
                 }, 10000);
@@ -434,6 +471,8 @@ function loadDasher(){
 
         }, 2000);
     } else {
+        // Attempt to reconnect if there is no connection by "loadDasher" call as the server will automatically attempt
+        // a reconnection after 5 seconds.
         setTimeout(function(){
             window.error_message.textContent = "Cannot connect to the dashboard server!";
             showErrors();
@@ -442,16 +481,22 @@ function loadDasher(){
     }
 }
 
+/**
+ * Configure the dashboard defaults if required otherwise sort out the user settings.
+ *
+ * The system uses the widgets_defaults array at the top to find & set the default values for all of the
+ * widgets displayed on the site.
+ */
 function configureDashboard(){
     debug("configureDashboard()");
-    // SET DEFAULTS
+    // Set up the default values for the localStorage
     for(var i = 0; i < widgets_defaults.length; i++){
         if(localStorage.getItem(widgets_defaults[i].store_name) === null){
             localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
         }
     }
 
-    // Show or hide the elements
+    // Show or hide the elements, only if the widget_id isn't false!
     for(var i = 0; i < widgets_defaults.length; i++){
         if(widgets_defaults[i].widget_id !== false){
             if(localStorage.getItem(widgets_defaults[i].store_name) == "true"){
@@ -484,21 +529,28 @@ function configureDashboard(){
         widgets[i].style.borderBottomColor = localStorage.getItem("setting_background_color");
     }
 
+    // Set the twitter feed to be the correct user on refresh
     document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" +
         localStorage.getItem("setting_twitter_user");
 }
 
+/**
+ * Takes an element then updates the textContent for it
+ */
 function updateElementText(element, text){
     document.querySelector(element).textContent = text;
 }
 
+/**
+ * Takes an element then updates the innerHTML for it
+ */
 function updateElementHTML(element, text){
     document.querySelector(element).innerHTML = text;
 }
 
 
 /**
- * Hide the error messages
+ * Hide the error messages, displays the dashboard
  */
 function showDashboard(){
     window.dashboard_loading.classList.add("hidden");
@@ -509,7 +561,7 @@ function showDashboard(){
 }
 
 /**
- * Shows the error display
+ * Shows the error display, hides loading / dashboard
  */
 function showErrors(){
     window.dashboard_loading.classList.add("hidden");
@@ -532,6 +584,9 @@ function showLoading(){
 
 /**
  * Event Listeners
+ *
+ * This uses the widgets_events array to create the full list of eventListeners to make creating them
+ * faster and simpler.
  */
 for(var i = 0; i < widgets_events.length; i++){
     document.getElementById(widgets_events[i].element_id).addEventListener( widgets_events[i].event_type,
@@ -539,25 +594,34 @@ for(var i = 0; i < widgets_events.length; i++){
 }
 
 /**
- * Event Handlers
+ * When a news headline is clicked, toggle the display of the description / image for the news story
  */
 function viewNews(element){
     element.childNodes[1].classList.toggle("hidden");
 }
 
+/**
+ * Updates the twitter username for the display, also updating the localStorage.
+ */
 function updateTwitterUsername(){
     document.getElementById("setting_twitter_save").classList.remove("hidden");
     localStorage.setItem("setting_twitter_user", document.getElementById("twitter_user_name").value);
 }
 
+/**
+ * Toggles the display of the aboutBox
+ */
 function showAboutBox(){
     window.about_box.classList.toggle("hidden");
 }
 
+/**
+ * Toggles the display of the settings box but also sets up the menu to display all the settings.
+ */
 function showSettingsBox(){
     window.about_box.classList.toggle("hidden");
 
-    // Loop through all the backgrounds
+    // Loop through all the backgrounds to check which is selected.
     var set_bg_ty = document.getElementById("setting_background_type");
     for(var i = 0; i < set_bg_ty.options.length; i++){
         if(set_bg_ty.options[i].value == localStorage.getItem("setting_background_type")){
@@ -566,6 +630,7 @@ function showSettingsBox(){
         }
     }
 
+    // Uses the widgets_defaults to see which option is currently set to which!
     for(var i = 0; i < widgets_defaults.length; i++){
         if(widgets_defaults[i].widget_id !== false){
             if(localStorage.getItem(widgets_defaults[i].store_name) == "true"){
@@ -584,19 +649,22 @@ function showSettingsBox(){
 }
 
 /**
- * Reset Dasher to defaults
+ * Reset Dasher to defaults, updating all the localStorage to match the widgets_defaults values
  */
 function updateResetDasher(){
+    // Removes the location items from LocalStorage
     localStorage.removeItem("locLon");
     localStorage.removeItem("locLat");
 
+    // Resets the current location
     getLocation();
 
+    // Sets the items to match the default from widgets_defaults
     for(var i = 0; i < widgets_defaults.length; i++){
         localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
     }
 
-    // Close all news articles
+    // Close all news articles that are expanded
     var articles = document.querySelectorAll(".news_headline");
     for(var i = 0; i < articles.length; i++){
         articles[i].childNodes[1].classList.add("hidden");
@@ -604,14 +672,14 @@ function updateResetDasher(){
 }
 
 /**
- * Save Notepad Content
+ * Save Notepad Content, if greater than 500 chars, don't save and show an error.
  */
 function updateNotepadContent(){
-    if(document.getElementById("notepad_content").textContent.length > 250){
-        // More than 250 characters, ignore :(
+    if(document.getElementById("notepad_content").textContent.length > 500){
+        // More than 500 characters, ignore :(
         window.notepad_max_length.classList.remove("hidden");
     } else {
-        // Less than 250 characters, therefore save =)
+        // Less than 500 characters, therefore save =)
         window.notepad_max_length.classList.add("hidden");
         localStorage.setItem("notepad_content", document.getElementById("notepad_content").innerHTML);
     }
@@ -707,7 +775,9 @@ function updateSettingsBackground(){
 }
 
 /**
- * Get location from IP Address
+ * Get location from IP Address as a fallback for the getLocation GEOLocation. Show a warning for using IP.
+ *
+ * Adblock can cause errors, so we check to see if adblock is enabled!
  */
 function getLocationFromIP(){
     debug("getLocationFromIP()");
@@ -729,6 +799,9 @@ function getLocationFromIP(){
     }
 }
 
+/**
+ * Gets the response from the getLocationFromIP. Hides the warning that it's using IP after 10 seconds.
+ */
 function locationIPResponse(){
     var response = JSON.parse(this.responseText);
     localStorage.setItem("locLon", response.lon);
@@ -738,9 +811,9 @@ function locationIPResponse(){
         document.getElementById("widget_loc_warning").classList.add("hidden");
     }, 10000);
 }
-// TEST
+
 /**
- * HTML Geolocation - getLocation
+ * HTML Geolocation - Gets the users location from their browser.
  */
 function getLocation() {
     debug("getLocation()");
@@ -760,7 +833,6 @@ function getLocation() {
 
 /**
  * Stores the user location to browser LocalStorage
- * @param position
  */
 function saveLocation(position){
     localStorage.setItem("locLat", position.coords.latitude);
@@ -769,7 +841,6 @@ function saveLocation(position){
 
 /**
  * Error handler for getLocation functions
- * @param error
  */
 function locationError(error) {
     localStorage.setItem("locLat", "false");
@@ -795,7 +866,11 @@ function locationError(error) {
     }
 }
 
-// Source: http://coursesweb.net/javascript/strip_tags-stripslashes-javascript_cs
+/**
+ * Removes all tags from a string that shouldn't be there except those that have been given in the allow param.
+ *
+ * Source: http://coursesweb.net/javascript/strip_tags-stripslashes-javascript_cs
+ */
 function strip_tags(str, allow) {
     // making sure the allow arg is a string containing only tags in lowercase (<a><b><c>)
     allow = (((allow || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
@@ -807,7 +882,10 @@ function strip_tags(str, allow) {
     });
 }
 
-/* Message Commands */
+/**
+ * Displays a formatted console message that says [DEBUG] before, only displays if debug_mode == true at the top
+ * of the page.
+ */
 function debug(message){
     if(debug_mode) {
         console.log("[DEBUG] " + message);
