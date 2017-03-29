@@ -139,11 +139,21 @@ function updateCurrentDate(){
  * Updates the current news headlines.
  */
 function updateCurrentNews(){
-    ws.send(JSON.stringify({"action":"news"}));
+    if(socket_connected) {
+        ws.send(JSON.stringify({
+            "action": "news"
+        }));
+    }
 }
 
 function updateCurrentWeather(){
-    ws.send(JSON.stringify({"action":"weather", "lat":localStorage.getItem("locLat"), "lon":localStorage.getItem("locLon")}));
+    if(socket_connected) {
+        ws.send(JSON.stringify({
+            "action": "weather",
+            "lat": localStorage.getItem("locLat"),
+            "lon": localStorage.getItem("locLon")
+        }));
+    }
 }
 
 /**
@@ -216,11 +226,13 @@ function loadDasher(){
                 startWeatherTimer();
 
                 // Send current lat and lon to get the location response
-                ws.send(JSON.stringify({
-                    "action": "location",
-                    "lat": localStorage.getItem("locLat"),
-                    "lon": localStorage.getItem("locLon")
-                }));
+                if(socket_connected) {
+                    ws.send(JSON.stringify({
+                        "action": "location",
+                        "lat": localStorage.getItem("locLat"),
+                        "lon": localStorage.getItem("locLon")
+                    }));
+                }
 
                 createTrafficMap();
 
@@ -561,10 +573,17 @@ function updateSettingsBackground(){
 function getLocationFromIP(){
     document.getElementById("widget_loc_warning").classList.remove("hidden");
 
-    var req = new XMLHttpRequest();
-    req.addEventListener("load", locationIPResponse);
-    req.open("GET", "http://ip-api.com/json");
-    req.send();
+    if(document.getElementById('checkAdBlocker')) {
+        // Doesn't have an adblock so this'll work fine!
+        var req = new XMLHttpRequest();
+        req.addEventListener("load", locationIPResponse);
+        req.open("GET", "http://ip-api.com/json");
+        req.send();
+    } else {
+        // Does have an adblocker, show an error?
+        window.error_message.textContent = "Please disable your adblock, our fallback location system isn't able to detect where you are!";
+        showErrors();
+    }
 }
 
 function locationIPResponse(){
