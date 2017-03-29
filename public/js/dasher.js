@@ -301,7 +301,7 @@ function configureDashboard(){
 
     // Update settings placeholder
     document.querySelector("#twitter_user_name").placeholder = localStorage.getItem("setting_twitter_user");
-    document.querySelector("#twitter_user_name_error").textContent = localStorage.getItem("setting_twitter_user");
+    document.getElementById("twitter_user_name_error").textContent = localStorage.getItem("setting_twitter_user");
 
     // Update Background Picture
     document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
