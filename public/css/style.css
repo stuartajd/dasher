@@ -33,6 +33,11 @@ select{
     padding: 0.5em;
 }
 
+input[type=text]{
+    margin: 0 1em;
+    padding: 0.5em;
+}
+
 .clearfix {
     overflow: auto;
 }

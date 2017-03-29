@@ -110,6 +110,18 @@
                     </section>
                 </section>
 
+                <!-- Twitter Feed -->
+                <section class="col-md-6" id="widget_twitter">
+                    <section class="widget_header">
+                        Twitter Feed
+                    </section>
+                    <section class="widget">
+                        <section id="twitterFeed">
+                            <a id="twitter" class="twitter-timeline" data-height="15em" data-chrome="nofooter, noheader" target="_blank">There is no twitter user under this name! <span id="twitter_user_name_error"></span></a>
+                        </section>
+                    </section>
+                </section>
+
                 <!-- Notepad -->
                 <section class="col-md-6" id="widget_notepad">
                     <section class="widget_header">
@@ -190,6 +202,12 @@
                     <input type="color" id="setting_color_picker" value="#008cff">
                 </p>
 
+                <div class="red-alert hidden" id="setting_twitter_save">To display the new twitter feed, please refresh the page!</div>
+
+                <p>Twitter Username: &nbsp;
+                    @<input type="text" id="twitter_user_name">
+                </p>
+
                 <hr>
 
                 <h3>Widget Display</h3>
@@ -197,6 +215,7 @@
                 <p>Display Weather: <span class="clickable" id="display_weather_button"></span></p>
                 <p>Display Notepad: <span class="clickable" id="display_notepad_button"></span></p>
                 <p>Display Map: <span class="clickable" id="display_map_button"></span></p>
+                <p>Display Twitter Feed: <span class="clickable" id="display_twitter_button"></span></p>
 
                 <hr>
 
@@ -207,6 +226,7 @@
         </section>
         <script src="/js/ads.js"></script>
         <script async defer src="/js/dasher.js"></script>
+        <script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAu2pQkbeYVcYTeWouEVUi2EVT93LpIBp0"></script>
     </body>
 </html>

@@ -238,7 +238,9 @@ function loadDasher(){
 
                 showDashboard();
             }else {
-                getLocation();
+                setTimeout(function(){
+                    getLocation();
+                }, 10000);
             }
 
         }, 2000);
@@ -281,6 +283,14 @@ function configureDashboard(){
         localStorage.setItem("setting_display_weather", "true");
     }
 
+    if(localStorage.getItem("setting_display_twitter") === null){
+        localStorage.setItem("setting_display_twitter", "true");
+    }
+
+    if(localStorage.getItem("setting_twitter_user") === null){
+        localStorage.setItem("setting_twitter_user", "twitterdev");
+    }
+
     if(localStorage.getItem("setting_display_notepad") === null){
         localStorage.setItem("setting_display_notepad", "true");
     }
@@ -288,6 +298,10 @@ function configureDashboard(){
     if(localStorage.getItem("notepad_content") === null){
         localStorage.setItem("notepad_content", "");
     }
+
+    // Update settings placeholder
+    document.querySelector("#twitter_user_name").placeholder = localStorage.getItem("setting_twitter_user");
+    document.querySelector("#twitter_user_name_error").textContent = localStorage.getItem("setting_twitter_user");
 
     // Update Background Picture
     document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
@@ -325,6 +339,15 @@ function configureDashboard(){
         window.widget_weather.style.display = "block";
     } else {
         window.widget_weather.style.display = "none";
+    }
+
+    // Display Twitter Widget
+    if(localStorage.getItem("setting_display_twitter") == "true"){
+        window.widget_twitter.style.display = "block";
+
+        document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" + localStorage.getItem("setting_twitter_user");
+    } else {
+        window.widget_twitter.style.display = "none";
     }
 
     // Display Notepad Widget
@@ -387,18 +410,24 @@ document.getElementById("about_box_close").addEventListener("click", showAboutBo
 document.getElementById("setting_background_type").addEventListener("change", updateSettingsBackground);
 document.getElementById("display_news_button").addEventListener("click", updateSettingsNews);
 document.getElementById("display_weather_button").addEventListener("click", updateSettingsWeather);
+document.getElementById("display_twitter_button").addEventListener("click", updateSettingsTwitter);
 document.getElementById("display_notepad_button").addEventListener("click", updateSettingsNotepad);
 document.getElementById("display_map_button").addEventListener("click", updateSettingsMap);
 document.getElementById("setting_color_picker").addEventListener("change", updateSettingsBackgroundColor);
 document.getElementById("setting_reset_dasher").addEventListener("click", updateResetDasher);
 document.getElementById("notepad_content").addEventListener("keyup", updateNotepadContent);
-
+document.getElementById("twitter_user_name").addEventListener("keyup", updateTwitterUsername);
 
 /**
  * Event Handlers
  */
 function viewNews(element){
     element.childNodes[1].classList.toggle("hidden");
+}
+
+function updateTwitterUsername(){
+    document.getElementById("setting_twitter_save").classList.remove("hidden");
+    localStorage.setItem("setting_twitter_user", document.getElementById("twitter_user_name").value);
 }
 
 function showAboutBox(){
@@ -431,7 +460,14 @@ function showSettingsBox(){
         window.display_weather_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
     }
 
-    // Check if weather is enabled
+    // Check if twitter is enabled
+    if(localStorage.getItem("setting_display_twitter") == "true"){
+        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+    } else {
+        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    }
+
+    // Check if map is enabled
     if(localStorage.getItem("setting_display_map") == "true"){
         window.display_map_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
     } else {
@@ -462,6 +498,8 @@ function updateResetDasher(){
     localStorage.setItem("setting_display_news", "true");
     localStorage.setItem("setting_display_weather", "true");
     localStorage.setItem("setting_display_map", "true");
+    localStorage.setItem("setting_display_twitter", "true");
+    localStorage.setItem("setting_twitter_user", "twitterdev");
     localStorage.setItem("setting_display_notepad", "true");
     localStorage.setItem("setting_background_color", "#008cff");
     localStorage.setItem("setting_background_type", "nature");
@@ -531,6 +569,19 @@ function updateSettingsWeather(){
     } else {
         localStorage.setItem("setting_display_weather", "true");
         window.display_weather_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+    }
+}
+
+/**
+ * If the twitter setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsTwitter(){
+    if(localStorage.getItem("setting_display_twitter") == "true"){
+        localStorage.setItem("setting_display_twitter", "false");
+        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    } else {
+        localStorage.setItem("setting_display_twitter", "true");
+        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
     }
 }
 
