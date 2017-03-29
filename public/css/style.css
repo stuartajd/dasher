@@ -92,11 +92,12 @@ input[type=text]{
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
 
-    margin: 2em auto;
+    margin-top: 2em;
 
     height: auto;
+
+    overflow: hidden;
 
     z-index:9999999;
     background-color: #fefefe;
@@ -122,10 +123,9 @@ input[type=text]{
 }
 
 .white_box_content{
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-y: auto;
 
-    height: auto;
+    height: calc(100% - 70px);
 
     display: block;
 

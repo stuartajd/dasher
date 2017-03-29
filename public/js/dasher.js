@@ -452,9 +452,7 @@ function updateResetDasher(){
     getLocation();
 
     for(var i = 0; i < widgets_defaults.length; i++){
-        if(localStorage.getItem(widgets_defaults[i].store_name) === null){
-            localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
-        }
+        localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
     }
 
     // Close all news articles
