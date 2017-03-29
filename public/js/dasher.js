@@ -6,11 +6,37 @@
 
 'use strict'
 
-var ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 8080 +'/');
+var ws = null;
+function socket_connect(){
+    try{
+        ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 8080 +'/');
+    } catch (e){
+        console.error("We've not been able to connect to the server, retrying!");
+    }
+}
+socket_connect();
 var socket_connected = false;
 
 ws.onopen = function (event) {
     socket_connected = true;
+};
+
+function checkSocketConnection(){
+    if(ws.readyState === 1){
+        socket_connected = true;
+        setTimeout(function(){
+            document.getElementById("widget_soc_warning").classList.add("hidden");
+        }, 2500);
+    } else {
+        document.getElementById("widget_soc_warning").classList.remove("hidden");
+        socket_connected = false;
+        socket_connect();
+    }
+}
+
+ws.onclose = function(event){
+    socket_connected = false;
+    console.log('Disconnected');
 };
 
 ws.onmessage = function (event) {
@@ -161,6 +187,15 @@ function startWeatherTimer(){
 }
 
 /**
+ * Checks if the server is connected to the web sockets! Runs every 5 seconds.
+ */
+function checkSocketConnectionTimer(){
+    setInterval(function(){
+        checkSocketConnection();
+    }, 5000);
+}
+
+/**
  * Load up the dasher functions
  */
 function loadDasher(){
@@ -169,6 +204,8 @@ function loadDasher(){
     if(socket_connected){
         // Display the loading screen
         showLoading();
+
+        checkSocketConnectionTimer();
 
         setTimeout(function() {
             if(localStorage.getItem("locLon") != "false" && localStorage.getItem("locLat") != "false") {

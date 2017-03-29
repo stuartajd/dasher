@@ -160,6 +160,10 @@ footer {
     border-bottom: 5px solid #008cff;
 }
 
+.widget_warning{
+    border-bottom: 5px solid red !important;
+}
+
 .widget_header{
     background-color: #008cff;
     padding: 0.2em;
