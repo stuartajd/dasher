@@ -3,7 +3,7 @@
     <head>
         <title>dasher</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <!-- Needs to be stored on local but for now -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -26,14 +26,14 @@
         </aside>
 
         <main id="dashboard_loading" class="container hidden">
-            <section id="center_box">
+            <section class="center_box">
                 <h1 class="dasher_title">dasher</h1>
                 <p>we are just syncing your settings, please wait..</p>
             </section>
         </main>
 
         <main id="dashboard_error" class="container hidden">
-            <section id="center_box">
+            <section class="center_box">
                 <h1>dasher can't load</h1>
 
                 <span id="error_message"></span>
@@ -47,6 +47,13 @@
                 <section class="col-md-12 hidden" id="widget_soc_warning">
                     <section class="widget widget_warning">
                         <article id="socket_warning"><i class="fa fa-exclamation-triangle"></i> Dasher can't access the server, retrying! <i class="fa fa-exclamation-triangle"></i></article>
+                    </section>
+                </section>
+
+                <!-- Location Warning -->
+                <section class="col-md-12 hidden" id="widget_loc_warning">
+                    <section class="widget widget_warning">
+                        <article id="location_warning"><i class="fa fa-exclamation-triangle"></i> Dasher has had to use your IP address to determine your location, it may not be 100% accurate! <i class="fa fa-exclamation-triangle"></i></article>
                     </section>
                 </section>
 
@@ -68,13 +75,6 @@
                 <section class="col-md-4" id="widget_location">
                     <section class="widget">
                         <span id="current_location"><i class="fa fa-refresh fa-spin"></i></span>
-                    </section>
-                </section>
-
-                <!-- Location Warning -->
-                <section class="col-md-12 hidden" id="widget_loc_warning">
-                    <section class="widget widget_warning">
-                        <article id="location_warning"><i class="fa fa-exclamation-triangle"></i> Dasher has had to use your IP address to determine your location, it may not be 100% accurate! <i class="fa fa-exclamation-triangle"></i></article>
                     </section>
                 </section>
 

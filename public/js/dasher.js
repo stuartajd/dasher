@@ -4,40 +4,156 @@
  The main client script for the Dasher package.
  */
 
-'use strict'
+'use strict';
 
+var debug_mode = false;
+
+/**
+ * Widgets_Defaults is a store of all the widgets, their element IDs along with their defaults for the localStorage.
+ *
+ * It is used to quickly reset default to avoid having to constantly rewrite the same code over and over.
+ */
 var widgets_defaults = [
     // Default for Widgets
-    {"widget_id":"widget_weather",  "store_name":"setting_display_weather",     "store_value":"true",   "settings_button":"display_weather_button"}, // Widget Weather
-    {"widget_id":"widget_news",     "store_name":"setting_display_news",        "store_value":"true",   "settings_button":"display_news_button"}, // Widget News
-    {"widget_id":"widget_map",      "store_name":"setting_display_map",         "store_value":"true",   "settings_button":"display_map_button"}, // Widget Map
-    {"widget_id":"widget_twitter",  "store_name":"setting_display_twitter",     "store_value":"true",   "settings_button":"display_twitter_button"}, // Widget Twitter
-    {"widget_id":"widget_notepad",  "store_name":"setting_display_notepad",     "store_value":"true",   "settings_button":"display_notepad_button"}, // Widget Notepad
+    {
+        "widget_id":"widget_weather",
+        "store_name":"setting_display_weather",
+        "store_value":"true",
+        "settings_button":"display_weather_button"
+    },
+    {
+        "widget_id":"widget_news",
+        "store_name":"setting_display_news",
+        "store_value":"true",
+        "settings_button":"display_news_button"
+    },
+    {
+        "widget_id":"widget_map",
+        "store_name":"setting_display_map",
+        "store_value":"true",
+        "settings_button":"display_map_button"
+    },
+    {
+        "widget_id":"widget_twitter",
+        "store_name":"setting_display_twitter",
+        "store_value":"true",
+        "settings_button":"display_twitter_button"
+    },
+    {
+        "widget_id":"widget_notepad",
+        "store_name":"setting_display_notepad",
+        "store_value":"true",
+        "settings_button":"display_notepad_button"
+    },
 
     // Defaults for Local Storage
-    {"widget_id":false,     "store_name":"notepad_content",             "store_value":"" },
-    {"widget_id":false,     "store_name":"setting_background_color",    "store_value":"#008cff" },
-    {"widget_id":false,     "store_name":"setting_background_type",     "store_value":"technology" },
-    {"widget_id":false,     "store_name":"setting_twitter_user",        "store_value":"twitterdev" },
-    {"widget_id":false,     "store_name":"locLat",                      "store_value":"false" },
-    {"widget_id":false,     "store_name":"locLon",                      "store_value":"false" },
+    {
+        "widget_id":false,
+        "store_name":"notepad_content",
+        "store_value":""
+    },
+    {
+        "widget_id":false,
+        "store_name":"setting_background_color",
+        "store_value":"#008cff"
+    },
+    {
+        "widget_id":false,
+        "store_name":"setting_background_type",
+        "store_value":"technology"
+    },
+    {
+        "widget_id":false,
+        "store_name":"setting_twitter_user",
+        "store_value":"twitterdev"
+    },
+    {
+        "widget_id":false,
+        "store_name":"locLat",
+        "store_value":"false"
+    },
+    {
+        "widget_id":false,
+        "store_name":"locLon",
+        "store_value":"false"
+    },
 ]
 
+/**
+ * Widgets_Events stores all the events, the element and the function to run. In the event listeners section, a for loop
+ * creates the system.
+ */
 var widgets_events = [
-    {"element_id":"settings_box_close",         "event_type": "click",      "event_func": updateSettings },
-    {"element_id":"settings_button",            "event_type": "click",      "event_func": showSettingsBox },
-    {"element_id":"about_button",               "event_type": "click",      "event_func": showAboutBox },
-    {"element_id":"about_box_close",            "event_type": "click",      "event_func": showAboutBox },
-    {"element_id":"setting_background_type",    "event_type": "change",     "event_func": updateSettingsBackground},
-    {"element_id":"display_news_button",        "event_type": "click",      "event_func": updateSettingsNews},
-    {"element_id":"display_weather_button",     "event_type": "click",      "event_func": updateSettingsWeather},
-    {"element_id":"display_twitter_button",     "event_type": "click",      "event_func": updateSettingsTwitter},
-    {"element_id":"display_notepad_button",     "event_type": "click",      "event_func": updateSettingsNotepad},
-    {"element_id":"display_map_button",         "event_type": "click",      "event_func": updateSettingsMap},
-    {"element_id":"setting_color_picker",       "event_type": "change",     "event_func": updateSettingsBackgroundColor},
-    {"element_id":"setting_reset_dasher",       "event_type": "click",      "event_func": updateResetDasher},
-    {"element_id":"notepad_content",            "event_type": "keyup",      "event_func": updateNotepadContent},
-    {"element_id":"twitter_user_name",          "event_type": "keyup",      "event_func": updateTwitterUsername},
+    {
+        "element_id":"settings_box_close",
+        "event_type": "click",
+        "event_func": updateSettings
+    },
+    {
+        "element_id":"settings_button",
+        "event_type": "click",
+        "event_func": showSettingsBox
+    },
+    {
+        "element_id":"about_button",
+        "event_type": "click",
+        "event_func": showAboutBox
+    },
+    {
+        "element_id":"about_box_close",
+        "event_type": "click",
+        "event_func": showAboutBox
+    },
+    {
+        "element_id":"setting_background_type",
+        "event_type": "change",
+        "event_func": updateSettingsBackground
+    },
+    {
+        "element_id":"display_news_button",
+        "event_type": "click",
+        "event_func": updateSettingsNews
+    },
+    {
+        "element_id":"display_weather_button",
+        "event_type": "click",
+        "event_func": updateSettingsWeather
+    },
+    {
+        "element_id":"display_twitter_button",
+        "event_type": "click",
+        "event_func": updateSettingsTwitter
+    },
+    {
+        "element_id":"display_notepad_button",
+        "event_type": "click",
+        "event_func": updateSettingsNotepad
+    },
+    {
+        "element_id":"display_map_button",
+        "event_type": "click",
+        "event_func": updateSettingsMap
+    },
+    {
+        "element_id":"setting_color_picker",
+        "event_type": "change",
+        "event_func": updateSettingsBackgroundColor
+    },
+    {
+        "element_id":"setting_reset_dasher",
+        "event_type": "click",
+        "event_func": updateResetDasher
+    },
+    {
+        "element_id":"notepad_content",
+        "event_type": "keyup",
+        "event_func": updateNotepadContent
+    },
+    {
+        "element_id":"twitter_user_name",
+        "event_type": "keyup",
+        "event_func": updateTwitterUsername
+    },
 ];
 
 
@@ -45,8 +161,9 @@ var ws = null;
 function socket_connect(){
     try{
         ws = new WebSocket('ws://'+window.location.hostname+':' + window.location.port || 8080 +'/');
+        debug("Connected to socket server");
     } catch (e){
-        console.error("We've not been able to connect to the server, retrying!");
+        debug("Cannot connect to socket server");
     }
 }
 socket_connect();
@@ -58,11 +175,13 @@ ws.onopen = function (event) {
 
 function checkSocketConnection(){
     if(ws.readyState === 1){
+        debug("Socket connection live.");
         socket_connected = true;
         setTimeout(function(){
             document.getElementById("widget_soc_warning").classList.add("hidden");
         }, 2500);
     } else {
+        debug("Socket connection lost.");
         document.getElementById("widget_soc_warning").classList.remove("hidden");
         socket_connected = false;
         socket_connect();
@@ -71,15 +190,24 @@ function checkSocketConnection(){
 
 ws.onclose = function(event){
     socket_connected = false;
-    console.log('Disconnected');
+    debug("Disconnected from Socket Server");
 };
 
 ws.onmessage = function (event) {
     var message = JSON.parse(event.data);
+    debug("Message Received : " + message.action);
+
     switch(message.action){
         case "weather":
-            updateElementHTML("#widget_weather_icon", '<i class="wi wi-forecast-io-'+message.forecast.currently.icon+'"></i>');
-            updateElementHTML("#widget_weather_text", 'It\'s currently ' + message.forecast.currently.summary + "<hr>");
+            updateElementHTML(
+                "#widget_weather_icon",
+                '<i class="wi wi-forecast-io-'+message.forecast.currently.icon+'"></i>'
+            );
+
+            updateElementHTML(
+                "#widget_weather_text",
+                'It\'s currently ' + message.forecast.currently.summary + "<hr>"
+            );
 
             var weekly = document.createElement("table");
             weekly.classList.add("table");
@@ -94,7 +222,8 @@ ws.onmessage = function (event) {
                 var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
 
                 var fore = document.createElement("td");
-                fore.innerHTML = '<i title="'+ weekForecast[i+1].summary +'" class="wi wi-forecast-io-'+ weekForecast[i+1].icon +'"></i><br />'+ hours + ":" + mins + AMPM ;
+                fore.innerHTML = '<i title="'+ weekForecast[i+1].summary +'" ' +
+                    'class="wi wi-forecast-io-'+ weekForecast[i+1].icon +'"></i><br />'+ hours + ":" + mins + AMPM ;
                 weekly.appendChild(fore);
             }
 
@@ -117,9 +246,11 @@ ws.onmessage = function (event) {
 
                 var ti = document.createElement("li");
                 ti.innerHTML = '<span class="news_headline" id="news_headline_'+i+'">' + headline +'</a>' +
-                    '<article class="news_body hidden"><img src="' + newsHeadlines[i].urlToImage +'" class="img-responsive"><br />' +
+                    '<article class="news_body hidden"><img src="' + newsHeadlines[i].urlToImage +'"' +
+                    ' class="img-responsive"><br />' +
                     '' + newsHeadlines[i].title + '<hr>' + newsHeadlines[i].description  +
-                    '<p class="text-right"><a href="'+ newsHeadlines[i].url +'" target="_blank">Read More</a></p></article></span>';
+                    '<p class="text-right"><a href="'+ newsHeadlines[i].url +'"' +
+                    ' target="_blank">Read More</a></p></article></span>';
 
                 ti.setAttribute('onclick', 'viewNews(news_headline_'+i+')');
 
@@ -132,7 +263,10 @@ ws.onmessage = function (event) {
 
 function createTrafficMap(){
 
-    var myLatlng = new google.maps.LatLng(Number(localStorage.getItem("locLat")), Number(localStorage.getItem("locLon")));
+    var myLatlng = new google.maps.LatLng(
+        Number(localStorage.getItem("locLat")),
+        Number(localStorage.getItem("locLon"))
+    );
 
     var map = new google.maps.Map(document.getElementById('widget_map_image'), {
         zoom: 13,
@@ -154,6 +288,8 @@ loadDasher();
  * Update the current displayed time on the dashboard
  */
 function updateCurrentTime(){
+    debug("updateCurrentTime()");
+
     var time = new Date();
     var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
     var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
@@ -165,15 +301,20 @@ function updateCurrentTime(){
  * Update the current displayed date on the dashboard
  */
 function updateCurrentDate(){
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    debug("updateCurrentDate()");
+
+    var months = [  "January", "February", "March", "April", "May", "June", "July",
+                    "August", "September", "October", "November", "December"];
     var date = new Date();
-    document.querySelector("#current-date").textContent = "" + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear() + "";
+    document.querySelector("#current-date").textContent = "" + date.getDate() + " " +
+        months[date.getMonth()] + " " + date.getFullYear() + "";
 }
 
 /**
  * Updates the current news headlines.
  */
 function updateCurrentNews(){
+    debug("updateCurrentNews()");
     if(socket_connected) {
         ws.send(JSON.stringify({
             "action": "news"
@@ -182,6 +323,7 @@ function updateCurrentNews(){
 }
 
 function updateCurrentWeather(){
+    debug("updateCurrentWeather()");
     if(socket_connected) {
         ws.send(JSON.stringify({
             "action": "weather",
@@ -232,6 +374,15 @@ function startWeatherTimer(){
 }
 
 /**
+ * Starts the timer to update the current location. Runs every 10 minutes.
+ */
+function startLocationTimer(){
+    setInterval(function(){
+        getLocation();
+    }, 600000);
+}
+
+/**
  * Checks if the server is connected to the web sockets! Runs every 5 seconds.
  */
 function checkSocketConnectionTimer(){
@@ -261,6 +412,7 @@ function loadDasher(){
                 startDateTimer();
                 startNewsTimer();
                 startWeatherTimer();
+                startLocationTimer();
 
                 // Send current lat and lon to get the location response
                 if(socket_connected) {
@@ -291,6 +443,7 @@ function loadDasher(){
 }
 
 function configureDashboard(){
+    debug("configureDashboard()");
     // SET DEFAULTS
     for(var i = 0; i < widgets_defaults.length; i++){
         if(localStorage.getItem(widgets_defaults[i].store_name) === null){
@@ -313,10 +466,12 @@ function configureDashboard(){
     document.querySelector("#twitter_user_name").placeholder = localStorage.getItem("setting_twitter_user");
 
     // Update Background Picture
-    document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' + localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
+    document.querySelector("body").style.background = 'url("https://source.unsplash.com/category/' +
+        localStorage.getItem("setting_background_type") + '/1280x720/") no-repeat center center fixed';
 
     // Update Notepad Content
-    document.getElementById("notepad_content").innerHTML = strip_tags(localStorage.getItem("notepad_content"), "<div><br>");
+    document.getElementById("notepad_content").innerHTML = strip_tags(localStorage.getItem("notepad_content"),
+        "<div><br>");
 
     // Update Widget Header Colour
     var widgets = document.querySelectorAll(".widget_header");
@@ -329,7 +484,8 @@ function configureDashboard(){
         widgets[i].style.borderBottomColor = localStorage.getItem("setting_background_color");
     }
 
-    document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" + localStorage.getItem("setting_twitter_user");
+    document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" +
+        localStorage.getItem("setting_twitter_user");
 }
 
 function updateElementText(element, text){
@@ -378,7 +534,8 @@ function showLoading(){
  * Event Listeners
  */
 for(var i = 0; i < widgets_events.length; i++){
-    document.getElementById(widgets_events[i].element_id).addEventListener(widgets_events[i].event_type, widgets_events[i].event_func);
+    document.getElementById(widgets_events[i].element_id).addEventListener( widgets_events[i].event_type,
+                                                                            widgets_events[i].event_func);
 }
 
 /**
@@ -412,9 +569,11 @@ function showSettingsBox(){
     for(var i = 0; i < widgets_defaults.length; i++){
         if(widgets_defaults[i].widget_id !== false){
             if(localStorage.getItem(widgets_defaults[i].store_name) == "true"){
-                document.getElementById(widgets_defaults[i].settings_button).innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+                document.getElementById(widgets_defaults[i].settings_button).innerHTML =
+                    '<i class="fa fa-toggle-on"></i> Shown';
             } else {
-                document.getElementById(widgets_defaults[i].settings_button).innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+                document.getElementById(widgets_defaults[i].settings_button).innerHTML =
+                    '<i class="fa fa-toggle-off"></i> Hidden';
             }
         }
     }
@@ -534,6 +693,7 @@ function updateSettingsNotepad(){
  * Updates the settings for the dashboard, then closes the settings page.
  */
 function updateSettings(){
+    debug("updateSettings()");
     configureDashboard()
     showSettingsBox()
 }
@@ -550,6 +710,8 @@ function updateSettingsBackground(){
  * Get location from IP Address
  */
 function getLocationFromIP(){
+    debug("getLocationFromIP()");
+
     document.getElementById("widget_loc_warning").classList.remove("hidden");
 
     if(document.getElementById('checkAdBlocker')) {
@@ -560,7 +722,8 @@ function getLocationFromIP(){
         req.send();
     } else {
         // Does have an adblocker, show an error?
-        window.error_message.innerHTML = "Please disable your adblock, our fallback location system isn't able to detect where you are!<br />Please disable adBlock and refresh!";
+        window.error_message.innerHTML = "Please disable your adblock, our fallback location system " +
+            "isn't able to detect where you are!<br />Please disable adBlock and refresh!";
         showErrors();
         throw new Error("Adblock has been detected, fallback location check can't run, closing!");
     }
@@ -580,6 +743,8 @@ function locationIPResponse(){
  * HTML Geolocation - getLocation
  */
 function getLocation() {
+    debug("getLocation()");
+
     var options = {
         enableHighAccuracy: false,
         timeout: 5000,
@@ -642,3 +807,9 @@ function strip_tags(str, allow) {
     });
 }
 
+/* Message Commands */
+function debug(message){
+    if(debug_mode) {
+        console.log("[DEBUG] " + message);
+    }
+}
