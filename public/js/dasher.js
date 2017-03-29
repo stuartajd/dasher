@@ -6,6 +6,23 @@
 
 'use strict'
 
+var widgets_defaults = [
+    // Default for Widgets
+    {"widget_id":"widget_weather", "store_name":"setting_display_weather", "store_value":"true"}, // Widget Weather
+    {"widget_id":"widget_news", "store_name":"setting_display_news", "store_value":"true"}, // Widget News
+    {"widget_id":"widget_map", "store_name":"setting_display_map", "store_value":"true"}, // Widget Map
+    {"widget_id":"widget_twitter", "store_name":"setting_display_twitter", "store_value":"true"}, // Widget Twitter
+    {"widget_id":"widget_notepad", "store_name":"setting_display_notepad", "store_value":"true"}, // Widget Notepad
+
+    // Defaults for Local Storage
+    {"widget_id":false, "store_name":"notepad_content", "store_value":"" },
+    {"widget_id":false, "store_name":"setting_background_color", "store_value":"#008cff" },
+    {"widget_id":false, "store_name":"setting_background_type", "store_value":"technology" },
+    {"widget_id":false, "store_name":"setting_twitter_user", "store_value":"twitterdev" },
+    {"widget_id":false, "store_name":"locLat", "store_value":"false" },
+    {"widget_id":false, "store_name":"locLon", "store_value":"false" },
+];
+
 var ws = null;
 function socket_connect(){
     try{
@@ -215,6 +232,8 @@ function loadDasher(){
         // Display the loading screen
         showLoading();
 
+        getLocation();
+
         checkSocketConnectionTimer();
 
         setTimeout(function() {
@@ -239,7 +258,7 @@ function loadDasher(){
                 showDashboard();
             }else {
                 setTimeout(function(){
-                    getLocation();
+                    loadDasher();
                 }, 10000);
             }
 
@@ -254,49 +273,22 @@ function loadDasher(){
 }
 
 function configureDashboard(){
-    if(localStorage.getItem("locLon") === null){
-        localStorage.setItem("locLon", "false");
-    }
-
-    if(localStorage.getItem("locLat") === null){
-        localStorage.setItem("locLat", "false");
-    }
-
     // SET DEFAULTS
-    if(localStorage.getItem("setting_background_type") === null){
-        localStorage.setItem("setting_background_type", "nature");
+    for(var i = 0; i < widgets_defaults.length; i++){
+        if(localStorage.getItem(widgets_defaults[i].store_name) === null){
+            localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
+        }
     }
 
-    if(localStorage.getItem("setting_background_color") === null){
-        localStorage.setItem("setting_background_color", "#008cff");
-    }
-
-    if(localStorage.getItem("setting_display_news") === null){
-        localStorage.setItem("setting_display_news", "true");
-    }
-
-    if(localStorage.getItem("setting_display_map") === null){
-        localStorage.setItem("setting_display_map", "true");
-    }
-
-    if(localStorage.getItem("setting_display_weather") === null){
-        localStorage.setItem("setting_display_weather", "true");
-    }
-
-    if(localStorage.getItem("setting_display_twitter") === null){
-        localStorage.setItem("setting_display_twitter", "true");
-    }
-
-    if(localStorage.getItem("setting_twitter_user") === null){
-        localStorage.setItem("setting_twitter_user", "twitterdev");
-    }
-
-    if(localStorage.getItem("setting_display_notepad") === null){
-        localStorage.setItem("setting_display_notepad", "true");
-    }
-
-    if(localStorage.getItem("notepad_content") === null){
-        localStorage.setItem("notepad_content", "");
+    // Show or hide the elements
+    for(var i = 0; i < widgets_defaults.length; i++){
+        if(widgets_defaults[i].widget_id !== false){
+            if(localStorage.getItem(widgets_defaults[i].store_name) == "true"){
+                document.getElementById(widgets_defaults[i].widget_id).style.display = "block";
+            } else {
+                document.getElementById(widgets_defaults[i].widget_id).style.display = "none";
+            }
+        }
     }
 
     // Update settings placeholder
@@ -319,42 +311,7 @@ function configureDashboard(){
         widgets[i].style.borderBottomColor = localStorage.getItem("setting_background_color");
     }
 
-    // Display News Widget
-    if(localStorage.getItem("setting_display_news") == "true"){
-        window.widget_news.style.display = "block";
-    } else {
-        window.widget_news.style.display = "none";
-    }
-
-    // Display Map Widget
-    if(localStorage.getItem("setting_display_map") == "true"){
-        window.widget_map.style.display = "block";
-    } else {
-        window.widget_map.style.display = "none";
-    }
-
-    // Display Weather Widget
-    if(localStorage.getItem("setting_display_weather") == "true"){
-        window.widget_weather.style.display = "block";
-    } else {
-        window.widget_weather.style.display = "none";
-    }
-
-    // Display Twitter Widget
-    if(localStorage.getItem("setting_display_twitter") == "true"){
-        window.widget_twitter.style.display = "block";
-
-        document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" + localStorage.getItem("setting_twitter_user");
-    } else {
-        window.widget_twitter.style.display = "none";
-    }
-
-    // Display Notepad Widget
-    if(localStorage.getItem("setting_display_notepad") == "true"){
-        window.widget_notepad.style.display = "block";
-    } else {
-        window.widget_notepad.style.display = "none";
-    }
+    document.getElementById("twitterFeed").childNodes[1].href = "https://twitter.com/" + localStorage.getItem("setting_twitter_user");
 }
 
 function updateElementText(element, text){
@@ -494,15 +451,11 @@ function updateResetDasher(){
 
     getLocation();
 
-    localStorage.setItem("setting_display_news", "true");
-    localStorage.setItem("setting_display_weather", "true");
-    localStorage.setItem("setting_display_map", "true");
-    localStorage.setItem("setting_display_twitter", "true");
-    localStorage.setItem("setting_twitter_user", "twitterdev");
-    localStorage.setItem("setting_display_notepad", "true");
-    localStorage.setItem("setting_background_color", "#008cff");
-    localStorage.setItem("setting_background_type", "nature");
-    localStorage.setItem("notepad_content", "");
+    for(var i = 0; i < widgets_defaults.length; i++){
+        if(localStorage.getItem(widgets_defaults[i].store_name) === null){
+            localStorage.setItem(widgets_defaults[i].store_name, widgets_defaults[i].store_value);
+        }
+    }
 
     // Close all news articles
     var articles = document.querySelectorAll(".news_headline");
