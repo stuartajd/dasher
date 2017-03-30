@@ -728,6 +728,7 @@ function showSettingsBox(){
 
     window.settings_box.classList.toggle("hidden");
 
+    window.setting_message_name.value = "";
     window.setting_message_name.placeholder = localStorage.getItem("setting_message_name");
 }
 
