@@ -100,7 +100,7 @@ wss.on('connection', function connection(ws) {
  * Returns the current weather forcast from the darksky API, then sends back via WS
  */
 function getWeatherForcast(ws, lat, lon){
-    request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/'+lat+','+lon+'', function (error, response, body) {
+    request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/'+lat+','+lon+'&units=SI', function (error, response, body) {
         var forecast = JSON.parse(body);
         ws.send(JSON.stringify({"action":"weather", "forecast":forecast}));
     });

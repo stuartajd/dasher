@@ -158,6 +158,18 @@ var widgets_events = [
     },
 ];
 
+/**
+ * An array of all the days of the week.
+ */
+var days = ["MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"];
+var fullDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+/**
+ * An array of all the months of the year.
+ */
+var months = [  "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+
 // Assign a value for the global declaration.
 var ws = null;
 var socket_connected = false;
@@ -211,6 +223,15 @@ ws.onclose = function(){
 };
 
 /**
+ * Converts a fahrenheit temperature into the celcius and returns it with a string along with C at the end.
+ * @param temp
+ * @returns {string}
+ */
+function convertToC(temp){
+    return Math.round((Number(temp) - 32) / (9 / 5)) + '&deg; C';
+}
+
+/**
  * When the socket server sends a message to the client.
  * It will return a JSON message containing an action [weather, location, news] and the data that comes with it.
  */
@@ -223,10 +244,9 @@ ws.onmessage = function (event) {
         case "weather":
             updateElementHTML(
                 "#widget_weather_icon",
-                '<div class="row"><div class="col-md-6">' +
-                '<img src="/images/'+ message.forecast.currently.icon +'.png" class="img-responsive">' +
-                '</div><div class="col-md-6">'+ Math.round((Number(message.forecast.currently.temperature) - 32) / (9 / 5)) +
-                '&deg; C</div></div>'
+                '<div class="row"><div class="col-md-6 text-center">' +
+                '<img src="/images/'+ message.forecast.currently.icon +'.png">' +
+                '</div><div class="col-md-6">' + convertToC(message.forecast.currently.temperature) + '</div></div>'
             );
 
             updateElementHTML(
@@ -236,19 +256,18 @@ ws.onmessage = function (event) {
 
             var weekly = document.createElement("table");
             weekly.classList.add("table");
+            weekly.style.textAlign = "center";
 
-            var weekForecast = message.forecast.hourly.data;
+            var weekForecast = message.forecast.daily.data;
 
             for(var i = 0; i < 5; i++){
                 var time = new Date(0); // The 0 there is the key, which sets the date to the epoch
-                time.setUTCSeconds(weekForecast[i+1].time);
-                var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
-                var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
-                var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
+                time.setUTCSeconds(weekForecast[i].time);
+                var day = time.getDay();
 
                 var fore = document.createElement("td");
-                fore.innerHTML = '<img src="/images/'+ weekForecast[i+1].icon +'.png" class="img-responsive">' +
-                    '<br />'+ hours + ":" + mins + AMPM ;
+                fore.innerHTML = days[day] + '<br /><small>' + convertToC(weekForecast[i].temperatureMin) +
+                    '</small><br /><img src="/images/'+ weekForecast[i].icon +'.png" style="width: 2em;">';
                 weekly.appendChild(fore);
             }
 
@@ -326,16 +345,36 @@ function updateCurrentTime(){
 }
 
 /**
+ * Function to get the ordinal from the date [st, nd, rd, th]
+ *
+ * Source: http://stackoverflow.com/a/6003589
+ */
+function get_nth_suffix(date) {
+    switch (date) {
+        case 1:
+        case 21:
+        case 31:
+            return 'st';
+        case 2:
+        case 22:
+            return 'nd';
+        case 3:
+        case 23:
+            return 'rd';
+        default:
+            return 'th';
+    }
+}
+
+/**
  * Update the current displayed date on the dashboard
  */
 function updateCurrentDate(){
     debug("updateCurrentDate()");
 
-    var months = [  "January", "February", "March", "April", "May", "June", "July",
-                    "August", "September", "October", "November", "December"];
     var date = new Date();
-    document.querySelector("#current-date").textContent = "" + date.getDate() + " " +
-        months[date.getMonth()] + " " + date.getFullYear() + "";
+    document.querySelector("#current-date").textContent = fullDays[date.getDay()] + " " + date.getDate() +
+        "" + get_nth_suffix(date.getDate()) + " " +months[date.getMonth()] + " " + date.getFullYear() + "";
 }
 
 /**
