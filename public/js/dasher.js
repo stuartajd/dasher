@@ -42,6 +42,12 @@ var widgets_defaults = [
         "settings_button":"display_twitter_button"
     },
     {
+        "widget_id":"widget_chat",
+        "store_name":"setting_display_chat",
+        "store_value":"true",
+        "settings_button":"display_chat_button"
+    },
+    {
         "widget_id":"widget_notepad",
         "store_name":"setting_display_notepad",
         "store_value":"true",
@@ -68,6 +74,11 @@ var widgets_defaults = [
         "widget_id":false,
         "store_name":"setting_twitter_user",
         "store_value":"twitterdev"
+    },
+    {
+        "widget_id":false,
+        "store_name":"setting_message_name",
+        "store_value":"Dasher User"
     },
     {
         "widget_id":false,
@@ -137,6 +148,11 @@ var widgets_events = [
         "event_func": updateSettingsMap
     },
     {
+        "element_id":"display_chat_button",
+        "event_type": "click",
+        "event_func": updateSettingsChat
+    },
+    {
         "element_id":"setting_color_picker",
         "event_type": "change",
         "event_func": updateSettingsBackgroundColor
@@ -156,6 +172,16 @@ var widgets_events = [
         "event_type": "keyup",
         "event_func": updateTwitterUsername
     },
+    {
+        "element_id":"chat_input",
+        "event_type":"keypress",
+        "event_func": sendMessage
+    },
+    {
+        "element_id":"setting_message_name",
+        "event_type":"keyup",
+        "event_func":updateSettingsChatUser
+    }
 ];
 
 /**
@@ -277,6 +303,13 @@ ws.onmessage = function (event) {
         // Updates the current location from lat / long
         case "location":
             updateElementText("#current_location", message.location);
+            break;
+        // Updates to display the messages from the chat
+        case "message":
+            var chat = document.createElement("li");
+            chat.innerHTML = '<small><span style="color: blue;">'+ message.user + '</span> ' + message.message +
+                '</small>';
+            document.getElementById("chat_content").prepend(chat);
             break;
         // Updates the latest news headlines
         case "news":
@@ -687,6 +720,8 @@ function showSettingsBox(){
     window.setting_color_picker.value = localStorage.getItem("setting_background_color");
 
     window.settings_box.classList.toggle("hidden");
+
+    window.setting_message_name.placeholder = localStorage.getItem("setting_message_name");
 }
 
 /**
@@ -736,6 +771,19 @@ function updateSettingsNews(){
     } else {
         localStorage.setItem("setting_display_news", "true");
         window.display_news_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+    }
+}
+
+/**
+ * If the chat setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsChat(){
+    if(localStorage.getItem("setting_display_chat") == "true"){
+        localStorage.setItem("setting_display_chat", "false");
+        window.display_chat_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+    } else {
+        localStorage.setItem("setting_display_chat", "true");
+        window.display_chat_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
     }
 }
 
@@ -813,6 +861,13 @@ function updateSettings(){
 function updateSettingsBackground(){
     var background = document.getElementById("setting_background_type");
     localStorage.setItem("setting_background_type", background.options[background.selectedIndex].value);
+}
+
+/**
+ * Updates the background of the site.
+ */
+function updateSettingsChatUser(){
+    localStorage.setItem("setting_message_name", document.getElementById("setting_message_name").value);
 }
 
 /**
@@ -930,5 +985,16 @@ function strip_tags(str, allow) {
 function debug(message){
     if(debug_mode) {
         console.log("[DEBUG] " + message);
+    }
+}
+
+/**
+ * Sends a user message from the chat box
+ */
+function sendMessage(event){
+    if(event.keyCode == 13){
+        // They press the enter key
+        var message = document.getElementById("chat_input").value;
+        ws.send(JSON.stringify({"action":"message", "user":localStorage.getItem("setting_message_name"), "message":message }));
     }
 }

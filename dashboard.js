@@ -82,6 +82,7 @@ wss.on('connection', function connection(ws) {
      */
     ws.on('message', function incoming(message) {
         var message = JSON.parse(message);
+        debug("Message Received: "+ message.action);
         switch(message.action){
             case "weather":
                 getWeatherForcast(ws, message.lat, message.lon);
@@ -92,9 +93,28 @@ wss.on('connection', function connection(ws) {
             case "news":
                 getNewsHeadlines(ws);
                 break;
+            case "message":
+                ws_broadcast(JSON.stringify({"action":"message", "user": message.user, "message": message.message}));
+                break;
         }
     });
 });
+
+/**
+ * Broadcast a message to all connected clients
+ *
+ * Source: https://github.com/portsoc/EventedWebSocketMouse/blob/master/svr.js
+ */
+function ws_broadcast(message) {
+    wss.clients.forEach( (client) => {
+        if(client.readyState === client.OPEN){
+            try {
+                client.send(message);
+            } catch (e) {
+            }
+        }
+    });
+}
 
 /**
  * Returns the current weather forcast from the darksky API, then sends back via WS

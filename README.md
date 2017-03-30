@@ -41,6 +41,7 @@ Customisation is easy, simply click the cog in the top left corner, then it'll d
 * Background Category [Nature, Buildings, Food, People, Technology, Objects]
 * Displaying and Hiding specific elements
 * Notepad Facility
+* User name for the chat
 
 #Data Sources
 Data is sourced from multiple locations, they have been credited below.

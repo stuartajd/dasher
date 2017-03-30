@@ -143,6 +143,17 @@
                         <article id="notepad_content" contenteditable="true" placeholder="Click to begin typing.."></article>
                     </section>
                 </section>
+
+                <!-- Chat Widget -->
+                <section class="col-md-6" id="widget_chat">
+                    <section class="widget_header">
+                        Dasher Chat
+                    </section>
+                    <section class="widget">
+                        <article id="chat_content" style="height: auto; max-height: 10em; overflow-y:auto;"></article>
+                        <input class="form-control" id="chat_input" placeholder="Click to begin typing..">
+                    </section>
+                </section>
             </section>
         </main>
 
@@ -223,6 +234,10 @@
                     @<input type="text" id="twitter_user_name">
                 </p>
 
+                <p>Chat Display Username: &nbsp;
+                    @<input type="text" id="setting_message_name">
+                </p>
+
                 <hr>
 
                 <h3>Widget Display</h3>
@@ -231,6 +246,7 @@
                 <p>Display Notepad: <span class="clickable" id="display_notepad_button"></span></p>
                 <p>Display Map: <span class="clickable" id="display_map_button"></span></p>
                 <p>Display Twitter Feed: <span class="clickable" id="display_twitter_button"></span></p>
+                <p>Display Chat Box: <span class="clickable" id="display_chat_button"></span></p>
 
                 <hr>
 

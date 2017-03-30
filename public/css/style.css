@@ -234,3 +234,19 @@ footer {
 #widget_weather_icon{
     font-size: 3em;
 }
+
+#chat_input{
+    border-top: 1px solid grey;
+}
+#chat_content{
+    margin-bottom: 0.5em;
+}
+#chat_content > li{
+    word-wrap: break-word;
+    list-style-type: none;
+    text-align: left;
+    border-bottom: 1px solid grey;
+}
+#chat_content > li:last-child{
+    border-bottom: none;
+}
