@@ -17,14 +17,18 @@
         - [Reflection](#reflection)
 
 ## Introduction to Dasher
-Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to display appropriate information as required, it is fully customisable with different modules that can be selected as you wish to use them. It is self contained and is shipped with an HTTP server to ensure that you simply run a few commands for it to function.
-
-The system is built to be run on any system and many systems are able to access the server as all the customisation options are managed on the client side.
+Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to display appropriate information as required, 
+it is fully customisable with different modules that can be selected as you wish to use them. It is self contained and 
+is shipped with an HTTP server to ensure that you simply run a few commands for it to function.
 
 Dasher is also mobile friendly, it can be used and shaped on all devices without hassle!
 
-
 Dasher is also built to automatically update all the information periodically, you never need to refresh your dashboard!
+It'll also reconnect when the system drops connection to the socket server!
+
+As Dasher is built to be a customisable dashboard for the client side, the server is able to have multiple connections
+allowing as many people as wanted to join the same system! Their own customisation options will remain on their 
+browser! The more people on one server the more communication you can have in the live chat!
 
 ## Requirements
 A nodeJS server (npm installed)
@@ -44,7 +48,8 @@ Then once all the required packages are installed simply run:
 npm run dashboard
 ```
 
-This will kickstart the server and dashboard itself. Once the server has started running simply visit the URL that is given and you will be able to begin using the dashboard (See example of console below)
+This will kickstart the server and dashboard itself. Once the server has started running simply visit the URL that is 
+given and you will be able to begin using the dashboard (See example of console below)
 
 ```
 [SERVER] Welcome to Dasher.. We're just loading the server now!
@@ -54,6 +59,16 @@ This will kickstart the server and dashboard itself. Once the server has started
 ## Customisation
 Dasher has a load of different customisation options, you're able to alter the background colours, images along with
 showing and hiding all different widgets that on are the site. 
+
+Dasher has 6 main widgets:
+* News Headlines Feed
+* Weather Forecast (Current & Week Ahead)
+* Notepad to store text in
+* Local Area Map with Traffic Guide
+* Twitter Feed
+* Live Chat Box
+
+And also has a local clock, date and location widgets which remain at the top of the page.
 
 #### How do I customise the site?
 Customisation is easy, simply click the cog in the top left corner, then it'll display the site settings, then just 
@@ -65,6 +80,7 @@ click on the settings that you want to change!
 - Displaying and Hiding specific elements
 - Notepad Facility
 - User name for the chat
+- And more!
 
 ## Data Sources
 Data is sourced from multiple locations, they have been credited below.
@@ -85,6 +101,10 @@ with headers to make identification easier. When the widgets are hidden, the bac
 remaining widgets into place to ensure that there isn't massive spaces between them, keeping the system clean. All 
 features that have been implemented in Dasher are functional, there is no untested or nonfunctional code. Libraries 
 are used throughout the package however the majority of the code created was created by myself.
+
+As the method of storage, I chose to use HTML5 localStorage. This is because I found that the localStorage of the browser
+is able to hold as much data as required by my system but is also able to keep it for as long as the user wants it for as
+it does not clear unless the user specifically clears their browsing data.
 
 #### Maintainability
 _Code style, comprehensibility and maintainability. This includes formatting, file structure, naming - everything that 
@@ -134,5 +154,13 @@ fallback mechanism creation, I found that the IP location address AJAX request w
 the correct information from being passed through, I was able to counter this by creating the simple "ads.js" file, which
 after research I found that this is one of the keywords that the adblocker system looks for. By using the "ads.js" file to
 create an element, then checking if the element actually exists allows a primative way of checking if the user has an adblocker,
-ofcourse this only requires it to be disabled if the fallback system is used.
+ofcourse this only requires it to be disabled if the fallback system is used. The fallback method is also used for users
+who don't share their user information via the GeoLocation, so it will be called if there is any error found within the
+location system.
 
+Another issue found was that the Twitter Feed will not refresh automatically when the username is updated, this forces
+the user to refresh the page itself to fully update the twitter user. This is because the system automatically generates
+an iFrame to embed the twitter feed into the page, after attempting to use different selections including childNodes of
+`#twitterFeed` and also querySelector to get the iFrame, I was unable to force a refresh on the frame and reload the 
+feed, therefore a warning message appears when updating the twitter feed, the username in the localStorage saves however
+to update the feed display a refresh is required.

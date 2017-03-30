@@ -3,6 +3,8 @@
  *
  * The client side script to create an invisible element on the page, this is to check if an adblocker is enabled.
  *
+ * This does not affect the dasher display in any way and should not be removed.
+ *
  * @author: UP772629
  */
 

@@ -30,6 +30,8 @@ server.on('request', app);
 /**
  * Global Variables
  */
+    // If the --debug flag is given (Can be called with npm run dev) then debug mode enabled.
+    // Debug mode displays messages within the console that are extra to the usual messages.
 var debug_mode = (args.debug) ? true : false;
 var location = null;
 

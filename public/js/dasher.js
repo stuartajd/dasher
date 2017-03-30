@@ -8,6 +8,11 @@
 
 'use strict';
 
+/**
+ * Debug mode will show the debug messages for different functions within the dasher system, shown in the Browser Console.
+ *
+ * Default: false
+ */
 var debug_mode = false;
 
 /**
