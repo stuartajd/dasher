@@ -33,7 +33,7 @@ This will kickstart the server and dashboard itself. Once the server has started
 [SERVER] Dasher has loaded, visit {YOUR IP}:8080 to view!
 ```
 
-## What can be customised?
+## Customisation
 Dasher has a load of different customisation options, you're able to alter the background colours, images along with showing and hiding all different widgets that on are the site. 
 
 #### How do I customise the site?
@@ -46,7 +46,7 @@ Customisation is easy, simply click the cog in the top left corner, then it'll d
 *Notepad Facility
 *User name for the chat
 
-#### Data Sources
+## Data Sources
 Data is sourced from multiple locations, they have been credited below.
 
 *Weather API: https://darksky.net
@@ -55,4 +55,3 @@ Data is sourced from multiple locations, they have been credited below.
 *News Headlines: https://newsapi.org
 
 Any functions used from external sources have been credited in the code comments.
-
