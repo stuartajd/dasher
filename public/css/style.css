@@ -19,11 +19,9 @@
     border-radius: 0 !important;
 }
 
-.dasher_title{
-    font-family: JennaSue;
-    font-size: 4em;
-}
 body{
+    min-width: 30em;
+
     font-family: Basic;
     text-transform: uppercase;
 
@@ -36,6 +34,11 @@ body{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+}
+
+.dasher_title{
+    font-family: JennaSue;
+    font-size: 4em;
 }
 
 select{
