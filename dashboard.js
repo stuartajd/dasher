@@ -68,6 +68,16 @@ app.get('/*', function (req, res) {
     res.redirect("/");
 });
 
+/**
+ * Returns a count of the number of users in a connection.
+ */
+function countWSSusers(){
+    var user_count = 0;
+    wss.clients.forEach(function each(client) {
+        user_count++;
+    });
+    return user_count;
+}
 
 /**
  * A new connection is established on the server.
@@ -75,12 +85,9 @@ app.get('/*', function (req, res) {
 wss.on('connection', function connection(ws) {
     debug("New Connection Established");
 
-    var user_count = 0;
-    wss.clients.forEach(function each(client) {
-        user_count++;
-    });
 
-    ws_broadcast(JSON.stringify({"action":"users", "count": user_count }));
+
+    ws_broadcast(JSON.stringify({"action":"users", "count": countWSSusers() }));
 
     /**
      * A message is received in the JSON format:
