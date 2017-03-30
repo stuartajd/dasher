@@ -1,5 +1,20 @@
 # Dasher - Configurable Dashboard
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
+- [Dasher - Configurable Dashboard](#)
+	- [Introduction to Dasher](#introduction-to-dasher)
+	- [Requirements](#requirements)
+	- [Installation Guide](#installation-guide)
+	- [Customisation](#cusomisation)
+        - [How do I customise the site?](#how-do-i-customise-the-site)
+        - [Customisation Options](#customisation-options)
+	- [Data Sources](#data-sources)
+	- [Mark Scheme Notes](#mark-scheme-notes)
+        - [Functionality](#functionality)
+        - [Maintainability](#maintainability)
+        - [Usability](#usability)
+        - [Accessibility](#accessibility)
+        - [Reflection](#reflection)
 
 ## Introduction to Dasher
 Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to display appropriate information as required, it is fully customisable with different modules that can be selected as you wish to use them. It is self contained and is shipped with an HTTP server to ensure that you simply run a few commands for it to function.
