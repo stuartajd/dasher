@@ -7,19 +7,11 @@
     "dev": "nodemon dashboard.js --debug",
     "dashboard": "node dashboard.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stuartajd/dasher.git"
-  },
   "keywords": [
     "dasher"
   ],
   "author": "UP772629",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/stuartajd/dasher/issues"
-  },
-  "homepage": "https://github.com/stuartajd/dasher#readme",
   "dependencies": {
     "colors": "^1.1.2",
     "express": "^4.14.0",

@@ -1,7 +1,14 @@
+<!--
+    Dasher - index.html
+
+    The HTML base for the Dasher Package.
+
+    @author: UP772629
+-->
 <!doctype html>
 <html lang="en">
     <head>
-        <title>dasher</title>
+        <title>dasher - Dashboard</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -17,14 +24,17 @@
     </head>
 
     <body>
+        <!-- Apply a slight darkness to the background to make the front stand out better. -->
         <section id="background-darkness"></section>
 
+        <!-- Side bar for the settings & about buttons -->
         <aside id="side_bar">
             <div id="settings_button" class="hidden clickable"><i class="fa fa-cog"></i></div>
 
             <div id="about_button" class="hidden clickable"><i class="fa fa-question"></i></div>
         </aside>
 
+        <!-- Dasher loading screen -->
         <main id="dashboard_loading" class="container hidden">
             <section class="center_box">
                 <h1 class="dasher_title">dasher</h1>
@@ -32,17 +42,18 @@
             </section>
         </main>
 
+        <!-- Dashboard Errors Page -->
         <main id="dashboard_error" class="container hidden">
             <section class="center_box">
                 <h1>dasher can't load</h1>
 
-                <span id="error_message"></span>
+                <span id="error_message">An unknown error has occured!</span>
             </section>
         </main>
 
+        <!-- Main Dashboard Content -->
         <main id="dashboard" class="container hidden">
             <section class="row clearfix">
-
                 <!-- Socket Warning -->
                 <section class="col-md-12 hidden" id="widget_soc_warning">
                     <section class="widget widget_warning">
@@ -71,14 +82,14 @@
                     </section>
                 </section>
 
-                <!-- Location -->
+                <!-- Location Widget -->
                 <section class="col-md-4" id="widget_location">
                     <section class="widget">
                         <span id="current_location"><i class="fa fa-refresh fa-spin"></i></span>
                     </section>
                 </section>
 
-                <!-- Headlines -->
+                <!-- Headlines Widget -->
                 <section class="col-md-6" id="widget_news">
                     <section class="widget_header">
                         News Headlines
@@ -88,7 +99,7 @@
                     </section>
                 </section>
 
-                <!-- Weather Forecast -->
+                <!-- Weather Forecast Widget -->
                 <section class="col-md-6" id="widget_weather">
                     <section class="widget_header">
                         Local Weather Forecast
@@ -100,7 +111,7 @@
                     </section>
                 </section>
 
-                <!-- Map -->
+                <!-- Map Widget -->
                 <section class="col-md-6" id="widget_map">
                     <section class="widget_header">
                         Local Area Traffic
@@ -110,7 +121,7 @@
                     </section>
                 </section>
 
-                <!-- Twitter Feed -->
+                <!-- Twitter Feed Widget -->
                 <section class="col-md-6" id="widget_twitter">
                     <section class="widget_header">
                         Twitter Feed
@@ -122,7 +133,7 @@
                     </section>
                 </section>
 
-                <!-- Notepad -->
+                <!-- Notepad Widget -->
                 <section class="col-md-6" id="widget_notepad">
                     <section class="widget_header">
                         Notes
@@ -224,8 +235,12 @@
                 <p>Reset Dasher: <span class="clickable btn btn-default" id="setting_reset_dasher">Reset Dasher</span></p>
             </section>
         </section>
+        <!-- ads.js creates a div, most adblocks remove "ads.js" files. -->
         <script src="/js/ads.js"></script>
+        <!-- Loads the dasher.js file for the client side scripts -->
         <script async defer src="/js/dasher.js"></script>
+
+        <!-- Other require scripts for dasher to function correctly. -->
         <script async defer src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAu2pQkbeYVcYTeWouEVUi2EVT93LpIBp0"></script>
     </body>

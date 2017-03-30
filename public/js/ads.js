@@ -1,3 +1,11 @@
+/**
+ * Dasher - app.js
+ *
+ * The client side script to create an invisible element on the page, this is to check if an adblocker is enabled.
+ *
+ * @author: UP772629
+ */
+
 var e=document.createElement('div');
 e.id='checkAdBlocker';
 e.style.display='none';
