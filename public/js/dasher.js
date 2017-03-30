@@ -874,7 +874,7 @@ function updateSettingsBackground(){
  * Updates the background of the site.
  */
 function updateSettingsChatUser(){
-    localStorage.setItem("setting_message_name", document.getElementById("setting_message_name").value);
+    localStorage.setItem("setting_message_name", strip_tags(document.getElementById("setting_message_name").value));
 }
 
 /**
