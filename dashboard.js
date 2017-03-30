@@ -100,9 +100,10 @@ wss.on('connection', function connection(ws) {
  * Returns the current weather forcast from the darksky API, then sends back via WS
  */
 function getWeatherForcast(ws, lat, lon){
-    request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/'+lat+','+lon+'&units=SI', function (error, response, body) {
+    request('https://api.darksky.net/forecast/130474c13d870a20cd8b548373536d63/'+lat+','+lon, function (error, response, body) {
         var forecast = JSON.parse(body);
-        ws.send(JSON.stringify({"action":"weather", "forecast":forecast}));
+        ws.send(JSON.stringify({"action": "weather", "forecast": forecast}));
+
     });
 }
 
@@ -110,7 +111,7 @@ function getWeatherForcast(ws, lat, lon){
  * Returns the current news headlines from BBC News / newsAPI system, then sends back via WS
  */
 function getNewsHeadlines(ws){
-    request('https://newsapi.org/v1/articles?source=bbc-news&apiKey=08962d9950894e9ab44c424a0690d2aa', function (error, response, body) {
+    request('https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=08962d9950894e9ab44c424a0690d2aa', function (error, response, body) {
         ws.send(JSON.stringify({"action":"news", "articles":JSON.parse(body).articles}));
     });
 }

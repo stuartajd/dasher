@@ -3,6 +3,8 @@ Dasher is a configurable dashboard built in CSS, HTML &amp; Javascript to displa
 
 The system is built to be run on any system and many systems are able to access the server as all the customisation options are managed on the client side.
 
+
+Dasher is also built to automatically update all the information periodically, you never need to refresh your dashboard!
 ## Requirements
 A nodeJS server (npm installed)
 
@@ -25,8 +27,6 @@ This will kickstart the server and dashboard itself. Once the server has started
 
 ```
 [SERVER] Welcome to Dasher.. We're just loading the server now!
-[SERVER] Web Server Started on {YOUR IP}:8080
-[SERVER] Socket Server Started {YOUR IP}:8081
 [SERVER] Dasher has loaded, visit {YOUR IP}:8080 to view!
 ```
 
@@ -47,7 +47,7 @@ Data is sourced from multiple locations, they have been credited below.
 
 * Weather API: https://darksky.net
 * Location API: Google API
-* Weather Icons: https://github.com/erikflowers/weather-icons
+* Weather Icons: https://www.iconfinder.com/iconsets/weather-color-2
 * News Headlines: https://newsapi.org
 
 Any functions used from external sources have been credited in the code comments.
