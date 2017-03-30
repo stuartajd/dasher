@@ -339,7 +339,9 @@ function updateCurrentTime(){
 
     var time = new Date();
     var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
-    document.querySelector("#current-time").textContent = "" + time.getHours() + ":" + mins + ":" + time.getSeconds();
+    var secs = (time.getSeconds() <= 9) ? "0"+time.getSeconds() : time.getSeconds();
+
+    document.querySelector("#current-time").textContent = "" + time.getHours() + ":" + mins + ":" + secs;
 }
 
 /**
@@ -402,13 +404,13 @@ function updateCurrentWeather(){
 }
 
 /**
- * Starts the timer to update the dashboard time. Runs every 5 seconds.
+ * Starts the timer to update the dashboard time. Runs every second.
  */
 function startTimeTimer(){
     updateCurrentTime();
     setInterval(function(){
         updateCurrentTime()
-    }, 5000);
+    }, 1000);
 }
 
 /**
@@ -587,7 +589,6 @@ function updateElementText(element, text){
 function updateElementHTML(element, text){
     document.querySelector(element).innerHTML = text;
 }
-
 
 /**
  * Hide the error messages, displays the dashboard
