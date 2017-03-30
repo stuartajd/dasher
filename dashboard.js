@@ -75,6 +75,13 @@ app.get('/*', function (req, res) {
 wss.on('connection', function connection(ws) {
     debug("New Connection Established");
 
+    var user_count = 0;
+    wss.clients.forEach(function each(client) {
+        user_count++;
+    });
+
+    ws_broadcast(JSON.stringify({"action":"users", "count": user_count }));
+
     /**
      * A message is received in the JSON format:
      *

@@ -266,6 +266,13 @@ ws.onmessage = function (event) {
     debug("Message Received : " + message.action);
 
     switch(message.action){
+        // Updates the total users conncted counter
+        case "users":
+            updateElementText(
+                '#chat_user_connected',
+                message.count
+            );
+            break;
         // Updates the current weather
         case "weather":
             updateElementHTML(
