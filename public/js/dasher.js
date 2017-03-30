@@ -223,7 +223,10 @@ ws.onmessage = function (event) {
         case "weather":
             updateElementHTML(
                 "#widget_weather_icon",
-                '<i class="wi wi-forecast-io-'+message.forecast.currently.icon+'"></i>'
+                '<div class="row"><div class="col-md-6">' +
+                '<img src="/images/'+ message.forecast.currently.icon +'.png" class="img-responsive">' +
+                '</div><div class="col-md-6">'+ Math.round((Number(message.forecast.currently.temperature) - 32) / (9 / 5)) +
+                '&deg; C</div></div>'
             );
 
             updateElementHTML(
@@ -244,8 +247,8 @@ ws.onmessage = function (event) {
                 var hours= (time.getHours() >= 12) ? time.getHours() - 12 : time.getHours();
 
                 var fore = document.createElement("td");
-                fore.innerHTML = '<i title="'+ weekForecast[i+1].summary +'" ' +
-                    'class="wi wi-forecast-io-'+ weekForecast[i+1].icon +'"></i><br />'+ hours + ":" + mins + AMPM ;
+                fore.innerHTML = '<img src="/images/'+ weekForecast[i+1].icon +'.png" class="img-responsive">' +
+                    '<br />'+ hours + ":" + mins + AMPM ;
                 weekly.appendChild(fore);
             }
 
