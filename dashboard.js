@@ -94,7 +94,10 @@ wss.on('connection', function connection(ws) {
                 getNewsHeadlines(ws);
                 break;
             case "message":
-                ws_broadcast(JSON.stringify({"action":"message", "user": message.user, "message": message.message}));
+                // They didn't just send an empty string, so we can send it to everyone!
+                if(message.message.length > 0){
+                    ws_broadcast(JSON.stringify({"action":"message", "user": message.user, "message": message.message}));
+                }
                 break;
         }
     });
