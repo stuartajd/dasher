@@ -42,7 +42,9 @@ dasher.dashboardText();
 print("Welcome to Dasher.. We're just loading the server now!", "Server");
 debug("Dasher Loading - Started");
 
-/* Webserver Content */
+/**
+ * Serve all the static content from within the /public folder.
+ */
 app.use(express.static(__dirname + '/public'));
 
 /**
@@ -64,7 +66,7 @@ app.get('/', function (req, res) {
 });
 
 /**
- * Redirect all traffic that isn't on / to / package.
+ * Redirect all traffic that isn't on / to the index on /.
  */
 app.get('/*', function (req, res) {
     res.redirect("/");
@@ -87,8 +89,7 @@ function countWSSusers(){
 wss.on('connection', function connection(ws) {
     debug("New Connection Established");
 
-
-
+    // When there is a new connection, tell everyone to update their user count
     ws_broadcast(JSON.stringify({"action":"users", "count": countWSSusers() }));
 
     /**

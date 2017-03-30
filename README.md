@@ -58,7 +58,7 @@ given and you will be able to begin using the dashboard (See example of console 
 
 ## Customisation
 Dasher has a load of different customisation options, you're able to alter the background colours, images along with
-showing and hiding all different widgets that on are the site. 
+showing and hiding all different widgets that on are the site.
 
 Dasher has 6 main widgets:
 * News Headlines Feed
@@ -68,7 +68,8 @@ Dasher has 6 main widgets:
 * Twitter Feed
 * Live Chat Box
 
-And also has a local clock, date and location widgets which remain at the top of the page.
+And also has a local clock, date and location widgets which remain at the top of the page. By default all 6 widgets are 
+shown!
 
 #### How do I customise the site?
 Customisation is easy, simply click the cog in the top left corner, then it'll display the site settings, then just 
@@ -85,6 +86,7 @@ click on the settings that you want to change!
 ## Data Sources
 Data is sourced from multiple locations, they have been credited below.
 
+- Unsplash Backgrounds: https://unsplash.com/
 - Weather API: https://darksky.net
 - Location API: Google API
 - Weather Icons: https://www.iconfinder.com/iconsets/weather-color-2
