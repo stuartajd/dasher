@@ -339,8 +339,7 @@ function updateCurrentTime(){
 
     var time = new Date();
     var mins = (time.getMinutes() <= 9) ? "0"+time.getMinutes() : time.getMinutes();
-    var AMPM = (time.getHours() >= 12) ? "PM" : "AM";
-    document.querySelector("#current-time").textContent = "" + time.getHours() + ":" + mins + AMPM;
+    document.querySelector("#current-time").textContent = "" + time.getHours() + ":" + mins;
 }
 
 /**
