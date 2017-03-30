@@ -996,5 +996,6 @@ function sendMessage(event){
         // They press the enter key
         var message = document.getElementById("chat_input").value;
         ws.send(JSON.stringify({"action":"message", "user":localStorage.getItem("setting_message_name"), "message":message }));
+        document.getElementById("chat_input").value = "";
     }
 }
