@@ -14,6 +14,37 @@ var debug_mode = false;
  * Widgets_Defaults is a store of all the widgets, their element IDs along with their defaults for the localStorage.
  *
  * It is used to quickly reset default to avoid having to constantly rewrite the same code over and over.
+ *
+ * How does this work?
+ * ======================
+ *
+ * There are two types of data stored in widgets_defaults, one is for the widgets themselves, these all contain the
+ * unique ID assigned to each widget, the other is for the remaining local storage defaults for dasher.
+ *
+ * When required, the data stored in this array will automatically populate the different settings throughout dasher
+ * such as during the resetDasher function when required, it will update all the localStorage settings to create
+ * a default item.
+ *
+ * How do I add new widget defaults?
+ * ===================================
+ *
+ * When creating a new widget, the default will need to be added. Add a JSON entry to the array below.
+ *
+ * widget_id -> The unique ID for the entire widget within the index.html file
+ * store_name -> The name for the localStorage setting that will be default for this widget (this will be shown / hidden)
+ * store_value -> The value for the localStorage setting (most likely true / false for widgets)
+ * settings_button -> The ID for the settings button for use within the settings page, this will toggle the button created
+ *                    within the index.html page / settings popup.
+ *
+ * How do I add a new general default?
+ * =====================================
+ *
+ * When creating a new default, add a JSON entry to the array below.
+ *
+ * widget_id -> This is not required, simply set this to false.
+ * store_name -> This is the name for the localStorage setting.
+ * store_value -> The default value for the localStorage setting.
+ *
  */
 var widgets_defaults = [
     // Default for Widgets
@@ -95,6 +126,21 @@ var widgets_defaults = [
 /**
  * Widgets_Events stores all the events, the element and the function to run. In the event listeners section, a for loop
  * creates the system.
+ *
+ * Creating new events
+ * =====================
+ *
+ * To create a new event simply add a new JSON entry to the widgets_events array, use the following format.
+ * element_id -> The element that the event will take place on, must be a unique ID specified.
+ * event_type -> The event to listen for such as keyup or click.
+ * event_func -> The function to call when the event has been completed.
+ *
+ * How does it work?
+ * ====================
+ *
+ * There is a for loop further down the dasher.js page that creates all the events and correctly sets everything
+ * up to make event listeners faster, the event handler functions still need to be created however this simplifies
+ * the creation of listeners.
  */
 var widgets_events = [
     {
@@ -700,7 +746,8 @@ function showAboutBox(){
  * Toggles the display of the settings box but also sets up the menu to display all the settings.
  */
 function showSettingsBox(){
-    window.about_box.classList.toggle("hidden");
+    // If the about box is open, close it!
+    window.about_box.classList.add("hidden");
 
     // Loop through all the backgrounds to check which is selected.
     var set_bg_ty = document.getElementById("setting_background_type");
@@ -724,12 +771,15 @@ function showSettingsBox(){
         }
     }
 
+    // Set the value of the colour picker
     window.setting_color_picker.value = localStorage.getItem("setting_background_color");
 
-    window.settings_box.classList.toggle("hidden");
-
+    // Remove the messager user name
     window.setting_message_name.value = "";
     window.setting_message_name.placeholder = localStorage.getItem("setting_message_name");
+
+    // Display / Hide the settings box
+    window.settings_box.classList.toggle("hidden");
 }
 
 /**
@@ -773,38 +823,67 @@ function updateNotepadContent(){
  * If the news setting is True, changes to False as they have clicked to hide
  */
 function updateSettingsNews(){
-    if(localStorage.getItem("setting_display_news") == "true"){
-        localStorage.setItem("setting_display_news", "false");
-        window.display_news_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_news", "true");
-        window.display_news_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-    }
+    toggleElementDisplay("setting_display_news");
 }
 
 /**
  * If the chat setting is True, changes to False as they have clicked to hide
  */
 function updateSettingsChat(){
-    if(localStorage.getItem("setting_display_chat") == "true"){
-        localStorage.setItem("setting_display_chat", "false");
-        window.display_chat_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_chat", "true");
-        window.display_chat_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-    }
+    toggleElementDisplay("setting_display_chat");
+}
+
+/**
+ * If the map setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsMap(){
+    toggleElementDisplay("setting_display_map");
 }
 
 /**
  * If the news setting is True, changes to False as they have clicked to hide
  */
-function updateSettingsMap(){
-    if(localStorage.getItem("setting_display_map") == "true"){
-        localStorage.setItem("setting_display_map", "false");
-        window.display_map_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_map", "true");
-        window.display_map_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+function updateSettingsWeather(){
+    toggleElementDisplay("setting_display_weather");
+}
+
+/**
+ * If the twitter setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsTwitter(){
+    toggleElementDisplay("setting_display_twitter");
+}
+
+/**
+ * If the news setting is True, changes to False as they have clicked to hide
+ */
+function updateSettingsNotepad(){
+    toggleElementDisplay("setting_display_notepad");
+}
+
+/**
+ * Uses the store_name value from widgets_defaults to locate the element required
+ * then displays or hides the element based on it's current value.
+ *
+ * Used by the settings box to show and hide the widgets on the dashboard then flick the switch to show the status.
+ */
+function toggleElementDisplay(store_name){
+    for(var i = 0; i < widgets_defaults.length; i++){
+        // Check if a button exists for the widget (it is a widget not a store default)
+        if(widgets_defaults[i].settings_button) {
+            if (widgets_defaults[i].store_name == store_name) {
+                var button = document.getElementById(widgets_defaults[i].settings_button);
+                if (localStorage.getItem(store_name) == "true") {
+                    // It's displayed, hide it!
+                    localStorage.setItem(store_name, "false");
+                    button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
+                } else {
+                    // It's hidden, show it!
+                    localStorage.setItem(store_name, "true");
+                    button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
+                }
+            }
+        }
     }
 }
 
@@ -813,45 +892,6 @@ function updateSettingsMap(){
  */
 function updateSettingsBackgroundColor(){
     localStorage.setItem("setting_background_color", window.setting_color_picker.value);
-}
-
-/**
- * If the news setting is True, changes to False as they have clicked to hide
- */
-function updateSettingsWeather(){
-    if(localStorage.getItem("setting_display_weather") == "true"){
-        localStorage.setItem("setting_display_weather", "false");
-        window.display_weather_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_weather", "true");
-        window.display_weather_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-    }
-}
-
-/**
- * If the twitter setting is True, changes to False as they have clicked to hide
- */
-function updateSettingsTwitter(){
-    if(localStorage.getItem("setting_display_twitter") == "true"){
-        localStorage.setItem("setting_display_twitter", "false");
-        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_twitter", "true");
-        window.display_twitter_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-    }
-}
-
-/**
- * If the news setting is True, changes to False as they have clicked to hide
- */
-function updateSettingsNotepad(){
-    if(localStorage.getItem("setting_display_notepad") == "true"){
-        localStorage.setItem("setting_display_notepad", "false");
-        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-off"></i> Hidden';
-    } else {
-        localStorage.setItem("setting_display_notepad", "true");
-        window.display_notepad_button.innerHTML = '<i class="fa fa-toggle-on"></i> Shown';
-    }
 }
 
 /**
