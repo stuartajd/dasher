@@ -247,6 +247,7 @@ footer {
     text-align: left;
     border-bottom: 1px solid grey;
 }
+
 #chat_content > li:last-child{
     border-bottom: none;
 }

@@ -1002,7 +1002,7 @@ function sendMessage(event){
     if(event.keyCode == 13){
         // They press the enter key
         var message = document.getElementById("chat_input").value;
-        ws.send(JSON.stringify({"action":"message", "user":localStorage.getItem("setting_message_name"), "message":message }));
+        ws.send(JSON.stringify({"action":"message", "user":localStorage.getItem("setting_message_name"), "message":strip_tags(message) }));
         document.getElementById("chat_input").value = "";
     }
 }
