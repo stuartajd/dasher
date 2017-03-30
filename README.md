@@ -40,18 +40,18 @@ Dasher has a load of different customisation options, you're able to alter the b
 Customisation is easy, simply click the cog in the top left corner, then it'll display the site settings, then just click on the settings that you want to change!
 
 #### Customisation Options
-*House colours can be changed
-*Background Category [Nature, Buildings, Food, People, Technology, Objects]
-*Displaying and Hiding specific elements
-*Notepad Facility
-*User name for the chat
+-House colours can be changed
+-Background Category [Nature, Buildings, Food, People, Technology, Objects]
+-Displaying and Hiding specific elements
+-Notepad Facility
+-User name for the chat
 
 ## Data Sources
 Data is sourced from multiple locations, they have been credited below.
 
-*Weather API: https://darksky.net
-*Location API: Google API
-*Weather Icons: https://www.iconfinder.com/iconsets/weather-color-2
-*News Headlines: https://newsapi.org
+-Weather API: https://darksky.net
+-Location API: Google API
+-Weather Icons: https://www.iconfinder.com/iconsets/weather-color-2
+-News Headlines: https://newsapi.org
 
 Any functions used from external sources have been credited in the code comments.
