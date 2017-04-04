@@ -238,8 +238,8 @@ var widgets_events = [
 /**
  * An array of all the days of the week.
  */
-var days = ["MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"];
-var fullDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+var days = ["SUN", "MON", "TUE", "WED", "THUR", "FRI", "SAT"];
+var fullDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 /**
  * An array of all the months of the year.
