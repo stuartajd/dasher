@@ -346,12 +346,12 @@ ws.onmessage = function (event) {
 
             for(var i = 0; i < 5; i++){
                 var time = new Date(0); // The 0 there is the key, which sets the date to the epoch
-                time.setUTCSeconds(weekForecast[i].time);
+                time.setUTCSeconds(weekForecast[i + 1].time);
                 var day = time.getDay();
 
                 var fore = document.createElement("td");
-                fore.innerHTML = days[day] + '<br /><small>' + convertToC(weekForecast[i].temperatureMin) +
-                    '</small><br /><img src="/images/'+ weekForecast[i].icon +'.png" style="width: 2em;">';
+                fore.innerHTML = days[day] + '<br /><small>' + convertToC(weekForecast[i + 1].temperatureMin) +
+                    '</small><br /><img src="/images/'+ weekForecast[i + 1].icon +'.png" style="width: 2em;">';
                 weekly.appendChild(fore);
             }
 
